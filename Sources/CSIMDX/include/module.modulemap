@@ -1,0 +1,44 @@
+// Thoughts:
+// 1. (ARM) NEON has no restrictions. If NEON is available, use NEON intrinsics.
+// 2. SSE2/AVX (et al) must not be used if NEON is available. This is not possible,
+//    (at least as far as I know) but it does not hurt to be defined in the module map.
+// 3. SSE2/AVX (et al) dependencies are aligned with their release/dependency cycle.
+//    So if AVX is available, SSE2 is available. If AVX2 is available, AVX is available
+//    therefore SSE2 is available - and so on.
+// 4. Generic vectors mostly (if not always) result in the worst performance. Therefore,
+//    they are not available if any of the afore mentioned instruction set is available.
+
+module CSIMDX {
+
+    // MARK: NEON
+
+    module neon {
+        requires neon
+        umbrella "neon"
+    }
+
+    // MARK: AVX/SSE2
+
+    module avx {
+        requires avx
+        requires !neon
+        umbrella "avx"
+        export sse2
+    }
+
+    module sse2 {
+        requires sse2
+        requires !neon
+        umbrella "sse2"
+    }
+
+    // MARK: Generic Storage
+
+    module generic {
+        requires !avx
+        requires !sse2
+        requires !neon
+        umbrella "generic"
+    }
+}
+
