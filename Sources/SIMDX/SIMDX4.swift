@@ -59,11 +59,7 @@ extension SIMDX4 {
 }
 
 // MARK: Collection Conformance
-<<<<<<< HEAD
-extension SIMDX3 {
-=======
 extension SIMDX4 {
->>>>>>> Add arm neon 128bit types, and refined simdx layout
 
     /// The position of the first element in the collection.
     public var startIndex: Index4 { .index0 }
