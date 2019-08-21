@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Index
 
 /// The `Index` type of a 4 value SIMD storage.
-public struct Index4: Comparable {
+public struct Index4: RawRepresentable, Comparable {
 
     /// The index to the first element in the collection
     public static let index0: Index4 = .init(rawValue: 0)
@@ -59,7 +59,11 @@ extension SIMDX4 {
 }
 
 // MARK: Collection Conformance
+<<<<<<< HEAD
 extension SIMDX3 {
+=======
+extension SIMDX4 {
+>>>>>>> Add arm neon 128bit types, and refined simdx layout
 
     /// The position of the first element in the collection.
     public var startIndex: Index4 { .index0 }
