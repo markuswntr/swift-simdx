@@ -111,16 +111,6 @@ final class CXFloat32x3Tests: XCTestCase {
         XCTAssertEqual(CXFloat32x3GetElement(product, 3), 0) // Make sure the unused value remains zero
     }
 
-    func testEqual() {
-        let lhs = CXFloat32x3Make(1, -2, -3)
-        let rhs = CXFloat32x3Make(1, 2, -3)
-        let result = CXFloat32x3Equal(lhs, rhs)
-
-        XCTAssertNotEqual(CXFloat32x3GetElement(result, 0), 0)
-        XCTAssertEqual(CXFloat32x3GetElement(result, 1), 0)
-        XCTAssertNotEqual(CXFloat32x3GetElement(result, 2), 0)
-    }
-
     static var allTests = [
         ("testMake", testMake),
         ("testMakeRepeatingValues", testMakeRepeatingValues),
@@ -130,7 +120,6 @@ final class CXFloat32x3Tests: XCTestCase {
         ("testAdd", testAdd),
         ("testSubtract", testSubtract),
         ("testNegate", testNegate),
-        ("testMultiply", testMultiply),
-        ("testEqual", testEqual)
+        ("testMultiply", testMultiply)
     ]
 }

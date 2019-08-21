@@ -1,7 +1,7 @@
 import Foundation
 import CSIMDX
 
-public struct Float32x2: RawStorage2 {
+public struct Float32x2: RawStorage2, FloatingPointRawStorage {
 
     // MARK: Collection Conformance
 
@@ -55,26 +55,14 @@ extension Float32x2 {
     }
 }
 
-// MARK: - Comparable
-extension Float32x2 {
-
-    @inline(__always)
-    public func equalMask(to other: Float32x2) -> Float32x2 {
-        return .init(rawValue: CXFloat32x2Equal(self.rawValue, other.rawValue))
-    }
-
-    @inline(__always)
-    public static func == (lhs: Float32x2, rhs: Float32x2) -> Bool {
-        let result: Float32x2 = lhs.equalMask(to: rhs) // TODO: Refactor
-        return result[0] != 0.0 && result[1] != 0.0
-    }
-}
-
 // MARK: - Arithmetics
 extension Float32x2 {
 
     @inline(__always)
     public static var zero: Float32x2 = .init(rawValue: CXFloat32x2MakeZero())
+
+    @inline(__always)
+    public var magnitude: Float32x2 { .init(rawValue: CXFloat32x2Absolute(rawValue)) }
 
     // MARK: Additive
 
@@ -84,18 +72,8 @@ extension Float32x2 {
     }
 
     @inline(__always)
-    public static func += (lhs: inout Float32x2, rhs: Float32x2) {
-        lhs.rawValue = lhs.rawValue + rhs.rawValue
-    }
-
-    @inline(__always)
     public static func - (lhs: Float32x2, rhs: Float32x2) -> Float32x2  {
         return .init(rawValue: CXFloat32x2Subtract(lhs.rawValue, rhs.rawValue))
-    }
-
-    @inline(__always)
-    public static func -= (lhs: inout Float32x2, rhs: Float32x2) {
-        lhs.rawValue = lhs.rawValue - rhs.rawValue
     }
 
     @inline(__always)
@@ -103,10 +81,19 @@ extension Float32x2 {
         return .init(rawValue: CXFloat32x2Negate(operant.rawValue))
     }
 
+    public mutating func negate() {
+        rawValue = CXFloat32x2Negate(rawValue)
+    }
+
     // MARK: Multiplicative
 
     @inline(__always)
     public static func * (lhs: Float32x2, rhs: Float32x2) -> Float32x2  {
         return .init(rawValue: CXFloat32x2Multiply(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inline(__always)
+    public static func / (lhs: Float32x2, rhs: Float32x2) -> Float32x2  {
+        return .init(rawValue: CXFloat32x2Divide(lhs.rawValue, rhs.rawValue))
     }
 }

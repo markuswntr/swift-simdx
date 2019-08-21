@@ -11,21 +11,18 @@
 module CSIMDX {
 
     // MARK: NEON
-
     module neon {
         requires neon
         umbrella "neon"
     }
 
     // MARK: AVX/SSE2
-
     module avx {
         requires avx
         requires !neon
         umbrella "avx"
         export sse2
     }
-
     module sse2 {
         requires sse2
         requires !neon
@@ -33,7 +30,6 @@ module CSIMDX {
     }
 
     // MARK: Generic Storage
-
     module generic {
         requires !avx
         requires !sse2

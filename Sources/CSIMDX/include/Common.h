@@ -27,7 +27,7 @@
 #define DEFAULT_FUNCTION_ATTRIBUTES  __attribute__((__always_inline__, __nodebug__))
 
 /// Function pre-fix to make it static and to try force inlining it by the compiler. Takes the return value as input.
-#define STATIC_ALWAYS_INLINE(returnType) static __inline__ returnType DEFAULT_FUNCTION_ATTRIBUTES
+#define STATIC_INLINE_INTRINSIC(returnType) static __inline__ returnType DEFAULT_FUNCTION_ATTRIBUTES
 
 /// Reference: https://github.com/llvm-mirror/clang/blob/b165125115794a302175c79b63a1c964323cf6fb/test/Preprocessor/feature_tests.c
 // !__has_builtin(__builtin_shufflevector) || \

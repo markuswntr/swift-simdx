@@ -6,17 +6,27 @@ and  portable implementations of SIMD intrinsics on **hardware which doesn't nat
 of the target hardware. Therefore it allows vector and matrix calculations on any (Swift supporting) hardware and automatically
 routes([<sup>1</sup>](#1)) those through the fastest available instructions.
 
+> **Note:** This is far from finished, and not guarantueed to perform faster. There have been no performance tests, nor benchmarks, nor nothing.
+
+**TODO:**
+- [ ] 256bit (Length) storages
+- [ ] Matrices
+- [ ] Generic Implementation
+/// Reference: https://github.com/llvm-mirror/clang/blob/b165125115794a302175c79b63a1c964323cf6fb/test/Preprocessor/feature_tests.c
+// !__has_builtin(__builtin_shufflevector) || \
+// !__has_builtin(__builtin_convertvector) || \
+
 ## References 
 
-I started with almost zero knownledge of SIMD/Intrinsics or builtin clang functions and was DuckDuckGoing (is that a thing) alot 
-prior to started writting this lib. The following references are some of the most useful instructions I could find across the internet.
+I started with almost zero knownledge of SIMD/Intrinsics or builtin clang functions and was DuckDuckGoing (is that a thing?) alot 
+prior to started writting this lib. The following references contain some of the most useful instructions I could find across the internet.
 I gathered them while writting this library, and I am pretty sure I will need them and re-visit them quite a lot so I leave them here.
 
 ### General Knownledge
 
 - https://www.eduonix.com/courses/Software-Development/Learn-the-Basics-of-C-Programming-Language (:D **just kidding** - kind of)
-- https://en.wikipedia.org/wiki/SIMD (_ __not__ kidding_)
-- https://github.com/nemequ/simde (_I wish I would have found this library before finishing the first set of working simd instructions_)
+- https://en.wikipedia.org/wiki/SIMD (_**not** kidding_)
+- https://github.com/nemequ/simde (_I wish I would have found this library waaaaay earlier_)
 
 ### Built-in Vector Support in `clang`
 
@@ -27,12 +37,22 @@ I gathered them while writting this library, and I am pretty sure I will need th
 
 ### x86 Intrinsics
 
+- https://software.intel.com/sites/landingpage/IntrinsicsGuide/
 - https://en.wikipedia.org/wiki/Advanced_Vector_Extensions
-- http://www.g-truc.net/post-0359.html
 - https://clang.llvm.org/doxygen/immintrin_8h.html
 - https://clang.llvm.org/doxygen/immintrin_8h_source.html
+- http://www.g-truc.net/post-0359.html
 
+### NEON Intrinsics
+
+- https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/intrinsics
+
+----
 Footnotes: <a class="anchor" id="1">1</a>. It barely "routes" anything. All instructions are marked to be inline whenever possible.
+
+
+
+
 
 
 #### Check available intrinsics

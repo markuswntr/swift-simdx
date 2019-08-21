@@ -1,7 +1,7 @@
 import Foundation
 import CSIMDX
 
-public struct Float32x3: RawStorage3 {
+public struct Float32x3: RawStorage3, FloatingPointRawStorage {
 
     // MARK: Collection Conformance
 
@@ -55,26 +55,14 @@ extension Float32x3 {
     }
 }
 
-// MARK: - Comparable
-extension Float32x3 {
-
-    @inline(__always)
-    public func equalMask(to other: Float32x3) -> Float32x3 {
-        return .init(rawValue: CXFloat32x3Equal(self.rawValue, other.rawValue))
-    }
-
-    @inline(__always)
-    public static func == (lhs: Float32x3, rhs: Float32x3) -> Bool {
-        let result: Float32x3 = lhs.equalMask(to: rhs) // TODO: Refactor
-        return result[0] != 0.0 && result[1] != 0.0 && result[2] != 0.0
-    }
-}
-
 // MARK: - Arithmetics
 extension Float32x3 {
 
     @inline(__always)
     public static var zero: Float32x3 = .init(rawValue: CXFloat32x3MakeZero())
+
+    @inline(__always)
+    public var magnitude: Float32x3 { .init(rawValue: CXFloat32x3Absolute(rawValue)) }
 
     // MARK: Additive
 
@@ -93,10 +81,19 @@ extension Float32x3 {
         return .init(rawValue: CXFloat32x3Negate(operant.rawValue))
     }
 
+    public mutating func negate() {
+        rawValue = CXFloat32x3Negate(rawValue)
+    }
+
     // MARK: Multiplicative
 
     @inline(__always)
     public static func * (lhs: Float32x3, rhs: Float32x3) -> Float32x3  {
         return .init(rawValue: CXFloat32x3Multiply(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inline(__always)
+    public static func / (lhs: Float32x3, rhs: Float32x3) -> Float32x3  {
+        return .init(rawValue: CXFloat32x3Divide(lhs.rawValue, rhs.rawValue))
     }
 }
