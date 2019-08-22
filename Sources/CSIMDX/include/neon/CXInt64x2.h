@@ -7,7 +7,7 @@
 /// Returns an intrinsic initialized to the 2 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Make(Int64 value0, Int64 value1)
 {
-    return _mm_setr_epi64(_mm_cvtsi64_m64(value0), _mm_cvtsi64_m64(value1));
+    return (CXInt64x2){ value0, value1 };
 }
 
 /// Loads 2 x Int64 values from unaligned memory.
@@ -15,19 +15,19 @@ STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Make(Int64 value0, Int64 value1)
 /// @return CXInt64x2(pointer[0], pointer[1])
 STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Load(const Int64* pointer)
 {
-    return _mm_loadu_si64(pointer);
+    return vld1q_s64(pointer);
 }
 
 /// Returns an intrinsic type with all lanes initialized to `value`.
 STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2MakeRepeatingElement(const Int64 value)
 {
-    return _mm_set1_epi64(_mm_cvtsi64_m64(value));
+    return vdupq_n_s64(value);
 }
 
 /// Returns an intrinsic type with all lanes initialized to zero (0.f).
 STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2MakeZero(void)
 {
-    return _mm_setzero_si128();
+    return CXInt64x2MakeRepeatingElement(0L);
 }
 
 // MARK: - Getter/Setter
@@ -51,20 +51,16 @@ STATIC_INLINE_INTRINSIC(void) CXInt64x2SetElement(CXInt64x2* storage, const int 
 
 // MARK: - Arithmetics
 
-/// Returns the negated value (element-wise).
-STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Negate(const CXInt64x2 storage)
-{
-    return _mm_sub_epi64(CXInt64x2MakeZero(), storage);
-}
-
 /// Returns the absolute value (element-wise).
 STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Absolute(const CXInt64x2 storage)
 {
-     // TODO: SSE2 does not have a native abs operation for storages with 64 bit ints
-    return CXInt64x2Make(
-        llabs(CXInt64x2GetElement(storage, 0)),
-        llabs(CXInt64x2GetElement(storage, 1))
-    );
+    return vabsq_s64(storage);
+}
+
+/// Returns the negated value (element-wise).
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Negate(const CXInt64x2 storage)
+{
+    return vnegq_s64(storage);
 }
 
 // MARK: Additive
@@ -74,7 +70,7 @@ STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Absolute(const CXInt64x2 storage)
 /// @param rhs Right-hand side operator
 STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Add(const CXInt64x2 lhs, const CXInt64x2 rhs)
 {
-    return _mm_add_epi64(lhs, rhs);
+    return vaddq_s64(lhs, rhs);
 }
 
 /// Subtracts a storage from another (element-wise) and returns the result.
@@ -82,7 +78,7 @@ STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Add(const CXInt64x2 lhs, const CXInt
 /// @param rhs Right-hand side operator
 STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Subtract(const CXInt64x2 lhs, const CXInt64x2 rhs)
 {
-    return _mm_sub_epi64(lhs, rhs);
+    return vsubq_s64(lhs, rhs);
 }
 
 // MARK: Multiplicative
@@ -92,7 +88,7 @@ STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Subtract(const CXInt64x2 lhs, const 
 /// @param rhs Right-hand side operator
 STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Multiply(const CXInt64x2 lhs, const CXInt64x2 rhs)
 {
-    // TODO: SSE2 does not have a native multiply operation for storages with 64 bit ints
+    // TODO: NEON does not have a native multiply operation for storages with 64 bit ints
     return CXInt64x2Make(
         CXInt64x2GetElement(lhs, 0) * CXInt64x2GetElement(rhs, 0),
         CXInt64x2GetElement(lhs, 1) * CXInt64x2GetElement(rhs, 1)

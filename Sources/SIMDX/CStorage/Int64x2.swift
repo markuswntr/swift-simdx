@@ -11,21 +11,14 @@ public struct Int32x2: RawStorage2, FixedWidthIntegerRawStorage {
 
     // MARK: Raw Value Access
 
-    @inline(__always)
-    public fileprivate(set) var rawValue: CXInt32x2
+    public var rawValue: CXInt32x2
 
-    @inline(__always)
-    public subscript(index: Int32) -> Int32 {
-        @inline(__always) set {
-            CXInt32x2SetElement(&rawValue, index, newValue)
-        }
-        @inline(__always) get {
-            CXInt32x2GetElement(rawValue, index)
-        }
+    @inlinable public subscript(index: Int32) -> Int32 {
+        @inlinable set { CXInt32x2SetElement(&rawValue, index, newValue) }
+        @inlinable get { CXInt32x2GetElement(rawValue, index) }
     }
 
-    @inline(__always)
-    public init(rawValue: CXInt32x2) {
+    @inlinable public init(rawValue: CXInt32x2) {
         self.rawValue = rawValue
     }
 }
@@ -33,24 +26,20 @@ public struct Int32x2: RawStorage2, FixedWidthIntegerRawStorage {
 // MARK: - Designated Initializer
 extension Int32x2 {
 
-    @inline(__always)
-    public init(_ repeatingElement: Int32) {
+    @inlinable public init(_ repeatingElement: Int32) {
         self.init(rawValue: CXInt32x2MakeRepeatingElement(repeatingElement))
     }
 
-    @inline(__always)
-    public init(_ index0: Int32, _ index1: Int32) {
+    @inlinable public init(_ index0: Int32, _ index1: Int32) {
         self.init(rawValue: CXInt32x2Make(index0, index1))
     }
 
-    @inline(__always)
-    public init(_ array: [Int32]) {
+    @inlinable public init(_ array: [Int32]) {
         var array = array
         self.init(rawValue: CXInt32x2Load(&array))
     }
 
-    @inline(__always)
-    public init<Other>(_ sequence: Other) where Other: Sequence, Other.Element == Int32 {
+    @inlinable public init<Other>(_ sequence: Other) where Other: Sequence, Other.Element == Int32 {
         self.init(Array(sequence))
     }
 }
@@ -58,37 +47,31 @@ extension Int32x2 {
 // MARK: - Arithmetics
 extension Int32x2 {
 
-    @inline(__always)
-    public static var zero: Int32x2 = .init(rawValue: CXInt32x2MakeZero())
+    @inlinable public static var zero: Int32x2 { .init(rawValue: CXInt32x2MakeZero()) }
 
-    @inline(__always)
-    public var magnitude: Int32x2 { .init(rawValue: CXInt32x2Absolute(rawValue)) }
+    @inlinable public var magnitude: Int32x2 { .init(rawValue: CXInt32x2Absolute(rawValue)) }
 
     // MARK: Additive
 
-    @inline(__always)
-    public static func + (lhs: Int32x2, rhs: Int32x2) -> Int32x2 {
-        return .init(rawValue: CXInt32x2Add(lhs.rawValue, rhs.rawValue))
+    @inlinable public static func + (lhs: Int32x2, rhs: Int32x2) -> Int32x2 {
+        .init(rawValue: CXInt32x2Add(lhs.rawValue, rhs.rawValue))
     }
 
-    @inline(__always)
-    public static func - (lhs: Int32x2, rhs: Int32x2) -> Int32x2  {
-        return .init(rawValue: CXInt32x2Subtract(lhs.rawValue, rhs.rawValue))
+    @inlinable public static func - (lhs: Int32x2, rhs: Int32x2) -> Int32x2  {
+        .init(rawValue: CXInt32x2Subtract(lhs.rawValue, rhs.rawValue))
     }
 
-    @inline(__always)
-    public static prefix func - (operand: Int32x2) -> Int32x2  {
-        return .init(rawValue: CXInt32x2Negate(operand.rawValue))
+    @inlinable public static prefix func - (operand: Int32x2) -> Int32x2  {
+        .init(rawValue: CXInt32x2Negate(operand.rawValue))
     }
 
-    public mutating func negate() {
+    @inlinable public mutating func negate() {
         rawValue = CXInt32x2Negate(rawValue)
     }
 
     // MARK: Multiplicative
 
-    @inline(__always)
-    public static func * (lhs: Int32x2, rhs: Int32x2) -> Int32x2  {
-        return .init(rawValue: CXInt32x2Multiply(lhs.rawValue, rhs.rawValue))
+    @inlinable public static func * (lhs: Int32x2, rhs: Int32x2) -> Int32x2  {
+        .init(rawValue: CXInt32x2Multiply(lhs.rawValue, rhs.rawValue))
     }
 }

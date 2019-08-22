@@ -23,7 +23,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Load(const Float32* pointer)
 /// Returns an intrinsic type with all lanes initialized to `value`.
 STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3MakeRepeatingElement(const Float32 value)
 {
-    return vdupq_n_f32(value);
+    CXFloat32x3 storage = vdupq_n_f32(value);
+    storage[3] = 0.f;
+    return storage;
 }
 
 /// Returns an intrinsic type with all lanes initialized to zero (0.f).
@@ -98,5 +100,7 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Multiply(const CXFloat32x3 lhs, 
 /// @param rhs Right-hand side operator
 STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Divide(const CXFloat32x3 lhs, const CXFloat32x3 rhs)
 {
-    return vdivq_f32(lhs, rhs);
+    CXFloat32x3 _rhs = rhs;  // Prepare rhs value, to avoid
+    _rhs[3] = 1.f; // a division by zero, but 1 instead
+    return vdivq_f32(lhs, _rhs);
 }

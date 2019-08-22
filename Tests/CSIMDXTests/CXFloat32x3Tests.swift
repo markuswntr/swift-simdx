@@ -31,15 +31,6 @@ final class CXFloat32x3Tests: XCTestCase {
         XCTAssertEqual(CXFloat32x3GetElement(collection, 3), 0) // Make sure the unused value is zero
     }
 
-    func testZero() {
-        let collection = CXFloat32x3MakeZero()
-
-        XCTAssertEqual(CXFloat32x3GetElement(collection, 0), 0)
-        XCTAssertEqual(CXFloat32x3GetElement(collection, 1), 0)
-        XCTAssertEqual(CXFloat32x3GetElement(collection, 2), 0)
-        XCTAssertEqual(CXFloat32x3GetElement(collection, 3), 0) // Make sure the unused value is zero
-    }
-
     func testGetter() {
         let collection = CXFloat32x3Make(1, 2, 3)
 
@@ -67,6 +58,35 @@ final class CXFloat32x3Tests: XCTestCase {
         XCTAssertEqual(CXFloat32x3GetElement(collection, 3), 0) // Make sure the unused value remains zero
     }
 
+    func testZero() {
+        let collection = CXFloat32x3MakeZero()
+
+        XCTAssertEqual(CXFloat32x3GetElement(collection, 0), 0)
+        XCTAssertEqual(CXFloat32x3GetElement(collection, 1), 0)
+        XCTAssertEqual(CXFloat32x3GetElement(collection, 2), 0)
+        XCTAssertEqual(CXFloat32x3GetElement(collection, 3), 0) // Make sure the unused value is zero
+    }
+
+    func testAbsolute() {
+        let normal = CXFloat32x3Make(-1, 0, 3)
+        let absolute = CXFloat32x3Absolute(normal)
+
+        XCTAssertEqual(CXFloat32x3GetElement(absolute, 0), 1)
+        XCTAssertEqual(CXFloat32x3GetElement(absolute, 1), 0)
+        XCTAssertEqual(CXFloat32x3GetElement(absolute, 2), 3)
+        XCTAssertEqual(CXFloat32x3GetElement(absolute, 3), 0) // Make sure the unused value remains zero
+    }
+
+    func testNegate() {
+        let normal = CXFloat32x3Make(-1, 0, 3)
+        let negate = CXFloat32x3Negate(normal)
+
+        XCTAssertEqual(CXFloat32x3GetElement(negate, 0), 1)
+        XCTAssertEqual(CXFloat32x3GetElement(negate, 1), 0)
+        XCTAssertEqual(CXFloat32x3GetElement(negate, 2), -3)
+        XCTAssertEqual(CXFloat32x3GetElement(negate, 3), 0) // Make sure the unused value remains zero
+    }
+
     func testAdd() {
         let lhs = CXFloat32x3Make(1, 2, 3)
         let rhs = CXFloat32x3Make(4, 3, 2)
@@ -87,17 +107,6 @@ final class CXFloat32x3Tests: XCTestCase {
         XCTAssertEqual(CXFloat32x3GetElement(sum, 1), -1)
         XCTAssertEqual(CXFloat32x3GetElement(sum, 2), 1)
         XCTAssertEqual(CXFloat32x3GetElement(sum, 3), 0) // Make sure the unused value remains zero
-
-    }
-
-    func testNegate() {
-        let normal = CXFloat32x3Make(-1, 0, 3)
-        let negate = CXFloat32x3Negate(normal)
-
-        XCTAssertEqual(CXFloat32x3GetElement(negate, 0), 1)
-        XCTAssertEqual(CXFloat32x3GetElement(negate, 1), 0)
-        XCTAssertEqual(CXFloat32x3GetElement(negate, 2), -3)
-        XCTAssertEqual(CXFloat32x3GetElement(negate, 3), 0) // Make sure the unused value remains zero
     }
 
     func testMultiply() {
@@ -111,15 +120,29 @@ final class CXFloat32x3Tests: XCTestCase {
         XCTAssertEqual(CXFloat32x3GetElement(product, 3), 0) // Make sure the unused value remains zero
     }
 
+    func testDivide() {
+        let lhs = CXFloat32x3Make(1, -6, -3)
+        let rhs = CXFloat32x3Make(-4, -3, 3)
+        let product = CXFloat32x3Divide(lhs, rhs)
+
+        XCTAssertEqual(CXFloat32x3GetElement(product, 0), -0.25)
+        XCTAssertEqual(CXFloat32x3GetElement(product, 1), 2)
+        XCTAssertEqual(CXFloat32x3GetElement(product, 2), -1)
+        XCTAssertEqual(CXFloat32x3GetElement(product, 3), 0) // Make sure the unused value remains zero
+    }
+
     static var allTests = [
         ("testMake", testMake),
+        ("testLoad", testLoad),
         ("testMakeRepeatingValues", testMakeRepeatingValues),
-        ("testZero", testZero),
         ("testGetter", testGetter),
         ("testSetter", testSetter),
+        ("testZero", testZero),
+        ("testAbsolute", testAbsolute),
+        ("testNegate", testNegate),
         ("testAdd", testAdd),
         ("testSubtract", testSubtract),
-        ("testNegate", testNegate),
-        ("testMultiply", testMultiply)
+        ("testMultiply", testMultiply),
+        ("testDivide", testDivide)
     ]
 }

@@ -29,7 +29,7 @@ STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3MakeRepeatingElement(const Int32 val
 /// Returns an intrinsic type with all lanes initialized to zero (0.f).
 STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3MakeZero(void)
 {
-    return CXInt32x3MakeRepeatingElement(0.f);
+    return CXInt32x3MakeRepeatingElement(0);
 }
 
 // MARK: - Getter/Setter

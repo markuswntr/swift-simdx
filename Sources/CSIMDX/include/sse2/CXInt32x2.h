@@ -15,11 +15,7 @@ STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Make(Int32 value0, Int32 value1)
 /// @return CXInt32x2(pointer[0], pointer[1])
 STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Load(const Int32* pointer)
 {
-    CXInt32x2 storage = CXInt32x4Load(pointer);
-    storage[2] = 0.f;
-    storage[3] = 0.f;
-    return storage;
-
+    return _mm_loadu_si64(pointer); // TODO: Test!
 }
 
 /// Returns an intrinsic type with all lanes initialized to `value`.
