@@ -77,8 +77,8 @@ extension Float64x2 {
     }
 
     @inline(__always)
-    public static prefix func - (operant: Float64x2) -> Float64x2  {
-        return .init(rawValue: CXFloat64x2Negate(operant.rawValue))
+    public static prefix func - (operand: Float64x2) -> Float64x2  {
+        return .init(rawValue: CXFloat64x2Negate(operand.rawValue))
     }
 
     public mutating func negate() {

@@ -55,7 +55,7 @@ extension SIMDX where Storage: NumericRawStorage {
 
     // MARK: Additive
 
-    @inlinable prefix public static func + (operant: Self) -> Self { operant }
+    @inlinable prefix public static func + (operand: Self) -> Self { operand }
 
     @inlinable public static func + (lhs: Self, rhs: Self) -> Self {
         .init(rawValue: lhs.rawValue + rhs.rawValue)
@@ -82,8 +82,8 @@ extension SIMDX where Storage: NumericRawStorage {
 
 extension SIMDX where Storage: SignedNumericRawStorage {
 
-    @inlinable prefix public static func - (operant: Self) -> Self {
-       return .init(rawValue: -(operant.rawValue))
+    @inlinable prefix public static func - (operand: Self) -> Self {
+       return .init(rawValue: -(operand.rawValue))
     }
 }
 

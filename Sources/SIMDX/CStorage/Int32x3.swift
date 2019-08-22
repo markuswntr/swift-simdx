@@ -77,8 +77,8 @@ extension Int32x3 {
     }
 
     @inline(__always)
-    public static prefix func - (operant: Int32x3) -> Int32x3  {
-        return .init(rawValue: CXInt32x3Negate(operant.rawValue))
+    public static prefix func - (operand: Int32x3) -> Int32x3  {
+        return .init(rawValue: CXInt32x3Negate(operand.rawValue))
     }
 
     public mutating func negate() {

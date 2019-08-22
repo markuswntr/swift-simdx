@@ -13,9 +13,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Make(Float32 value0, Float32 val
 /// Loads 3 x Float32 values from unaligned memory.
 /// @param pointer Unaligned memory pointer to 3 x Float32 values
 /// @return CXFloat32x3(pointer[0], pointer[1], pointer[2])
-STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Load(const void* pointer)
+STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Load(const Float32* pointer)
 {
-    CXFloat32x3 storage = vld1q_f32((Float32*)pointer);
+    CXFloat32x3 storage = vld1q_f32(pointer);
     storage[3] = 0.f;
     return storage;
 }
@@ -54,7 +54,7 @@ STATIC_INLINE_INTRINSIC(void) CXFloat32x3SetElement(CXFloat32x3* storage, const 
 // MARK: - Arithmetics
 
 /// Returns the absolute value (element-wise).
-STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Absolute(CXFloat32x3 storage)
+STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Absolute(const CXFloat32x3 storage)
 {
     return vabsq_f32(storage);
 }

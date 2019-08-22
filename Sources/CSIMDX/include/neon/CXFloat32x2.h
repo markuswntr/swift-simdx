@@ -13,9 +13,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Make(Float32 value0, Float32 val
 /// Loads 2 x Float32 values from unaligned memory.
 /// @param pointer Unaligned memory pointer to 2 x Float32 values
 /// @return CXFloat32x2(pointer[0], pointer[1])
-STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Load(const void* pointer)
+STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Load(const Float32* pointer)
 {
-    return vld1_f32((Float32*)pointer);
+    return vld1_f32(pointer);
 }
 
 /// Returns an intrinsic type with all lanes initialized to `value`.
@@ -52,7 +52,7 @@ STATIC_INLINE_INTRINSIC(void) CXFloat32x2SetElement(CXFloat32x2* storage, const 
 // MARK: - Arithmetics
 
 /// Returns the absolute value (element-wise).
-STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Absolute(CXFloat32x2 storage)
+STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Absolute(const CXFloat32x2 storage)
 {
     return vabs_f32(storage);
 }

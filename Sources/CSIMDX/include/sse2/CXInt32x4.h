@@ -1,143 +1,104 @@
-//#pragma once
-//
-//#include <immintrin.h>
-//#include "Common.h"
-//
-//// MARK: - Int32x4 register type -
-//
-///// 128bit integer intrinsic. The first Int32 is stored in the lowest 32 bits, and so on.
-//typedef __m128i CXInt32x4;
-//
-//// MARK: Designated Initializers
-//
-///// Returns an 128bit intrinsic type initialized to the 4 given Int32 values.
-///// @param value0 1st integer component
-///// @param value1 2nd integer component
-///// @param value2 3rd integer component
-///// @param value3 4th integer component
-//static __attribute__((always_inline))
-//CXInt32x4 CXInt32x4Make(Int32 value0, Int32 value1, Int32 value2, Int32 value3)
-//{
-//	return _mm_setr_epi32(value0, value1, value2, value3);
-//}
-//
-//struct Test {
-//    
-//};
-//
-//#pragma once
-//
-//#include "Common.h"
-//#include <immintrin.h>
-//
-//// MARK: - Float32x4 register type -
-//
-///// 128bit floating point intrinsic. The first Float32 is stored in the lowest 32 bits, and so on.
-//typedef __m128 CXFloat32x4;
-//
-//// MARK: Designated Initializers
-//
-///// Returns an 128bit intrinsic type initialized to the 4 given Float32 values.
-///// @param value0 1st Float32 value
-///// @param value1 2nd Float32 value
-///// @param value2 3rd Float32 value
-///// @param value3 4th Float32 value
-//static __inline__ CXFloat32x4 __attribute__((__always_inline__))
-//CXFloat32x4Make(const Float32 value0, const Float32 value1, const Float32 value2, const Float32 value3)
-//{
-//    return _mm_setr_ps(value0, value1, value2, value3);
-//}
-//
-///// Loads 4 floating point values from unaligned memory.
-///// @param pointer Unaligned memory pointer to 4 floating point values
-///// @return CXFloat32x4(pointer[0], pointer[1], pointer[2], pointer[3])
-//static __attribute__((always_inline))
-//CXFloat32x4 CXFloat32x4Load(const float* pointer)
-//{
-//    return _mm_loadu_ps(pointer);
-//}
-//
-///// Returns an 128bit intrinsic type initialized all 4 Float32 values to given value.
-///// @param value0 1st float component
-///// @param value1 2nd float component
-///// @param value2 3rd float component
-///// @param value3 4th float component
-//static __attribute__((always_inline))
-//CXFloat32x4 CXFloat32x4MakeRepeatingElement(const Float32 value)
-//{
-//    return CXFloat32x4Make(value, value, value, value);
-//}
-//
-///// Returns an register type with all values initialized to zero (0.f).
-//static __attribute__((always_inline))
-//CXFloat32x4 CXFloat32x4MakeZero(void)
-//{
-//    return _mm_setzero_ps();
-//}
-//
-///// Returns an register type with all values initialized to one (1.f).
-//static __attribute__((always_inline))
-//CXFloat32x4 CXFloat32x4MakeOne(void)
-//{
-//    return CXFloat32x4MakeRepeatingElement(1.f);
-//}
-//
-//// MARK: Getter/Setter
-//
-///// Returns the element at `index` from the `float32x4` collection.
-///// @param float32x4 The element collection to look up values
-///// @param index The index of the value to return.
-//static __attribute__((always_inline))
-//Float32 CXFloat32x4GetElement(const CXFloat32x4 float32x4, const Int32 index)
-//{
-//    return (((Float32*)&(float32x4))[index]);
-//}
-//
-///// Sets the element at `index` from `collection`.
-///// @param collection The collection to look up values
-///// @param index The index of the value to return.
-//static __attribute__((always_inline))
-//void CXFloat32x4SetElement(const CXFloat32x4* float32x4, const Int32 index, const Float32 value)
-//{
-//    ((Float32*)float32x4)[index] = value;
-//}
-//
-//// MARK: Additive Arithmetics
-//
-///// Adds two float32x4 (element-wise) and returns the result.
-///// @param lhs Left-hand side operator
-///// @param rhs Right-hand side operator
-//static __attribute__((always_inline))
-//CXFloat32x4 CXFloat32x4Add(const CXFloat32x4 lhs, const CXFloat32x4 rhs)
-//{
-//    return _mm_add_ps(lhs, rhs);
-//}
-//
-///// Subtracts a float32x4 from another (element-wise) and returns the result.
-///// @param lhs Left-hand side operator
-///// @param rhs Right-hand side operator
-//static __attribute__((always_inline))
-//CXFloat32x4 CXFloat32x4Subtract(const CXFloat32x4 lhs, const CXFloat32x4 rhs)
-//{
-//    return _mm_sub_ps(lhs, rhs);
-//}
-//
-///// Returns the negated value (element-wise).
-///// @param float32x4 Source collection
-//static __attribute__((always_inline))
-//CXFloat32x4 CXFloat32x4Negate(const CXFloat32x4 float32x4)
-//{
-//    return CXFloat32x4Subtract(CXFloat32x4MakeZero(), float32x4);
-//}
-//
-//// MARK: Multiplicative Arithmetics
-//
-///// Multiplies two float32x4 (element-wise) and returns the result.
-///// @param lhs Left-hand side operator
-///// @param rhs Right-hand side operator
-//static __attribute__((always_inline))
-//CXFloat32x4 CXFloat32x4Multiply(const CXFloat32x4 lhs, const CXFloat32x4 rhs)
-//{
-//    return _mm_mul_ps(lhs, rhs);
-//}
-//
+#pragma once
+
+#include "CXInt32_t.h"
+
+// MARK: - Designated Initializers
+
+/// Returns an intrinsic initialized to the 4 given values, from least- to most-significant bits.
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Make(Int32 value0, Int32 value1, Int32 value2, Int32 value3)
+{
+    return _mm_setr_epi32(value0, value1, value2, value3);
+}
+
+/// Loads 4 x Int32 values from unaligned memory.
+/// @param pointer Unaligned memory pointer to 4 x Int32 values
+/// @return CXInt32x4(pointer[0], pointer[1], pointer[2], pointer[3])
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Load(const Int32* pointer)
+{
+    return _mm_loadu_si32(pointer);
+}
+
+/// Returns an intrinsic type with all lanes initialized to `value`.
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4MakeRepeatingElement(const Int32 value)
+{
+    return _mm_set1_epi32(value);
+}
+
+/// Returns an intrinsic type with all lanes initialized to zero (0.f).
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4MakeZero(void)
+{
+    return _mm_setzero_si128();
+}
+
+// MARK: - Getter/Setter
+
+/// Returns the element at `index` of `storage` (`storage[index]`).
+/// @param storage The storage to read values from
+/// @param index The index of the value to return
+STATIC_INLINE_INTRINSIC(Int32) CXInt32x4GetElement(const CXInt32x4 storage, const int index)
+{
+    return storage[index];  // TODO: Function call instead?
+}
+
+/// Sets the element at `index` from `storage` to given value.
+/// @param storage The storage to look up values
+/// @param index The index of the value to change.
+/// @param value The value to set at storage[index].
+STATIC_INLINE_INTRINSIC(void) CXInt32x4SetElement(CXInt32x4* storage, const int index, const Int32 value)
+{
+    (*storage)[index] = value; // TODO: Function call instead?
+}
+
+// MARK: - Arithmetics
+
+/// Returns the negated value (element-wise).
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Negate(const CXInt32x4 storage)
+{
+    return _mm_sub_ps(CXInt32x4MakeZero(), storage);
+}
+
+/// Returns the absolute value (element-wise).
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Absolute(const CXInt32x4 storage)
+{
+    #define CXInt32x4BitwiseExclusiveOr(operand) _mm_xor_si128(operand, CXInt32x4MakeRepeatingElement(0xFFFFFFFF))
+    #define CXInt32x4CompareEqual(lhs, rhs) CXInt32x4BitwiseExclusiveOr(_mm_cmplt_epi32(lhs, rhs))
+    CXInt32x4 comparison = CXInt32x4CompareEqual(storage, CXInt32x4MakeZero());
+    CXInt32x4 negated = CXInt32x4Negate(storage);
+    return _mm_xor_si128(negated, _mm_and_si128(comparison, _mm_xor_si128(storage, negated)));
+    #undef CXInt32x4CompareEqual
+    #undef CXInt32x4BitwiseExclusiveOr
+}
+
+// MARK: Additive
+
+/// Adds two storages (element-wise) and returns the result.
+/// @param lhs Left-hand side operator
+/// @param rhs Right-hand side operator
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Add(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    return _mm_add_epi32(lhs, rhs);
+}
+
+/// Subtracts a storage from another (element-wise) and returns the result.
+/// @param lhs Left-hand side operator
+/// @param rhs Right-hand side operator
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Subtract(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    return _mm_sub_epi32(lhs, rhs);
+}
+
+// MARK: Multiplicative
+
+/// Multiplies two storages (element-wise) and returns the result.
+/// @param lhs Left-hand side operator
+/// @param rhs Right-hand side operator
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Multiply(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    // SSE2 does not have a native multiply operation for 32bit ints
+    __m128i temp0 = _mm_mul_epu32(lhs, rhs);
+    __m128i temp1 = _mm_mul_epu32(_mm_srli_si128(lhs, 4), _mm_srli_si128(rhs, 4));
+    return _mm_unpacklo_epi32(
+        _mm_shuffle_epi32(temp0, _MM_SHUFFLE(0, 0, 2, 0)),
+        _mm_shuffle_epi32(temp1, _MM_SHUFFLE(0, 0, 2, 0))
+    );
+}

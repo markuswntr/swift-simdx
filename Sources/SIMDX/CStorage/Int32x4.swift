@@ -77,8 +77,8 @@ extension Int32x4 {
     }
 
     @inline(__always)
-    public static prefix func - (operant: Int32x4) -> Int32x4  {
-        return .init(rawValue: CXInt32x4Negate(operant.rawValue))
+    public static prefix func - (operand: Int32x4) -> Int32x4  {
+        return .init(rawValue: CXInt32x4Negate(operand.rawValue))
     }
 
     public mutating func negate() {
