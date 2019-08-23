@@ -14,7 +14,7 @@ final class CXFloat32x4Tests: XCTestCase {
 
     func testLoad() {
         var array: [Float32] = [1, 2, 3, 4]
-        let collection = CXFloat32x4Load(&array)
+        let collection = CXFloat32x4MakeLoad(&array)
 
         XCTAssertEqual(CXFloat32x4GetElement(collection, 0), 1)
         XCTAssertEqual(CXFloat32x4GetElement(collection, 1), 2)

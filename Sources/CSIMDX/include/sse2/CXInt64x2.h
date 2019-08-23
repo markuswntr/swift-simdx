@@ -13,9 +13,9 @@ STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Make(Int64 value0, Int64 value1)
 /// Loads 2 x Int64 values from unaligned memory.
 /// @param pointer Unaligned memory pointer to 2 x Int64 values
 /// @return CXInt64x2(pointer[0], pointer[1])
-STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Load(const Int64* pointer)
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2MakeLoad(const Int64* pointer)
 {
-    return _mm_loadu_si64(pointer);
+    return _mm_loadu_si128((const __m128i*)pointer);
 }
 
 /// Returns an intrinsic type with all lanes initialized to `value`.

@@ -13,7 +13,7 @@ STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Make(Float32 value0, Float32 val
 /// Loads 2 x Float32 values from unaligned memory.
 /// @param pointer Unaligned memory pointer to 2 x Float32 values
 /// @return CXFloat32x2(pointer[0], pointer[1])
-STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Load(const Float32* pointer)
+STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2MakeLoad(const Float32* pointer)
 {
     return vld1_f32(pointer);
 }

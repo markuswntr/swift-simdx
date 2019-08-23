@@ -36,7 +36,7 @@ extension Int32x2 {
 
     @inlinable public init(_ array: [Int32]) {
         var array = array
-        self.init(rawValue: CXInt32x2Load(&array))
+        self.init(rawValue: CXInt32x2MakeLoad(&array))
     }
 
     @inlinable public init<Other>(_ sequence: Other) where Other: Sequence, Other.Element == Int32 {

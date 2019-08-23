@@ -12,7 +12,7 @@ final class CXFloat64x2Tests: XCTestCase {
 
     func testLoad() {
         var array: [Float64] = [1, 2]
-        let collection = CXFloat64x2Load(&array)
+        let collection = CXFloat64x2MakeLoad(&array)
 
         XCTAssertEqual(CXFloat64x2GetElement(collection, 0), 1)
         XCTAssertEqual(CXFloat64x2GetElement(collection, 1), 2)

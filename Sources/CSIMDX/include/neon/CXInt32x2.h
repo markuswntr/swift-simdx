@@ -13,7 +13,7 @@ STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Make(Int32 value0, Int32 value1)
 /// Loads 2 x Int32 values from unaligned memory.
 /// @param pointer Unaligned memory pointer to 2 x Int32 values
 /// @return CXInt32x2(pointer[0], pointer[1])
-STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Load(const Int32* pointer)
+STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2MakeLoad(const Int32* pointer)
 {
     return vld1_s32(pointer);
 }

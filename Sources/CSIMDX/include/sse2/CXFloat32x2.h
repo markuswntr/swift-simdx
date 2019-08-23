@@ -13,21 +13,21 @@ STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Make(Float32 value0, Float32 val
 /// Loads 2 x Float32 values from unaligned memory.
 /// @param pointer Unaligned memory pointer to 2 x Float32 values
 /// @return CXFloat32x2(pointer[0], pointer[1])
-STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Load(const Float32* pointer)
+STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2MakeLoad(const Float32* pointer)
 {
-    CXFloat32x4 storage = CXFloat32x4Load(pointer);
-    storage[2] = 0.f; // zero-out the second last float32
-    storage[3] = 0.f; // zero-out the last float32
-    return (CXFloat32x2)storage;
+    CXFloat32x4 storage = CXFloat32x4MakeLoad(pointer);
+    CXFloat32x4SetElement(&storage, 2, 0.f); // zero-out the second last float32
+    CXFloat32x4SetElement(&storage, 3, 0.f); // zero-out the last float32
+    return storage;
 }
 
 /// Returns an intrinsic type with all lanes initialized to `value`.
 STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2MakeRepeatingElement(const Float32 value)
 {
     CXFloat32x4 storage = CXFloat32x4MakeRepeatingElement(value);
-    storage[2] = 0.f; // zero-out the second last float32
-    storage[3] = 0.f; // zero-out the last float32
-    return (CXFloat32x3)storage;
+    CXFloat32x4SetElement(&storage, 2, 0.f); // zero-out the second last float32
+    CXFloat32x4SetElement(&storage, 3, 0.f); // zero-out the last float32
+    return storage;
 }
 
 /// Returns an intrinsic type with all lanes initialized to zero (0.f).

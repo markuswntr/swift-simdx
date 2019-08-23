@@ -13,9 +13,9 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Make(Int32 value0, Int32 value1, Int
 /// Loads 4 x Int32 values from unaligned memory.
 /// @param pointer Unaligned memory pointer to 4 x Int32 values
 /// @return CXInt32x4(pointer[0], pointer[1], pointer[2], pointer[3])
-STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Load(const Int32* pointer)
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4MakeLoad(const Int32* pointer)
 {
-    return _mm_loadu_si32(pointer);
+    return _mm_loadu_si128((const __m128i*)pointer);
 }
 
 /// Returns an intrinsic type with all lanes initialized to `value`.
@@ -37,7 +37,7 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4MakeZero(void)
 /// @param index The index of the value to return
 STATIC_INLINE_INTRINSIC(Int32) CXInt32x4GetElement(const CXInt32x4 storage, const int index)
 {
-    return storage[index];  // TODO: Function call instead?
+    return ((Int32*)&(storage))[index];
 }
 
 /// Sets the element at `index` from `storage` to given value.
@@ -46,7 +46,7 @@ STATIC_INLINE_INTRINSIC(Int32) CXInt32x4GetElement(const CXInt32x4 storage, cons
 /// @param value The value to set at storage[index].
 STATIC_INLINE_INTRINSIC(void) CXInt32x4SetElement(CXInt32x4* storage, const int index, const Int32 value)
 {
-    (*storage)[index] = value; // TODO: Function call instead?
+    ((Int32*)storage)[index] = value;
 }
 
 // MARK: - Arithmetics
@@ -54,7 +54,7 @@ STATIC_INLINE_INTRINSIC(void) CXInt32x4SetElement(CXInt32x4* storage, const int 
 /// Returns the negated value (element-wise).
 STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Negate(const CXInt32x4 storage)
 {
-    return _mm_sub_ps(CXInt32x4MakeZero(), storage);
+    return _mm_sub_epi32(CXInt32x4MakeZero(), storage);
 }
 
 /// Returns the absolute value (element-wise).

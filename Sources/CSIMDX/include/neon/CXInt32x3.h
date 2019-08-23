@@ -13,7 +13,7 @@ STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Make(Int32 value0, Int32 value1, Int
 /// Loads 3 x Int32 values from unaligned memory.
 /// @param pointer Unaligned memory pointer to 3 x Int32 values
 /// @return CXInt32x3(pointer[0], pointer[1], pointer[2])
-STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Load(const Int32* pointer)
+STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3MakeLoad(const Int32* pointer)
 {
     CXInt32x3 storage = vld1q_s32(pointer);
     storage[3] = 0.f;

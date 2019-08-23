@@ -13,7 +13,7 @@ STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Make(Float64 value0, Float64 val
 /// Loads 2 x Float64 values from unaligned memory.
 /// @param pointer Unaligned memory pointer to 2 x Float64 values
 /// @return CXFloat64x2(pointer[0], pointer[1])
-STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Load(const Float64* pointer)
+STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2MakeLoad(const Float64* pointer)
 {
     return _mm_loadu_pd(pointer);
 }

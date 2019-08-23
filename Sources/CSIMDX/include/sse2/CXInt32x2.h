@@ -7,21 +7,21 @@
 /// Returns an intrinsic initialized to the 2 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Make(Int32 value0, Int32 value1)
 {
-    return CXInt32x4Make(value0, value1, 0.f, 0.f);
+    return CXInt32x4Make(value0, value1, 0, 0);
 }
 
 /// Loads 2 x Int32 values from unaligned memory.
 /// @param pointer Unaligned memory pointer to 2 x Int32 values
 /// @return CXInt32x2(pointer[0], pointer[1])
-STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Load(const Int32* pointer)
+STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2MakeLoad(const Int32* pointer)
 {
-    return _mm_loadu_si64(pointer); // TODO: Test!
+    return _mm_loadu_si64(pointer); // Loads only the first 64 bits using given pointer and zeros the rest.
 }
 
 /// Returns an intrinsic type with all lanes initialized to `value`.
 STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2MakeRepeatingElement(const Int32 value)
 {
-    return CXInt32x4MakeRepeatingElement(value);
+    return CXInt32x2Make(value, value);
 }
 
 /// Returns an intrinsic type with all lanes initialized to zero (0.f).
@@ -46,7 +46,7 @@ STATIC_INLINE_INTRINSIC(Int32) CXInt32x2GetElement(const CXInt32x2 storage, cons
 /// @param value The value to set at storage[index].
 STATIC_INLINE_INTRINSIC(void) CXInt32x2SetElement(CXInt32x2* storage, const int index, const Int32 value)
 {
-    CXInt32x2SetElement(storage, index, value);
+    CXInt32x4SetElement(storage, index, value);
 }
 
 // MARK: - Arithmetics
@@ -70,7 +70,7 @@ STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Absolute(const CXInt32x2 storage)
 /// @param rhs Right-hand side operator
 STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Add(const CXInt32x2 lhs, const CXInt32x2 rhs)
 {
-    return CXInt32x2Add(lhs, rhs);
+    return CXInt32x4Add(lhs, rhs);
 }
 
 /// Subtracts a storage from another (element-wise) and returns the result.
@@ -78,7 +78,7 @@ STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Add(const CXInt32x2 lhs, const CXInt
 /// @param rhs Right-hand side operator
 STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Subtract(const CXInt32x2 lhs, const CXInt32x2 rhs)
 {
-    return CXInt32x2Subtract(lhs, rhs);
+    return CXInt32x4Subtract(lhs, rhs);
 }
 
 // MARK: Multiplicative
@@ -88,5 +88,5 @@ STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Subtract(const CXInt32x2 lhs, const 
 /// @param rhs Right-hand side operator
 STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Multiply(const CXInt32x2 lhs, const CXInt32x2 rhs)
 {
-    return CXInt32x2Multiply(lhs, rhs);
+    return CXInt32x4Multiply(lhs, rhs);
 }

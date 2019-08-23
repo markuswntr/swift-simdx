@@ -36,7 +36,7 @@ extension Float32x4 {
 
     @inlinable public init(_ array: [Float32]) {
         var array = array
-        self.init(rawValue: CXFloat32x4Load(&array))
+        self.init(rawValue: CXFloat32x4MakeLoad(&array))
     }
 
     @inlinable public init<Other>(_ sequence: Other) where Other: Sequence, Other.Element == Float32 {
