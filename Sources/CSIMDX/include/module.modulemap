@@ -1,4 +1,3 @@
-// Thoughts:
 // 1. (ARM) NEON has no restrictions. If NEON is available, use NEON intrinsics.
 // 2. SSE2/AVX (et al) must not be used if NEON is available. This is not possible,
 //    (at least as far as I know) but it does not hurt to be defined in the module map.
