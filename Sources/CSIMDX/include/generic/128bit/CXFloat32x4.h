@@ -10,9 +10,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4Make(Float32 value0, Float32 val
 {
     CXFloat32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = (ExtFloatStorage32x4){ value0, value1, value2, value3 };
+    storage.internalElements = (CEXStorageFloat32x4){ value0, value1, value2, value3 };
 #else
-    storage.array = [value0, value1, value2, value3];
+    storage.elements = [value0, value1, value2, value3];
 #endif
     return storage;
 }
@@ -24,9 +24,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4MakeLoad(const Float32* pointer)
 {
     CXFloat32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = (ExtFloatStorage32x4){ pointer[0], pointer[1], pointer[2], pointer[3] };
+    storage.internalElements = (CEXStorageFloat32x4){ pointer[0], pointer[1], pointer[2], pointer[3] };
 #else
-    storage.array = (ExtFloatStorage32x4)[ pointer[0], pointer[1], pointer[2], pointer[3] ];
+    storage.elements = (CEXStorageFloat32x4)[ pointer[0], pointer[1], pointer[2], pointer[3] ];
 #endif
     return storage;
 }
@@ -36,9 +36,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4MakeRepeatingElement(const Float
 {
     CXFloat32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = (ExtFloatStorage32x4){ value, value, value, value };
+    storage.internalElements = (CEXStorageFloat32x4){ value, value, value, value };
 #else
-    storage.array = (ExtFloatStorage32x4)[ value, value, value, value ];
+    storage.elements = (CEXStorageFloat32x4)[ value, value, value, value ];
 #endif
     return storage;
 }
@@ -57,9 +57,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4MakeZero(void)
 STATIC_INLINE_INTRINSIC(Float32) CXFloat32x4GetElement(const CXFloat32x4 storage, const int index)
 {
 #if __has_extension(attribute_ext_vector_type)
-    return storage.extStorage[index];
+    return storage.internalElements[index];
 #else
-    return storage.array[index];
+    return storage.elements[index];
 #endif
 }
 
@@ -70,9 +70,9 @@ STATIC_INLINE_INTRINSIC(Float32) CXFloat32x4GetElement(const CXFloat32x4 storage
 STATIC_INLINE_INTRINSIC(void) CXFloat32x4SetElement(CXFloat32x4* storage, const int index, const Float32 value)
 {
 #if __has_extension(attribute_ext_vector_type)
-    (*storage).extStorage[index] = value;
+    (*storage).internalElements[index] = value;
 #else
-    (*storage).array[index] = value;
+    (*storage).elements[index] = value;
 #endif
 }
 
@@ -83,14 +83,14 @@ STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4Absolute(const CXFloat32x4 stora
 {
     CXFloat32x4 absStorage;
 #if __has_extension(attribute_ext_vector_type)
-    absStorage.extStorage = (ExtFloatStorage32x4){
+    absStorage.internalElements = (CEXStorageFloat32x4){
         fabsf(CXFloat32x4GetElement(storage, 0)),
         fabsf(CXFloat32x4GetElement(storage, 1)),
         fabsf(CXFloat32x4GetElement(storage, 2)),
         fabsf(CXFloat32x4GetElement(storage, 3))
     };
 #else
-    absStorage.array = (CXFloat32x4)[
+    absStorage.elements = (CXFloat32x4)[
         fabsf(CXFloat32x4GetElement(storage, 0)),
         fabsf(CXFloat32x4GetElement(storage, 1)),
         fabsf(CXFloat32x4GetElement(storage, 2)),
@@ -105,9 +105,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4Negate(const CXFloat32x4 storage
 {
     CXFloat32x4 negStorage;
 #if __has_extension(attribute_ext_vector_type)
-    negStorage.extStorage = -(storage.extStorage);
+    negStorage.internalElements = -(storage.internalElements);
 #else
-    negStorage.array = (CXFloat32x4)[
+    negStorage.elements = (CXFloat32x4)[
         -CXFloat32x4GetElement(storage, 0),
         -CXFloat32x4GetElement(storage, 1),
         -CXFloat32x4GetElement(storage, 2),
@@ -126,9 +126,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4Add(const CXFloat32x4 lhs, const
 {
     CXFloat32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = lhs.extStorage + rhs.extStorage;
+    storage.internalElements = lhs.internalElements + rhs.internalElements;
 #else
-    storage.array = (CXFloat32x4)[
+    storage.elements = (CXFloat32x4)[
          CXFloat32x4GetElement(lhs, 0) + CXFloat32x4GetElement(rhs, 0),
          CXFloat32x4GetElement(lhs, 1) + CXFloat32x4GetElement(rhs, 1),
          CXFloat32x4GetElement(lhs, 2) + CXFloat32x4GetElement(rhs, 2),
@@ -145,9 +145,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4Subtract(const CXFloat32x4 lhs, 
 {
     CXFloat32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = lhs.extStorage - rhs.extStorage;
+    storage.internalElements = lhs.internalElements - rhs.internalElements;
 #else
-    storage.array = (CXFloat32x4)[
+    storage.elements = (CXFloat32x4)[
          CXFloat32x4GetElement(lhs, 0) - CXFloat32x4GetElement(rhs, 0),
          CXFloat32x4GetElement(lhs, 1) - CXFloat32x4GetElement(rhs, 1),
          CXFloat32x4GetElement(lhs, 2) - CXFloat32x4GetElement(rhs, 2),
@@ -166,9 +166,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4Multiply(const CXFloat32x4 lhs, 
 {
     CXFloat32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = lhs.extStorage * rhs.extStorage;
+    storage.internalElements = lhs.internalElements * rhs.internalElements;
 #else
-    storage.array = (CXFloat32x4)[
+    storage.elements = (CXFloat32x4)[
          CXFloat32x4GetElement(lhs, 0) * CXFloat32x4GetElement(rhs, 0),
          CXFloat32x4GetElement(lhs, 1) * CXFloat32x4GetElement(rhs, 1),
          CXFloat32x4GetElement(lhs, 2) * CXFloat32x4GetElement(rhs, 2),
@@ -185,9 +185,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4Divide(const CXFloat32x4 lhs, co
 {
     CXFloat32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = lhs.extStorage / rhs.extStorage;
+    storage.internalElements = lhs.internalElements / rhs.internalElements;
 #else
-    storage.array = (CXFloat32x4)[
+    storage.elements = (CXFloat32x4)[
          CXFloat32x4GetElement(lhs, 0) / CXFloat32x4GetElement(rhs, 0),
          CXFloat32x4GetElement(lhs, 1) / CXFloat32x4GetElement(rhs, 1),
          CXFloat32x4GetElement(lhs, 2) / CXFloat32x4GetElement(rhs, 2),

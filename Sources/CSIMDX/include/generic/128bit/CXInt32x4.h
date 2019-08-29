@@ -10,9 +10,9 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Make(Int32 value0, Int32 value1, Int
 {
     CXInt32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = (ExtIntStorage32x4){ value0, value1, value2, value3 };
+    storage.internalElements = (CEXStorageInt32x4){ value0, value1, value2, value3 };
 #else
-    storage.array = [value0, value1, value2, value3];
+    storage.elements = [value0, value1, value2, value3];
 #endif
     return storage;
 }
@@ -24,9 +24,9 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4MakeLoad(const Int32* pointer)
 {
     CXInt32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = (ExtIntStorage32x4){ pointer[0], pointer[1], pointer[2], pointer[3] };
+    storage.internalElements = (CEXStorageInt32x4){ pointer[0], pointer[1], pointer[2], pointer[3] };
 #else
-    storage.array = (ExtIntStorage32x4)[ pointer[0], pointer[1], pointer[2], pointer[3] ];
+    storage.elements = (CEXStorageInt32x4)[ pointer[0], pointer[1], pointer[2], pointer[3] ];
 #endif
     return storage;
 }
@@ -36,9 +36,9 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4MakeRepeatingElement(const Int32 val
 {
     CXInt32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = (ExtIntStorage32x4){ value, value, value, value };
+    storage.internalElements = (CEXStorageInt32x4){ value, value, value, value };
 #else
-    storage.array = (ExtIntStorage32x4)[ value, value, value, value ];
+    storage.elements = (CEXStorageInt32x4)[ value, value, value, value ];
 #endif
     return storage;
 }
@@ -57,9 +57,9 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4MakeZero(void)
 STATIC_INLINE_INTRINSIC(Int32) CXInt32x4GetElement(const CXInt32x4 storage, const int index)
 {
 #if __has_extension(attribute_ext_vector_type)
-    return storage.extStorage[index];
+    return storage.internalElements[index];
 #else
-    return storage.array[index];
+    return storage.elements[index];
 #endif
 }
 
@@ -70,9 +70,9 @@ STATIC_INLINE_INTRINSIC(Int32) CXInt32x4GetElement(const CXInt32x4 storage, cons
 STATIC_INLINE_INTRINSIC(void) CXInt32x4SetElement(CXInt32x4* storage, const int index, const Int32 value)
 {
 #if __has_extension(attribute_ext_vector_type)
-    (*storage).extStorage[index] = value;
+    (*storage).internalElements[index] = value;
 #else
-    (*storage).array[index] = value;
+    (*storage).elements[index] = value;
 #endif
 }
 
@@ -83,14 +83,14 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Absolute(const CXInt32x4 storage)
 {
     CXInt32x4 absStorage;
 #if __has_extension(attribute_ext_vector_type)
-    absStorage.extStorage = (ExtIntStorage32x4){
+    absStorage.internalElements = (CEXStorageInt32x4){
         abs(CXInt32x4GetElement(storage, 0)),
         abs(CXInt32x4GetElement(storage, 1)),
         abs(CXInt32x4GetElement(storage, 2)),
         abs(CXInt32x4GetElement(storage, 3))
     };
 #else
-    absStorage.array = (CXInt32x4)[
+    absStorage.elements = (CXInt32x4)[
         abs(CXInt32x4GetElement(storage, 0)),
         abs(CXInt32x4GetElement(storage, 1)),
         abs(CXInt32x4GetElement(storage, 2)),
@@ -105,9 +105,9 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Negate(const CXInt32x4 storage)
 {
     CXInt32x4 negStorage;
 #if __has_extension(attribute_ext_vector_type)
-    negStorage.extStorage = -(storage.extStorage);
+    negStorage.internalElements = -(storage.internalElements);
 #else
-    negStorage.array = (CXInt32x4)[
+    negStorage.elements = (CXInt32x4)[
         -CXInt32x4GetElement(storage, 0),
         -CXInt32x4GetElement(storage, 1),
         -CXInt32x4GetElement(storage, 2),
@@ -126,9 +126,9 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Add(const CXInt32x4 lhs, const CXInt
 {
     CXInt32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = lhs.extStorage + rhs.extStorage;
+    storage.internalElements = lhs.internalElements + rhs.internalElements;
 #else
-    storage.array = (CXInt32x4)[
+    storage.elements = (CXInt32x4)[
          CXInt32x4GetElement(lhs, 0) + CXInt32x4GetElement(rhs, 0),
          CXInt32x4GetElement(lhs, 1) + CXInt32x4GetElement(rhs, 1),
          CXInt32x4GetElement(lhs, 2) + CXInt32x4GetElement(rhs, 2),
@@ -145,9 +145,9 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Subtract(const CXInt32x4 lhs, const 
 {
     CXInt32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = lhs.extStorage - rhs.extStorage;
+    storage.internalElements = lhs.internalElements - rhs.internalElements;
 #else
-    storage.array = (CXInt32x4)[
+    storage.elements = (CXInt32x4)[
          CXInt32x4GetElement(lhs, 0) - CXInt32x4GetElement(rhs, 0),
          CXInt32x4GetElement(lhs, 1) - CXInt32x4GetElement(rhs, 1),
          CXInt32x4GetElement(lhs, 2) - CXInt32x4GetElement(rhs, 2),
@@ -166,9 +166,9 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Multiply(const CXInt32x4 lhs, const 
 {
     CXInt32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = lhs.extStorage * rhs.extStorage;
+    storage.internalElements = lhs.internalElements * rhs.internalElements;
 #else
-    storage.array = (CXInt32x4)[
+    storage.elements = (CXInt32x4)[
          CXInt32x4GetElement(lhs, 0) * CXInt32x4GetElement(rhs, 0),
          CXInt32x4GetElement(lhs, 1) * CXInt32x4GetElement(rhs, 1),
          CXInt32x4GetElement(lhs, 2) * CXInt32x4GetElement(rhs, 2),
@@ -185,9 +185,9 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Divide(const CXInt32x4 lhs, const CX
 {
     CXInt32x4 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = lhs.extStorage / rhs.extStorage;
+    storage.internalElements = lhs.internalElements / rhs.internalElements;
 #else
-    storage.array = (CXInt32x4)[
+    storage.elements = (CXInt32x4)[
          CXInt32x4GetElement(lhs, 0) / CXInt32x4GetElement(rhs, 0),
          CXInt32x4GetElement(lhs, 1) / CXInt32x4GetElement(rhs, 1),
          CXInt32x4GetElement(lhs, 2) / CXInt32x4GetElement(rhs, 2),

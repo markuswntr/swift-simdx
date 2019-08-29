@@ -19,25 +19,25 @@ typedef Float64 ExtFloatStorage64x4 __attribute__((ext_vector_type(4)));
 
 /// The 2 x 64-bit floating point storage type
 typedef union CXFloat64x2 {
-    Float64 array[2]; // Read-only of extended vector support
+    Float64 elements[2]; // Read-only if extended vector support
 #if __has_extension(attribute_ext_vector_type)
-    ExtFloatStorage64x2 extStorage;
+    ExtFloatStorage64x2 internalElements;
 #endif
 } CXFloat64x2;
 
 /// The 3 x 64-bit floating point storage
 typedef union CXFloat64x3 {
-    Float64 array[3]; // Read-only of extended vector support
+    Float64 elements[3]; // Read-only if extended vector support
 #if __has_extension(attribute_ext_vector_type)
-    ExtFloatStorage64x3 extStorage;
+    ExtFloatStorage64x3 internalElements;
 #endif
 } CXFloat64x3;
 
 /// The 4 x 64-bit floating point storage
 typedef union CXFloat64x4 {
-    Float64 array[4]; // Read-only of extended vector support
+    Float64 elements[4]; // Read-only if extended vector support
 #if __has_extension(attribute_ext_vector_type)
-    ExtFloatStorage64x4 extStorage;
+    ExtFloatStorage64x4 internalElements;
 #endif
 } CXFloat64x4;
 

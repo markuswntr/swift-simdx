@@ -20,25 +20,25 @@ typedef Int64 ExtIntStorage64x4 __attribute__((ext_vector_type(4)));
 
 /// The 2 x 64-bit Inting point storage type
 typedef union CXInt64x2 {
-    Int64 array[2]; // Read-only of extended vector support
+    Int64 elements[2]; // Read-only if extended vector support
 #if __has_extension(attribute_ext_vector_type)
-    ExtIntStorage64x2 extStorage;
+    ExtIntStorage64x2 internalElements;
 #endif
 } CXInt64x2;
 
 /// The 3 x 64-bit Inting point storage
 typedef union CXInt64x3 {
-    Int64 array[3]; // Read-only of extended vector support
+    Int64 elements[3]; // Read-only if extended vector support
 #if __has_extension(attribute_ext_vector_type)
-    ExtIntStorage64x3 extStorage;
+    ExtIntStorage64x3 internalElements;
 #endif
 } CXInt64x3;
 
 /// The 4 x 64-bit Inting point storage
 typedef union CXInt64x4 {
-    Int64 array[4]; // Read-only of extended vector support
+    Int64 elements[4]; // Read-only if extended vector support
 #if __has_extension(attribute_ext_vector_type)
-    ExtIntStorage64x4 extStorage;
+    ExtIntStorage64x4 internalElements;
 #endif
 } CXInt64x4;
 

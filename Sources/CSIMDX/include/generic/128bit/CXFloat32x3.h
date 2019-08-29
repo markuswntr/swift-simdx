@@ -10,9 +10,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Make(Float32 value0, Float32 val
 {
     CXFloat32x3 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = (ExtFloatStorage32x3){ value0, value1, value2 };
+    storage.internalElements = (CEXStorageFloat32x3){ value0, value1, value2 };
 #else
-    storage.array = [value0, value1, value2];
+    storage.elements = [value0, value1, value2];
 #endif
     return storage;
 }
@@ -24,9 +24,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3MakeLoad(const Float32* pointer)
 {
     CXFloat32x3 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = (ExtFloatStorage32x3){ pointer[0], pointer[1], pointer[2] };
+    storage.internalElements = (CEXStorageFloat32x3){ pointer[0], pointer[1], pointer[2] };
 #else
-    storage.array = (ExtFloatStorage32x3)[ pointer[0], pointer[1], pointer[2] ];
+    storage.elements = (CEXStorageFloat32x3)[ pointer[0], pointer[1], pointer[2] ];
 #endif
     return storage;
 }
@@ -36,9 +36,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3MakeRepeatingElement(const Float
 {
     CXFloat32x3 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = (ExtFloatStorage32x3){ value, value, value };
+    storage.internalElements = (CEXStorageFloat32x3){ value, value, value };
 #else
-    storage.array = (ExtFloatStorage32x3)[ value, value, value ];
+    storage.elements = (CEXStorageFloat32x3)[ value, value, value ];
 #endif
     return storage;
 }
@@ -57,9 +57,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3MakeZero(void)
 STATIC_INLINE_INTRINSIC(Float32) CXFloat32x3GetElement(const CXFloat32x3 storage, const int index)
 {
 #if __has_extension(attribute_ext_vector_type)
-    return storage.extStorage[index];
+    return storage.internalElements[index];
 #else
-    return storage.array[index];
+    return storage.elements[index];
 #endif
 }
 
@@ -70,9 +70,9 @@ STATIC_INLINE_INTRINSIC(Float32) CXFloat32x3GetElement(const CXFloat32x3 storage
 STATIC_INLINE_INTRINSIC(void) CXFloat32x3SetElement(CXFloat32x3* storage, const int index, const Float32 value)
 {
 #if __has_extension(attribute_ext_vector_type)
-    (*storage).extStorage[index] = value;
+    (*storage).internalElements[index] = value;
 #else
-    (*storage).array[index] = value;
+    (*storage).elements[index] = value;
 #endif
 }
 
@@ -83,13 +83,13 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Absolute(const CXFloat32x3 stora
 {
     CXFloat32x3 absStorage;
 #if __has_extension(attribute_ext_vector_type)
-    absStorage.extStorage = (ExtFloatStorage32x3){
+    absStorage.internalElements = (CEXStorageFloat32x3){
         fabsf(CXFloat32x3GetElement(storage, 0)),
         fabsf(CXFloat32x3GetElement(storage, 1)),
         fabsf(CXFloat32x3GetElement(storage, 2))
     };
 #else
-    absStorage.array = (CXFloat32x3)[
+    absStorage.elements = (CXFloat32x3)[
         fabsf(CXFloat32x3GetElement(storage, 0)),
         fabsf(CXFloat32x3GetElement(storage, 1)),
         fabsf(CXFloat32x3GetElement(storage, 2))
@@ -103,9 +103,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Negate(const CXFloat32x3 storage
 {
     CXFloat32x3 negStorage;
 #if __has_extension(attribute_ext_vector_type)
-    negStorage.extStorage = -(storage.extStorage);
+    negStorage.internalElements = -(storage.internalElements);
 #else
-    negStorage.array = (CXFloat32x3)[
+    negStorage.elements = (CXFloat32x3)[
         -CXFloat32x3GetElement(storage, 0),
         -CXFloat32x3GetElement(storage, 1),
         -CXFloat32x3GetElement(storage, 2)
@@ -123,9 +123,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Add(const CXFloat32x3 lhs, const
 {
     CXFloat32x3 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = lhs.extStorage + rhs.extStorage;
+    storage.internalElements = lhs.internalElements + rhs.internalElements;
 #else
-    storage.array = (CXFloat32x3)[
+    storage.elements = (CXFloat32x3)[
          CXFloat32x3GetElement(lhs, 0) + CXFloat32x3GetElement(rhs, 0),
          CXFloat32x3GetElement(lhs, 1) + CXFloat32x3GetElement(rhs, 1),
          CXFloat32x3GetElement(lhs, 2) + CXFloat32x3GetElement(rhs, 2)
@@ -141,9 +141,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Subtract(const CXFloat32x3 lhs, 
 {
     CXFloat32x3 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = lhs.extStorage - rhs.extStorage;
+    storage.internalElements = lhs.internalElements - rhs.internalElements;
 #else
-    storage.array = (CXFloat32x3)[
+    storage.elements = (CXFloat32x3)[
          CXFloat32x3GetElement(lhs, 0) - CXFloat32x3GetElement(rhs, 0),
          CXFloat32x3GetElement(lhs, 1) - CXFloat32x3GetElement(rhs, 1),
          CXFloat32x3GetElement(lhs, 2) - CXFloat32x3GetElement(rhs, 2)
@@ -161,9 +161,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Multiply(const CXFloat32x3 lhs, 
 {
     CXFloat32x3 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = lhs.extStorage * rhs.extStorage;
+    storage.internalElements = lhs.internalElements * rhs.internalElements;
 #else
-    storage.array = (CXFloat32x3)[
+    storage.elements = (CXFloat32x3)[
          CXFloat32x3GetElement(lhs, 0) * CXFloat32x3GetElement(rhs, 0),
          CXFloat32x3GetElement(lhs, 1) * CXFloat32x3GetElement(rhs, 1),
          CXFloat32x3GetElement(lhs, 2) * CXFloat32x3GetElement(rhs, 2)
@@ -179,9 +179,9 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Divide(const CXFloat32x3 lhs, co
 {
     CXFloat32x3 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.extStorage = lhs.extStorage / rhs.extStorage;
+    storage.internalElements = lhs.internalElements / rhs.internalElements;
 #else
-    storage.array = (CXFloat32x3)[
+    storage.elements = (CXFloat32x3)[
          CXFloat32x3GetElement(lhs, 0) / CXFloat32x3GetElement(rhs, 0),
          CXFloat32x3GetElement(lhs, 1) / CXFloat32x3GetElement(rhs, 1),
          CXFloat32x3GetElement(lhs, 2) / CXFloat32x3GetElement(rhs, 2)

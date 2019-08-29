@@ -13,31 +13,31 @@
 
 /// Use built-in vectors when available
 #if __has_extension(attribute_ext_vector_type)
-typedef Int32 ExtIntStorage32x2 __attribute__((ext_vector_type(2)));
-typedef Int32 ExtIntStorage32x3 __attribute__((ext_vector_type(3)));
-typedef Int32 ExtIntStorage32x4 __attribute__((ext_vector_type(4)));
+typedef Int32 CEXStorageInt32x2 __attribute__((ext_vector_type(2)));
+typedef Int32 CEXStorageInt32x3 __attribute__((ext_vector_type(3)));
+typedef Int32 CEXStorageInt32x4 __attribute__((ext_vector_type(4)));
 #endif
 
 /// The 2 x 32-bit floating point storage type
 typedef union CXInt32x2 {
-    Int32 array[2]; // Read-only of extended vector support
+    Int32 elements[2]; // Read-only if extended vector support
 #if __has_extension(attribute_ext_vector_type)
-    ExtIntStorage32x2 extStorage;
+    CEXStorageInt32x2 internalElements;
 #endif
 } CXInt32x2;
 
 /// The 3 x 32-bit floating point storage
 typedef union CXInt32x3 {
-    Int32 array[3]; // Read-only of extended vector support
+    Int32 elements[3]; // Read-only if extended vector support
 #if __has_extension(attribute_ext_vector_type)
-    ExtIntStorage32x3 extStorage;
+    CEXStorageInt32x3 internalElements;
 #endif
 } CXInt32x3;
 
 /// The 4 x 32-bit floating point storage
 typedef union CXInt32x4 {
-    Int32 array[4]; // Read-only of extended vector support
+    Int32 elements[4]; // Read-only if extended vector support
 #if __has_extension(attribute_ext_vector_type)
-    ExtIntStorage32x4 extStorage;
+    CEXStorageInt32x4 internalElements;
 #endif
 } CXInt32x4;
