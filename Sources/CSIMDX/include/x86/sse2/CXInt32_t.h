@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 #include <emmintrin.h>
 #include "Attributes.h"
 

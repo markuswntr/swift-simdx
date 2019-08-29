@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 #include <arm_neon.h>
 #include "Attributes.h"
 

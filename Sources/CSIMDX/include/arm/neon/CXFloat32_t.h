@@ -1,6 +1,7 @@
 #pragma once
 /// Reference: https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/intrinsics?search=float32
 
+#include <stdint.h>
 #include <arm_neon.h>
 #include "Attributes.h"
 

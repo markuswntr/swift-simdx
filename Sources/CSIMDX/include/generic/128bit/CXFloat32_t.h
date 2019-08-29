@@ -1,6 +1,7 @@
 #pragma once
 /// Reference: https://clang.llvm.org/docs/LanguageExtensions.html#langext-vectors
 
+#include <stdint.h>
 #include "Attributes.h"
 
 // MARK: - Scalar
