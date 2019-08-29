@@ -1,4 +1,5 @@
 #pragma once
+#warning "No 128bit width SIMD instructions set detected, using fallback mode."
 
 // ==============================================================================
 // References: https://clang.llvm.org/doxygen/immintrin_8h_source.html
