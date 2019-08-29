@@ -3,16 +3,14 @@ sudo: required
 dist: trusty
 osx_image: xcode11
 
-# Environment
-env:
-  global:
-  - 
-
 # Build Matrix
 matrix:
   include:
     - os: osx
     - os: linux
+      env:
+        - COMPILER=clang CLANG=9.0
+        - SWIFT_VERSION=5.1-DEVELOPMENT-SNAPSHOT-2019-08-26-a
       addons:
         apt:
           sources:
@@ -20,21 +18,18 @@ matrix:
             - llvm-toolchain-trusty-9.0
           packages:
             - clang-9.0
-      env:
-        - COMPILER=clang CLANG=9.0
-        - SWIFT_VERSION=5.1-DEVELOPMENT-SNAPSHOT-2019-08-26-a
 
 # Dependencies
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-    eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
-  fi
+      eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
+    fi
 
 # Build Phase
 script:
-  - swift build 
-  - swift test
+  - swift build
   - swift build -c release
+  - swift test
 
 # Success Notifier
 after_success:
