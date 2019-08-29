@@ -6,5 +6,5 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 fi
 
 swift build;
-swift build -c release;
+# swift build -c release;
 swift test;
