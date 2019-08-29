@@ -15,7 +15,8 @@ matrix:
     - os: linux
 
 # Dependencies
-install: if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then; eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"; fi;
+install:
+  - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
 
 # Build Phase
 script:
