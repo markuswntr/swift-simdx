@@ -3,12 +3,16 @@ dist: trusty
 language: generic
 osx_image: xcode11
 
+# Environment
+env:
+  global:
+  - SWIFT_VERSION=5.1-DEVELOPMENT-SNAPSHOT-2019-08-26-a
+
 # Build Matrix
 matrix:
   include:
     - os: osx
     - os: linux
-      env: SWIFT_VERSION=5.1-DEVELOPMENT-SNAPSHOT-2019-08-26-a
 
 # Dependencies
 install: if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then; eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"; fi;
