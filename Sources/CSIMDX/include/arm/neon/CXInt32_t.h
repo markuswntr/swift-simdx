@@ -10,13 +10,13 @@
 
 // MARK: - Vector Storage
 
-/// The 4 x 32-bit singed integer storage
+/// The 4 x 32-bit signed integer storage
 typedef int32x4_t __attribute((aligned(16))) CXInt32x4;
 
-/// The 3 x 32-bit singed integer storage
+/// The 3 x 32-bit signed integer storage
 typedef int32x4_t __attribute((aligned(16))) CXInt32x3; // Most significant 32 bits are unused (zero)
 
-/// The 2 x 32-bit singed integer storage
+/// The 2 x 32-bit signed integer storage
 typedef int32x2_t __attribute((aligned(16))) CXInt32x2;
 
 // MARK: - Matrix Storage

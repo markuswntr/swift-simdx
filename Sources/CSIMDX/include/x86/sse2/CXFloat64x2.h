@@ -55,8 +55,8 @@ STATIC_INLINE_INTRINSIC(void) CXFloat64x2SetElement(CXFloat64x2* storage, const 
 STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Absolute(const CXFloat64x2 storage)
 {
     __m64 SIGN_BIT = _mm_cvtsi64_m64(~(1LL << 63));
-    union { CXFloat64x2 storage; __m128i integers; } Signed;
-    Signed.integers = _mm_setr_epi64(SIGN_BIT, SIGN_BIT);
+    union { CXFloat64x2 storage; __m128i signs; } Signed;
+    Signed.signs = _mm_setr_epi64(SIGN_BIT, SIGN_BIT);
     return _mm_and_ps(storage, Signed.storage);
 }
 

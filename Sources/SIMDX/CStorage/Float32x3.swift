@@ -7,7 +7,7 @@ public struct Float32x3: RawStorage3, FloatingPointRawStorage {
 
     public let startIndex: Int32 = 0
 
-    public let endIndex: Int32 = 4
+    public let endIndex: Int32 = 3
 
     // MARK: Raw Value Access
 

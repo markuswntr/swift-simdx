@@ -55,8 +55,8 @@ STATIC_INLINE_INTRINSIC(void) CXFloat32x4SetElement(CXFloat32x4* storage, const 
 STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4Absolute(const CXFloat32x4 storage)
 {
     #define SIGN_BIT (uint32_t)(~(1 << 31))
-    union { CXFloat32x2 storage; __m128i integers; } Signed;
-    Signed.integers = _mm_setr_epi32(SIGN_BIT, SIGN_BIT, SIGN_BIT, SIGN_BIT);
+    union { CXFloat32x2 storage; __m128i signs; } Signed;
+    Signed.signs = _mm_setr_epi32(SIGN_BIT, SIGN_BIT, SIGN_BIT, SIGN_BIT);
     #undef SIGN_BIT
     return _mm_and_ps(storage, Signed.storage);
 }

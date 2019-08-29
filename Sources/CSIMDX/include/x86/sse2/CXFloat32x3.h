@@ -101,6 +101,6 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Multiply(const CXFloat32x3 lhs, 
 STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Divide(const CXFloat32x3 lhs, const CXFloat32x3 rhs)
 {
     CXFloat32x3 _rhs = rhs;  // Prepare rhs value, to avoid
-    _rhs[3] = 1.f; // a division by zero, but 1 instead
+    CXFloat32x3SetElement(&_rhs, 3, 1.f); // a division by zero, but 1 instead
     return CXFloat32x4Divide(lhs, _rhs);
 }

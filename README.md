@@ -6,12 +6,15 @@ and  portable implementations of SIMD intrinsics on **hardware which doesn't nat
 of the target hardware. Therefore it allows vector and matrix calculations on any (Swift supporting) hardware and automatically
 routes([<sup>1</sup>](#1)) those through the fastest available instructions.
 
-> **Note:** This is far from finished, and not guarantueed to perform faster. There have been no performance tests, nor benchmarks, nor nothing.
+> **Note:** This is far from finished, and not guarantueed to perform faster. There have been no performance tests, no benchmarks, no nothing.
 
 **TODO:**
+- [ ] Comparison (Equal, Greater/LowerThan, ...)
 - [ ] 256bit (Length) storages
+- [ ] Casting different vector types
 - [ ] Matrices
-- [ ] Generic Implementation
+- [ ] Properly defining the numeric storages
+
 /// Reference: https://github.com/llvm-mirror/clang/blob/b165125115794a302175c79b63a1c964323cf6fb/test/Preprocessor/feature_tests.c
 // !__has_builtin(__builtin_shufflevector) || \
 // !__has_builtin(__builtin_convertvector) || \
@@ -26,7 +29,6 @@ I gathered them while writting this library, and I am pretty sure I will need th
 
 - https://www.eduonix.com/courses/Software-Development/Learn-the-Basics-of-C-Programming-Language (:D **just kidding** - kind of)
 - https://en.wikipedia.org/wiki/SIMD (_**not** kidding_)
-- https://github.com/nemequ/simde (_I wish I would have found this library waaaaay earlier_)
 
 ### Built-in Vector Support in `clang`
 
@@ -42,6 +44,13 @@ I gathered them while writting this library, and I am pretty sure I will need th
 - https://clang.llvm.org/doxygen/immintrin_8h.html
 - https://clang.llvm.org/doxygen/immintrin_8h_source.html
 - http://www.g-truc.net/post-0359.html
+
+### Other Libraries
+
+- https://github.com/QuantStack/xsimd
+- https://github.com/nemequ/simde
+- https://github.com/vectorclass/version2
+- https://github.com/HandmadeMath/Handmade-Math
 
 ### NEON Intrinsics
 
@@ -127,18 +136,5 @@ Kept for a while until I am pretty sure I will never ever need it again.
 #define CX_AVX_INSTRUCTIONS_AVAILABLE 1
 #elif __AVX512F__
 #define CX_AVX_INSTRUCTIONS_AVAILABLE 1
-#endif
-
-// MARK: - NEON Intrinsics -
-
-// TODO: Make proper check
-#if __AVX__
-#define CX_NEON_INSTRUCTIONS_AVAILABLE 1
-#elif __AVX2__
-#define CX_NEON_INSTRUCTIONS_AVAILABLE 1
-#elif __AVX512__
-#define CX_NEON_INSTRUCTIONS_AVAILABLE 1
-#elif __AVX512F__
-#define CX_NEON_INSTRUCTIONS_AVAILABLE 1
 #endif
 ```

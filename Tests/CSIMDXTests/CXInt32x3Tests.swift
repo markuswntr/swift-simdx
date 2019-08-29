@@ -9,7 +9,6 @@ final class CXInt32x3Tests: XCTestCase {
         XCTAssertEqual(CXInt32x3GetElement(collection, 0), 1)
         XCTAssertEqual(CXInt32x3GetElement(collection, 1), 2)
         XCTAssertEqual(CXInt32x3GetElement(collection, 2), 3)
-        XCTAssertEqual(CXInt32x3GetElement(collection, 3), 0) // Make sure the unused value is zero
     }
 
     func testLoad() {
@@ -19,7 +18,6 @@ final class CXInt32x3Tests: XCTestCase {
         XCTAssertEqual(CXInt32x3GetElement(collection, 0), 1)
         XCTAssertEqual(CXInt32x3GetElement(collection, 1), 2)
         XCTAssertEqual(CXInt32x3GetElement(collection, 2), 3)
-        XCTAssertEqual(CXInt32x3GetElement(collection, 3), 0) // Make sure the unused value is zero
     }
 
     func testMakeRepeatingValues() {
@@ -28,7 +26,6 @@ final class CXInt32x3Tests: XCTestCase {
         XCTAssertEqual(CXInt32x3GetElement(collection, 0), 3)
         XCTAssertEqual(CXInt32x3GetElement(collection, 1), 3)
         XCTAssertEqual(CXInt32x3GetElement(collection, 2), 3)
-        XCTAssertEqual(CXInt32x3GetElement(collection, 3), 0) // Make sure the unused value is zero
     }
 
     func testGetter() {
@@ -37,7 +34,6 @@ final class CXInt32x3Tests: XCTestCase {
         XCTAssertEqual(CXInt32x3GetElement(collection, 0), 1)
         XCTAssertEqual(CXInt32x3GetElement(collection, 1), 2)
         XCTAssertEqual(CXInt32x3GetElement(collection, 2), 3)
-        XCTAssertEqual(CXInt32x3GetElement(collection, 3), 0) // Make sure the unused value is zero
     }
 
     func testSetter() {
@@ -46,7 +42,6 @@ final class CXInt32x3Tests: XCTestCase {
         XCTAssertEqual(CXInt32x3GetElement(collection, 0), 1)
         XCTAssertEqual(CXInt32x3GetElement(collection, 1), 2)
         XCTAssertEqual(CXInt32x3GetElement(collection, 2), 3)
-        XCTAssertEqual(CXInt32x3GetElement(collection, 3), 0) // Make sure the unused value is zero
 
         CXInt32x3SetElement(&collection, 0, 5)
         CXInt32x3SetElement(&collection, 1, 6)
@@ -55,7 +50,6 @@ final class CXInt32x3Tests: XCTestCase {
         XCTAssertEqual(CXInt32x3GetElement(collection, 0), 5)
         XCTAssertEqual(CXInt32x3GetElement(collection, 1), 6)
         XCTAssertEqual(CXInt32x3GetElement(collection, 2), 7)
-        XCTAssertEqual(CXInt32x3GetElement(collection, 3), 0) // Make sure the unused value remains zero
     }
 
     func testZero() {
@@ -64,7 +58,6 @@ final class CXInt32x3Tests: XCTestCase {
         XCTAssertEqual(CXInt32x3GetElement(collection, 0), 0)
         XCTAssertEqual(CXInt32x3GetElement(collection, 1), 0)
         XCTAssertEqual(CXInt32x3GetElement(collection, 2), 0)
-        XCTAssertEqual(CXInt32x3GetElement(collection, 3), 0) // Make sure the unused value is zero
     }
 
     func testAbsolute() {
@@ -74,7 +67,6 @@ final class CXInt32x3Tests: XCTestCase {
         XCTAssertEqual(CXInt32x3GetElement(absolute, 0), 1)
         XCTAssertEqual(CXInt32x3GetElement(absolute, 1), 0)
         XCTAssertEqual(CXInt32x3GetElement(absolute, 2), 3)
-        XCTAssertEqual(CXInt32x3GetElement(absolute, 3), 0) // Make sure the unused value remains zero
     }
 
     func testNegate() {
@@ -84,7 +76,6 @@ final class CXInt32x3Tests: XCTestCase {
         XCTAssertEqual(CXInt32x3GetElement(negate, 0), 1)
         XCTAssertEqual(CXInt32x3GetElement(negate, 1), 0)
         XCTAssertEqual(CXInt32x3GetElement(negate, 2), -3)
-        XCTAssertEqual(CXInt32x3GetElement(negate, 3), 0) // Make sure the unused value remains zero
     }
 
     func testAdd() {
@@ -95,7 +86,6 @@ final class CXInt32x3Tests: XCTestCase {
         XCTAssertEqual(CXInt32x3GetElement(sum, 0), 5)
         XCTAssertEqual(CXInt32x3GetElement(sum, 1), 5)
         XCTAssertEqual(CXInt32x3GetElement(sum, 2), 5)
-        XCTAssertEqual(CXInt32x3GetElement(sum, 3), 0) // Make sure the unused value remains zero
     }
 
     func testSubtract() {
@@ -106,7 +96,6 @@ final class CXInt32x3Tests: XCTestCase {
         XCTAssertEqual(CXInt32x3GetElement(sum, 0), -3)
         XCTAssertEqual(CXInt32x3GetElement(sum, 1), -1)
         XCTAssertEqual(CXInt32x3GetElement(sum, 2), 1)
-        XCTAssertEqual(CXInt32x3GetElement(sum, 3), 0) // Make sure the unused value remains zero
     }
 
     func testMultiply() {
@@ -117,7 +106,6 @@ final class CXInt32x3Tests: XCTestCase {
         XCTAssertEqual(CXInt32x3GetElement(product, 0), 4)
         XCTAssertEqual(CXInt32x3GetElement(product, 1), 6)
         XCTAssertEqual(CXInt32x3GetElement(product, 2), -6)
-        XCTAssertEqual(CXInt32x3GetElement(product, 3), 0) // Make sure the unused value remains zero
     }
 
     static var allTests = [

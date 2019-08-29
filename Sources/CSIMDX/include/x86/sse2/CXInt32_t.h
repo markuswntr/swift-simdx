@@ -10,13 +10,13 @@
 
 // MARK: - Vector Storage
 
-/// The 2 x 32-bit singed integer storage
+/// The 2 x 32-bit signed integer storage
 typedef __m128i CXInt32x2; // Most significant 2 x 32 bits are unused (zero)
 
-/// The 3 x 32-bit singed integer storage
+/// The 3 x 32-bit signed integer storage
 typedef __m128i CXInt32x3; // Most significant 32 bits are unused (zero)
 
-/// The 4 x 32-bit singed integer storage
+/// The 4 x 32-bit signed integer storage
 typedef __m128i CXInt32x4;
 
 // MARK: - Matrix Storage

@@ -4,36 +4,46 @@
 // 3. SSE2/AVX (et al) dependencies are aligned with their release/dependency cycle.
 //    So if AVX is available, SSE2 is available. If AVX2 is available, AVX is available
 //    therefore SSE2 is available - and so on.
-// 4. Generic vectors mostly (if not always) result in the worst performance. Therefore,
-//    they are not available if any of the afore mentioned instruction set is available.
+// 4. Generic vectors, while still targetted to perform really good, mostly (if not
+//    always) result in the worst performance. Therefore, they are not available if
+//    any of the afore mentioned instruction set is available.
 
 module CSIMDX {
 
-    // MARK: NEON
+    // MARK: ARM
+
     module neon {
         requires neon
-        umbrella "neon"
+        umbrella "arm/neon"
     }
 
-    // MARK: AVX/SSE2
-    module avx {
-        requires avx
-        requires !neon
-        umbrella "avx"
-        export sse2
-    }
+    // MARK: x86
+
     module sse2 {
         requires sse2
         requires !neon
-        umbrella "sse2"
+        umbrella "x86/sse2"
     }
 
-    // MARK: Generic Storage
-    module generic {
-        requires !avx
+    module avx {
+        requires avx
+        requires !neon
+        umbrella "x86/avx"
+        export sse2
+    }
+
+    // MARK: Fallbacks
+
+    module generic128 {
         requires !sse2
         requires !neon
-        umbrella "generic"
+        umbrella "generic/128bit"
+    }
+
+    module generic256 {
+        requires !avx
+        umbrella "generic/256bit"
+        export generic128
     }
 }
 
