@@ -13,14 +13,14 @@ matrix:
   include:
     - os: osx
     - os: linux
-      env: COMPILER=clang CLANG=9.0
+      env: COMPILER=clang CLANG=6.0
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-9.0
+            - llvm-toolchain-trusty-6.0
           packages:
-            - clang-9.0
+            - clang-6.0
 
 # Allow script execution
 before_install:
