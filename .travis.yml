@@ -3,14 +3,17 @@ sudo: required
 dist: trusty
 osx_image: xcode11
 
+# Environment
+env:
+  global:
+    - SWIFT_VERSION=5.1-DEVELOPMENT-SNAPSHOT-2019-08-26-a
+
 # Build Matrix
 matrix:
   include:
     - os: osx
     - os: linux
-      env:
-        - COMPILER=clang CLANG=9.0
-        - SWIFT_VERSION=5.1-DEVELOPMENT-SNAPSHOT-2019-08-26-a
+      env: COMPILER=clang CLANG=9.0
       addons:
         apt:
           sources:
@@ -19,25 +22,16 @@ matrix:
           packages:
             - clang-9.0
 
-# Dependencies
-install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
-    fi
+# Allow script execution
+before_install:
+  - chmod +x .travis/deps.sh
+  - chmod +x .travis/build.sh
+  - chmod +x .travis/notify.sh
 
-# Build Phase
-script:
-  - swift build
-  - swift build -c release
-  - swift test
+# Install dependencies & build
+install: ./.travis/deps.sh
+script: ./.travis/build.sh
 
-# Success Notifier
-after_success:
-  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh success $WEBHOOK_URL
-# Failure Notifier
-after_failure:
-  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh failure $WEBHOOK_URL
+# Notify build status
+after_success: ./notify.sh success $WEBHOOK_URL # Success
+after_failure: ./notify.sh failure $WEBHOOK_URL # Failure
