@@ -1,0 +1,31 @@
+sudo: required
+dist: trusty
+language: generic
+osx_image: xcode11
+
+# Build Matrix
+matrix:
+  include:
+    - os: osx
+    - os: linux
+      env: SWIFT_VERSION=5.1-DEVELOPMENT-SNAPSHOT-2019-08-26-a
+
+# Dependencies
+install: if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then; eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"; fi;
+
+# Build Phase
+script:
+  - swift build 
+  - swift test
+  - swift build -c release
+
+# Success Notifier
+after_success:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+# Failure Notifier
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
