@@ -13,6 +13,24 @@ matrix:
   include:
     - os: osx
     - os: linux
+    - os: linux # ARM linux
+      env: CROSS_COMPILE=1 ARM_ARCH_DIR=arm-linux-gnueabi
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - qemu
+            - qemu-system-arm
+    - os: linux # AArch64 Linux
+      env: CROSS_COMPILE=1 ARM_ARCH_DIR=aarch64-linux-gnu
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - qemu
+            - qemu-system-arm
 
 # Allow script execution
 before_install:

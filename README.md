@@ -1,7 +1,7 @@
 # SIMDX
 
 _SIMDX_ provides a unified implementation for built-in vector and matrix intrinsics, such as **SSE/AVX on x86** and **NEON on ARM**, 
-in C (see `CSIMDX` target) and exposes them to Swift as generic types (see `SIMDX` target) . Furthermore, _SIMDX_ provides fast
+in C (see `CSIMDX` target) and exposes them to Swift as generic types (see `SIMDX` target) . Furthermore, _SIMDX_ provides a fast
 and  portable implementations of SIMD intrinsics on **hardware which doesn't natively support** them, making _SIMDX_ independent
 of the target hardware. Therefore it allows vector and matrix calculations on any (Swift supporting) hardware and automatically
 routes([<sup>1</sup>](#1)) those through the fastest available instructions.
