@@ -1,5 +1,5 @@
 import XCTest
-@testable import SIMDX
+import SIMDX
 
 final class SIMDX4Tests: XCTestCase {
     func testExample() {

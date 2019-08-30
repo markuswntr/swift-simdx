@@ -1,5 +1,5 @@
 import XCTest
-@testable import CSIMDX
+import CSIMDX
 
 final class CXFloat32x2Tests: XCTestCase {
 

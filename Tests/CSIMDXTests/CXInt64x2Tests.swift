@@ -1,5 +1,5 @@
 import XCTest
-@testable import CSIMDX
+import CSIMDX
 
 final class CXInt64x2Tests: XCTestCase {
 
