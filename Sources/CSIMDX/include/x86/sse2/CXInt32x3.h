@@ -53,16 +53,16 @@ STATIC_INLINE_INTRINSIC(void) CXInt32x3SetElement(CXInt32x3* storage, const int 
 
 // MARK: - Arithmetics
 
-/// Returns the negated value (element-wise).
-STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Negate(const CXInt32x3 storage)
-{
-    return CXInt32x4Negate(storage);
-}
-
 /// Returns the absolute value (element-wise).
 STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Absolute(const CXInt32x3 storage)
 {
     return CXInt32x4Absolute(storage);
+}
+
+/// Returns the negated value (element-wise).
+STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Negate(const CXInt32x3 storage)
+{
+    return CXInt32x4Negate(storage);
 }
 
 // MARK: Additive

@@ -57,16 +57,16 @@ STATIC_INLINE_INTRINSIC(void) CXFloat32x2SetElement(CXFloat32x2* storage, const 
 
 // MARK: - Arithmetics
 
-/// Returns the absolute value (element-wise).
-STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Absolute(const CXFloat32x2 storage)
-{
-    return CXFloat32x4Absolute(storage);
-}
-
 /// Returns the negated value (element-wise).
 STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Negate(const CXFloat32x2 storage)
 {
     return CXFloat32x4Negate(storage);
+}
+
+/// Returns the absolute value (element-wise).
+STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Absolute(const CXFloat32x2 storage)
+{
+    return CXFloat32x4Absolute(storage);
 }
 
 // MARK: Additive
@@ -102,8 +102,7 @@ STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Multiply(const CXFloat32x2 lhs, 
 /// @param rhs Right-hand side operator
 STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Divide(const CXFloat32x2 lhs, const CXFloat32x2 rhs)
 {
-    CXFloat32x2 _rhs = rhs;  // Prepare rhs value, to avoid a
-    CXFloat32x4SetElement(&_rhs, 2, 1.f); // division by zero, but 1 instead
-    CXFloat32x4SetElement(&_rhs, 3, 1.f);
-    return CXFloat32x4Divide(lhs, _rhs);
+    CXFloat32x4SetElement(&rhs, 2, 1.f); // Prepare rhs value, to avoid a ...
+    CXFloat32x4SetElement(&rhs, 3, 1.f); // ... division by zero, but 1 instead
+    return CXFloat32x4Divide(lhs, rhs);
 }

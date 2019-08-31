@@ -1,5 +1,4 @@
 #pragma once
-/// Reference: https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_m128&techs=SSE2
 
 #include <stdint.h>
 #include <emmintrin.h>
@@ -22,11 +21,10 @@ typedef __m128 CXFloat32x3; // Most significant 32 bits are unused (zero)
 typedef __m128 CXFloat32x4;
 
 // MARK: - Matrix Storage
-/// https://thinkingandcomputing.com/posts/using-avx-instructions-in-matrix-multiplication.html
 
-/// The 2 x 2 x 32-bit floating point storage
-//typedef __m128 __attribute((aligned(32))) CXFloat32x2x2;
-
+///// The 2 x 2 x 32-bit floating point storage
+//typedef __m128 CXFloat32x2x2;
+//
 ///// The 3 x 3 x 64-bit floating point storage
 //typedef struct CXFloat32x3x3 { CXFloat32x4 val[3]; } CXFloat32x3x3; // Last coloumn is unused (zeros)
 //

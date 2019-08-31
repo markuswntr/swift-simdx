@@ -22,9 +22,9 @@ typedef __m128i CXInt32x4;
 
 // MARK: - Matrix Storage
 
-/// The 2 x 2 x 32-bit floating point storage
-typedef __m128i CXInt32x2x2;
-
+///// The 2 x 2 x 32-bit floating point storage
+//typedef __m128i CXInt32x2x2;
+//
 ///// The 4 x 4 x 32-bit floating point storage
 //typedef int32x4x4_t __attribute((aligned(16))) CXInt32x4x4;
 //

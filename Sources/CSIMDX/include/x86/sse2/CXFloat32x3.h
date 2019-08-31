@@ -55,6 +55,18 @@ STATIC_INLINE_INTRINSIC(void) CXFloat32x3SetElement(CXFloat32x3* storage, const 
 
 // MARK: - Arithmetics
 
+/// Returns the negated value (element-wise).
+STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Negate(const CXFloat32x3 storage)
+{
+    return CXFloat32x4Negate(storage);
+}
+
+/// Returns the absolute value (element-wise).
+STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Absolute(const CXFloat32x3 storage)
+{
+    return CXFloat32x4Absolute(storage);
+}
+
 // MARK: Additive
 
 /// Adds two storages (element-wise) and returns the result.
@@ -73,18 +85,6 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Subtract(const CXFloat32x3 lhs, 
     return CXFloat32x4Subtract(lhs, rhs);
 }
 
-/// Returns the absolute value (element-wise).
-STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Absolute(const CXFloat32x3 storage)
-{
-    return CXFloat32x4Absolute(storage);
-}
-
-/// Returns the negated value (element-wise).
-STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Negate(const CXFloat32x3 storage)
-{
-    return CXFloat32x4Negate(storage);
-}
-
 // MARK: Multiplicative
 
 /// Multiplies two storages (element-wise) and returns the result.
@@ -100,7 +100,6 @@ STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Multiply(const CXFloat32x3 lhs, 
 /// @param rhs Right-hand side operator
 STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Divide(const CXFloat32x3 lhs, const CXFloat32x3 rhs)
 {
-    CXFloat32x3 _rhs = rhs;  // Prepare rhs value, to avoid
-    CXFloat32x3SetElement(&_rhs, 3, 1.f); // a division by zero, but 1 instead
-    return CXFloat32x4Divide(lhs, _rhs);
+    CXFloat32x3SetElement(&rhs, 3, 1.f); // Avoids division by zero, but 1.f instead
+    return CXFloat32x4Divide(lhs, rhs);
 }

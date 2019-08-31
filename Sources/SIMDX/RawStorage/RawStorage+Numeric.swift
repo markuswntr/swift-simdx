@@ -22,9 +22,6 @@ public protocol NumericRawStorage: RawStorage where Element: Numeric {
     /// - Parameter source: A value to convert to this type.
 //    init?<Other>(exactly source: Other) where Other: NumericRawStorage, Other.Element: BinaryInteger
 
-    /// A type that can represent the absolute value of any possible value of the conforming type.
-//    associatedtype Magnitude: Comparable, NumericRawStorage
-
     /// The magnitude of this value.
     ///
     /// For any numeric value `x`, `x.magnitude` is the absolute value of `x`.
@@ -134,6 +131,14 @@ extension NumericRawStorage {
     @inlinable prefix public static func + (operand: Self) -> Self {
         return operand
     }
+
+    /// Multiplies the storage (element-wise) by given element.
+    ///
+    /// - Parameter storage: The storage to be multiplied by given element.
+    /// - Parameter element: The element to multiply to each single other element in the storage.
+    @inlinable static func * (storage: Self, element: Element) -> Self {
+        return storage * .init(element)
+    }
 }
 
 // MARK: - SignedNumeric Storage
@@ -209,26 +214,22 @@ extension SignedNumericRawStorage {
 
 // TODO: This type is not properly defined yet
 public protocol FixedWidthIntegerRawStorage: SignedNumericRawStorage where Element: FixedWidthInteger {
+}
+
+extension FixedWidthIntegerRawStorage {
 
     /// The maximum representable integer in this type.
     ///
     /// For unsigned integer types, this value is `(2 ** bitWidth) - 1`, where
     /// `**` is exponentiation. For signed integer types, this value is
     /// `(2 ** (bitWidth - 1)) - 1`.
-    static var max: Self { get }
+    @inlinable public static var max: Self { .init(.max) }
 
     /// The minimum representable integer in this type.
     ///
     /// For unsigned integer types, this value is always `0`. For signed integer
     /// types, this value is `-(2 ** (bitWidth - 1))`, where `**` is
     /// exponentiation.
-    static var min: Self { get }
-}
-
-extension FixedWidthIntegerRawStorage {
-
-    @inlinable public static var max: Self { .init(.max) }
-
     @inlinable public static var min: Self { .init(.min) }
 }
 
@@ -236,38 +237,6 @@ extension FixedWidthIntegerRawStorage {
 
 // TODO: This type is not properly defined yet
 public protocol FloatingPointRawStorage: SignedNumericRawStorage where Element: FloatingPoint {
-
-    /// Positive infinity.
-    ///
-    /// Infinity compares greater than all finite numbers and equal to other
-    /// infinite values.
-    ///
-    ///     let x = Double.greatestFiniteMagnitude
-    ///     let y = x * 2
-    ///     // y == Double.infinity
-    ///     // y > x
-    static var infinity: Self { get }
-
-    /// The greatest finite number representable by this type.
-    ///
-    /// This value compares greater than or equal to all finite numbers, but less
-    /// than `infinity`.
-    ///
-    /// This value corresponds to type-specific C macros such as `FLT_MAX` and
-    /// `DBL_MAX`. The naming of those macros is slightly misleading, because
-    /// `infinity` is greater than this value.
-    static var greatestFiniteMagnitude: Self { get }
-
-    /// The least positive normal number.
-    ///
-    /// This value compares less than or equal to all positive normal numbers.
-    /// There may be smaller positive numbers, but they are *subnormal*, meaning
-    /// that they are represented with less precision than normal numbers.
-    ///
-    /// This value corresponds to type-specific C macros such as `FLT_MIN` and
-    /// `DBL_MIN`. The naming of those macros is slightly misleading, because
-    /// subnormals, zeros, and negative numbers are smaller than this value.
-    static var leastNormalMagnitude: Self { get }
 
     /// Returns the quotient of dividing the first value of the first storage by
     /// the first value of the second storage, rounded to a representable value.
@@ -280,9 +249,43 @@ public protocol FloatingPointRawStorage: SignedNumericRawStorage where Element: 
 
 extension FloatingPointRawStorage {
 
+    /// Positive infinity.
+    ///
+    /// Infinity compares greater than all finite numbers and equal to other
+    /// infinite values.
+    ///
+    ///     let x = Double.greatestFiniteMagnitude
+    ///     let y = x * 2
+    ///     // y == Double.infinity
+    ///     // y > x
     @inlinable public static var infinity: Self { .init(.infinity) }
 
+    /// The greatest finite number representable by this type.
+    ///
+    /// This value compares greater than or equal to all finite numbers, but less
+    /// than `infinity`.
+    ///
+    /// This value corresponds to type-specific C macros such as `FLT_MAX` and
+    /// `DBL_MAX`. The naming of those macros is slightly misleading, because
+    /// `infinity` is greater than this value.
     @inlinable public static var greatestFiniteMagnitude: Self { .init(.greatestFiniteMagnitude) }
 
+    /// The least positive normal number.
+    ///
+    /// This value compares less than or equal to all positive normal numbers.
+    /// There may be smaller positive numbers, but they are *subnormal*, meaning
+    /// that they are represented with less precision than normal numbers.
+    ///
+    /// This value corresponds to type-specific C macros such as `FLT_MIN` and
+    /// `DBL_MIN`. The naming of those macros is slightly misleading, because
+    /// subnormals, zeros, and negative numbers are smaller than this value.
     @inlinable public static var leastNormalMagnitude: Self { .init(.leastNormalMagnitude) }
+
+    /// Divides the storage (element-wise) by given element.
+    ///
+    /// - Parameter storage: The storage to be divided by given element.
+    /// - Parameter element: The element to use as divisor to each single other element in the storage.
+    @inlinable static func / (storage: Self, element: Element) -> Self {
+        return storage / .init(element)
+    }
 }

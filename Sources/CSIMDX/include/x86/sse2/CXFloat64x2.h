@@ -51,6 +51,12 @@ STATIC_INLINE_INTRINSIC(void) CXFloat64x2SetElement(CXFloat64x2* storage, const 
 
 // MARK: - Arithmetics
 
+/// Returns the negated value (element-wise).
+STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Negate(const CXFloat64x2 storage)
+{
+    return _mm_sub_pd(CXFloat64x2MakeZero(), storage);
+}
+
 /// Returns the absolute value (element-wise).
 STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Absolute(const CXFloat64x2 storage)
 {
@@ -58,12 +64,6 @@ STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Absolute(const CXFloat64x2 stora
     union { CXFloat64x2 storage; __m128i signs; } Signed;
     Signed.signs = _mm_setr_epi64(SIGN_BIT, SIGN_BIT);
     return _mm_and_ps(storage, Signed.storage);
-}
-
-/// Returns the negated value (element-wise).
-STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Negate(const CXFloat64x2 storage)
-{
-    return _mm_sub_pd(CXFloat64x2MakeZero(), storage);
 }
 
 // MARK: Additive

@@ -1,5 +1,4 @@
 #pragma once
-/// Reference: https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_m128d&techs=SSE2
 
 #include <stdint.h>
 #include <emmintrin.h>

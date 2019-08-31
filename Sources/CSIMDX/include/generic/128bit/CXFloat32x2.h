@@ -182,4 +182,3 @@ STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Divide(const CXFloat32x2 lhs, co
 #endif
     return storage;
 }
-
