@@ -8,7 +8,7 @@ let package = Package(
     ],
     dependencies: [],
     targets: [
-        .target(name: "CSIMDX"), // TODO: Add -mavx2 and ?-mfpu=neon? to clang compile stage
+        .target(name: "CSIMDX"), // TODO: Add -mavx2 or -march=native and ?-mfpu=neon? to clang compile stage
         .target(name: "SIMDX", dependencies: ["CSIMDX"]),
         .testTarget(name: "CSIMDXTests", dependencies: ["CSIMDX"]),
         .testTarget(name: "SIMDXTests", dependencies: ["SIMDX"]),

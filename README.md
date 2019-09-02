@@ -9,7 +9,6 @@ routes([<sup>1</sup>](#1)) those through the fastest available instructions.
 > **Note:** This is far from finished, and not guarantueed to perform faster. There have been no performance tests, no benchmarks, no nothing.
 
 **TODO:**
-- [ ] Element wise multiplication and division
 - [ ] Comparison (Equal, Greater/LowerThan, ...)
 - [ ] Documentation
 - [ ] 256bit (Length) storages

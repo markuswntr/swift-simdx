@@ -78,6 +78,10 @@ extension SIMDX where Storage: NumericRawStorage {
     @inlinable public static func * (lhs: Self, rhs: Self) -> Self  {
         .init(rawValue: lhs.rawValue * rhs.rawValue)
     }
+
+    @inlinable public static func * (storage: Self, element: Element) -> Self  {
+        return .init(rawValue: storage.rawValue * element)
+    }
 }
 
 extension SIMDX where Storage: SignedNumericRawStorage {
@@ -91,5 +95,9 @@ extension SIMDX where Storage: FloatingPointRawStorage {
 
     @inlinable public static func / (lhs: Self, rhs: Self) -> Self  {
         return .init(rawValue: lhs.rawValue / rhs.rawValue)
+    }
+
+    @inlinable public static func / (storage: Self, element: Element) -> Self  {
+        return .init(rawValue: storage.rawValue / element)
     }
 }

@@ -2,18 +2,36 @@ import XCTest
 import SIMDX
 
 final class SIMDX4Tests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        let storage = SIMDX4<Float>(index0: 1, index1: 2, index2: 3, index3: 4)
-        XCTAssertEqual(storage[.index0], 1)
-        XCTAssertEqual(storage[.index1], 2)
-        XCTAssertEqual(storage[.index2], 3)
-        XCTAssertEqual(storage[.index3], 4)
+
+    func testMultiplyByElement() {
+
+        var float32Storage = SIMDX4<Float32>(index0: 3, index1: 8, index2: -32, index3: 32.5)
+        float32Storage = float32Storage * 4 // Scale by 4
+        XCTAssertEqual(float32Storage[.index0], 12)
+        XCTAssertEqual(float32Storage[.index1], 32)
+        XCTAssertEqual(float32Storage[.index2], -128)
+        XCTAssertEqual(float32Storage[.index3], 130)
+
+        var int32Storage = SIMDX4<Int32>(index0: 3, index1: 8, index2: -32, index3: -0)
+        int32Storage = int32Storage * 4 // Scale by 4
+        XCTAssertEqual(int32Storage[.index0], 12)
+        XCTAssertEqual(int32Storage[.index1], 32)
+        XCTAssertEqual(int32Storage[.index2], -128)
+        XCTAssertEqual(int32Storage[.index3], 0)
+    }
+
+    func testDivideByElement() {
+
+        var float32Storage = SIMDX4<Float32>(index0: 3, index1: 8, index2: -32, index3: 32.5)
+        float32Storage = float32Storage / 2 // Scale by 0.5
+        XCTAssertEqual(float32Storage[.index0], 1.5)
+        XCTAssertEqual(float32Storage[.index1], 4.0)
+        XCTAssertEqual(float32Storage[.index2], -16.0)
+        XCTAssertEqual(float32Storage[.index3], 16.25)
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testMultiplyByElement", testMultiplyByElement),
+        ("testDivideByElement", testDivideByElement),
     ]
 }
