@@ -100,7 +100,7 @@ STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Multiply(const CXFloat32x2 lhs, 
 /// Divides two storages (element-wise) and returns the result.
 /// @param lhs Left-hand side operator
 /// @param rhs Right-hand side operator
-STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Divide(const CXFloat32x2 lhs, const CXFloat32x2 rhs)
+STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Divide(const CXFloat32x2 lhs, CXFloat32x2 rhs)
 {
     CXFloat32x4SetElement(&rhs, 2, 1.f); // Prepare rhs value, to avoid a ...
     CXFloat32x4SetElement(&rhs, 3, 1.f); // ... division by zero, but 1 instead

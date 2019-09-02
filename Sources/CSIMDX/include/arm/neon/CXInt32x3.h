@@ -7,7 +7,7 @@
 /// Returns an intrinsic initialized to the 3 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Make(Int32 value0, Int32 value1, Int32 value2)
 {
-    return (CXInt32x3){ value0, value1, value2, 0.f };
+    return (CXInt32x3){ value0, value1, value2, 0 };
 }
 
 /// Loads 3 x Int32 values from unaligned memory.
@@ -16,14 +16,16 @@ STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Make(Int32 value0, Int32 value1, Int
 STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3MakeLoad(const Int32* pointer)
 {
     CXInt32x3 storage = vld1q_s32(pointer);
-    storage[3] = 0.f;
+    storage[3] = 0;
     return storage;
 }
 
 /// Returns an intrinsic type with all lanes initialized to `value`.
 STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3MakeRepeatingElement(const Int32 value)
 {
-    return vdupq_n_s32(value);
+    CXInt32x3 storage = vdupq_n_s32(value);
+    storage[3] = 0;
+    return storage;
 }
 
 /// Returns an intrinsic type with all lanes initialized to zero (0.f).
