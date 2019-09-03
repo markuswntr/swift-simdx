@@ -1,7 +1,7 @@
 import Foundation
 import CSIMDX
 
-public struct Int64x2: RawStorage2, FixedWidthIntegerRawStorage {
+public struct Int64x2: RawStorage2, FixedWidthIntegerRawStorage, SignedIntegerRawStorage {
 
     // MARK: Collection Conformance
 
@@ -49,7 +49,7 @@ extension Int64x2 {
 
     @inlinable public static var zero: Int64x2 { .init(rawValue: CXInt64x2MakeZero()) }
 
-    @inlinable public var magnitude: Int64x2 { .init(rawValue: CXInt64x2Absolute(rawValue)) }
+    @inlinable public var magnitude: UInt64x2 { .init(rawValue: CXInt64x2Absolute(rawValue)) }
 
     // MARK: Additive
 

@@ -2,7 +2,7 @@
 
 #include "CXInt64_t.h"
 
-// MARK: - Designated Initializers
+// MARK: Designated Initializers
 
 /// Returns an intrinsic initialized to the 2 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Make(Int64 value0, Int64 value1)
@@ -58,7 +58,7 @@ STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Negate(const CXInt64x2 storage)
 }
 
 /// Returns the absolute value (element-wise).
-STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Absolute(const CXInt64x2 storage)
+STATIC_INLINE_INTRINSIC(CXUInt64x2) CXInt64x2Absolute(const CXInt64x2 storage)
 {
      // TODO: SSE2 does not have a native abs operation for storages with 64 bit ints
     return CXInt64x2Make(

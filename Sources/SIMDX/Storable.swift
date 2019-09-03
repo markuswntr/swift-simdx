@@ -8,14 +8,21 @@ extension Int32: RawStorable2, RawStorable3, RawStorable4 {
 }
 extension Int64: RawStorable2/*, RawStorable3, RawStorable4*/ {
     public typealias Storage2 = Int64x2
-//    public typealias Storage3 = SIMD3<Self>
-//    public typealias Storage4 = SIMD4<Self>
+//    public typealias Storage3 = Int64x3
+//    public typealias Storage4 = Int64x4
 }
-//extension UInt32: RawStorable2, RawStorable3, RawStorable4 {
-//    public typealias Storage2 = SIMD2<Self>
-//    public typealias Storage3 = SIMD3<Self>
-//    public typealias Storage4 = SIMD4<Self>
-//}
+
+extension UInt32: RawStorable2, RawStorable3, RawStorable4 {
+    public typealias Storage2 = UInt32x2
+    public typealias Storage3 = UInt32x3
+    public typealias Storage4 = UInt32x4
+}
+extension UInt64: RawStorable2/*, RawStorable3, RawStorable4*/ {
+    public typealias Storage2 = UInt64x2
+//    public typealias Storage3 = UInt64x3
+//    public typealias Storage4 = UInt64x4
+}
+
 extension Float32: RawStorable2, RawStorable3, RawStorable4 {
     public typealias Storage2 = Float32x2
     public typealias Storage3 = Float32x3
@@ -23,6 +30,6 @@ extension Float32: RawStorable2, RawStorable3, RawStorable4 {
 }
 extension Float64: RawStorable2/*, RawStorable3, RawStorable4*/ {
     public typealias Storage2 = Float64x2
-//    public typealias Storage3 = SIMD3<Self>
-//    public typealias Storage4 = SIMD4<Self>
+//    public typealias Storage3 = Float64x3
+//    public typealias Storage4 = Float64x4
 }

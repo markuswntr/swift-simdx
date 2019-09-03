@@ -1,7 +1,7 @@
 import Foundation
 import CSIMDX
 
-public struct Float32x3: RawStorage3, FloatingPointRawStorage {
+public struct Float32x3: RawStorage3, BinaryFloatingPointRawStorage {
 
     // MARK: Collection Conformance
 

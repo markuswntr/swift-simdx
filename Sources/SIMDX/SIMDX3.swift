@@ -78,3 +78,16 @@ extension SIMDX3 {
         return Index(rawValue: index.rawValue + 1)
     }
 }
+
+// MARK: Magnitude
+extension SIMDX3 where Storage: NumericRawStorage, Storable.Magnitude: RawStorable3,
+Storable.Magnitude.Storage3 == Storage.Magnitude {
+
+    /// A type that can represent the absolute value of any possible value of the conforming type.
+    public typealias Magnitude = SIMDX3<Storable.Magnitude>
+
+    /// The magnitude of the values in the storage.
+    @inlinable public var magnitude: SIMDX3<Storable.Magnitude> {
+        return .init(rawValue: rawValue.magnitude)
+    }
+}

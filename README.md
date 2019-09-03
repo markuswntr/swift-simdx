@@ -9,10 +9,10 @@ routes([<sup>1</sup>](#1)) those through the fastest available instructions.
 > **Note:** This is far from finished, and not guarantueed to perform faster. There have been no performance tests, no benchmarks, no nothing.
 
 **TODO:**
+- [ ] Casting different vector types
 - [ ] Comparison (Equal, Greater/LowerThan, ...)
 - [ ] Documentation
 - [ ] 256bit (Length) storages
-- [ ] Casting different vector types
 - [ ] Matrices
 - [ ] Properly defining the numeric storages
 

@@ -2,7 +2,7 @@
 
 #include "CXInt32x4.h"
 
-// MARK: - Designated Initializers
+// MARK: Designated Initializers
 
 /// Returns an intrinsic initialized to the 3 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Make(Int32 value0, Int32 value1, Int32 value2)
@@ -51,18 +51,36 @@ STATIC_INLINE_INTRINSIC(void) CXInt32x3SetElement(CXInt32x3* storage, const int 
     CXInt32x4SetElement(storage, index, value);
 }
 
-// MARK: - Arithmetics
+// MARK: - Conversion
 
-/// Returns the absolute value (element-wise).
-STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Absolute(const CXInt32x3 storage)
+/// Converts a vector of 3 x Float32 into a vector of 3 x Int32.
+/// @param operand A 128-bit vector of 3 x Float32.
+/// @returns A 128-bit integer vector of 3 x Int32 containing the converted values.
+STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3FromCXFloat32x3(CXFloat32x3 operand)
 {
-    return CXInt32x4Absolute(storage);
+    return CXInt32x4FromCXFloat32x4(operand);
 }
+
+/// Converts a vector of 3 x Float32 into a vector of 3 x Int32, truncating the result when it is inexact.
+/// @param operand A 128-bit vector of 3 x Float32.
+/// @returns A 128-bit vector of 3 x Int32 containing the converted values.
+STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3FromCXFloat32x3AllowTruncating(CXFloat32x3 operand)
+{
+    return CXInt32x4FromCXFloat32x4AllowTruncating(operand);
+}
+
+// MARK: - Arithmetics
 
 /// Returns the negated value (element-wise).
 STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Negate(const CXInt32x3 storage)
 {
     return CXInt32x4Negate(storage);
+}
+
+/// Returns the absolute value (element-wise).
+STATIC_INLINE_INTRINSIC(CXUInt32x3) CXInt32x3Absolute(const CXInt32x3 storage)
+{
+    return CXInt32x4Absolute(storage);
 }
 
 // MARK: Additive
