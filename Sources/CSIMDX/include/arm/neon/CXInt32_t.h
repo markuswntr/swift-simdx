@@ -22,11 +22,11 @@ typedef int32x2_t __attribute((aligned(16))) CXInt32x2;
 
 // MARK: - Matrix Storage
 
-/// The 4 x 4 x 32-bit floating point storage
+/// The 4 x 4 x 32-bit signed integer storage
 typedef int32x4x4_t __attribute((aligned(16))) CXInt32x4x4;
 
-/// The 3 x 3 x 32-bit floating point storage
+/// The 3 x 3 x 32-bit signed integer storage
 typedef int32x4x3_t __attribute((aligned(16))) CXInt32x3x3; // Last coloumn is unused (zeros)
 
-/// The 2 x 2 x 32-bit floating point storage
+/// The 2 x 2 x 32-bit signed integer storage
 typedef int32x2x2_t __attribute((aligned(16))) CXInt32x2x2;

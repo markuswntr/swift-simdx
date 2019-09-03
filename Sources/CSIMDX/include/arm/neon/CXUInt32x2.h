@@ -1,0 +1,86 @@
+#pragma once
+
+#include "CXUInt32_t.h"
+
+// MARK: Designated Initializers
+
+/// Returns an intrinsic initialized to the 2 given values, from least- to most-significant bits.
+STATIC_INLINE_INTRINSIC(CXUInt32x2) CXUInt32x2Make(UInt32 value0, UInt32 value1)
+{
+    return (CXUInt32x2){ value0, value1 };
+}
+
+/// Loads 2 x UInt32 values from unaligned memory.
+/// @param pointer Unaligned memory pointer to 2 x UInt32 values
+/// @return CXUInt32x2(pointer[0], pointer[1])
+STATIC_INLINE_INTRINSIC(CXUInt32x2) CXUInt32x2MakeLoad(const UInt32* pointer)
+{
+    return vld1_u32(pointer);
+}
+
+/// Returns an intrinsic type with all lanes initialized to `value`.
+STATIC_INLINE_INTRINSIC(CXUInt32x2) CXUInt32x2MakeRepeatingElement(const UInt32 value)
+{
+    return vdup_n_u32(value);
+}
+
+/// Returns an intrinsic type with all lanes initialized to zero (0.f).
+STATIC_INLINE_INTRINSIC(CXUInt32x2) CXUInt32x2MakeZero(void)
+{
+    return CXUInt32x2MakeRepeatingElement(0);
+}
+
+// MARK: - Getter/Setter
+
+/// Returns the element at `index` of `storage` (`storage[index]`).
+/// @param storage The storage to read values from
+/// @param index The index of the value to return
+STATIC_INLINE_INTRINSIC(UInt32) CXUInt32x2GetElement(const CXUInt32x2 storage, const int index)
+{
+    return storage[index];
+}
+
+/// Sets the element at `index` from `storage` to given value.
+/// @param storage The storage to look up values
+/// @param index The index of the value to change.
+/// @param value The value to set at storage[index].
+STATIC_INLINE_INTRINSIC(void) CXUInt32x2SetElement(CXUInt32x2* storage, const int index, const UInt32 value)
+{
+    (*storage)[index] = value; // TODO: Function call instead?
+}
+
+// MARK: -  Arithmetics
+
+/// Returns the given storage unchanged. Allows for symmetry with signed values.
+STATIC_INLINE_INTRINSIC(CXUInt32x2) CXUInt32x2Absolute(const CXUInt32x2 storage)
+{
+    return storage;
+}
+
+// MARK: Additive
+
+/// Adds two storages (element-wise) and returns the result.
+/// @param lhs Left-hand side operator
+/// @param rhs Right-hand side operator
+STATIC_INLINE_INTRINSIC(CXUInt32x2) CXUInt32x2Add(const CXUInt32x2 lhs, const CXUInt32x2 rhs)
+{
+    return vadd_u32(lhs, rhs);
+}
+
+/// Subtracts a storage from another (element-wise) and returns the result.
+/// @param lhs Left-hand side operator
+/// @param rhs Right-hand side operator
+STATIC_INLINE_INTRINSIC(CXUInt32x2) CXUInt32x2Subtract(const CXUInt32x2 lhs, const CXUInt32x2 rhs)
+{
+    return vsub_u32(lhs, rhs);
+}
+
+// MARK: Multiplicative
+
+/// Multiplies two storages (element-wise) and returns the result.
+/// @param lhs Left-hand side operator
+/// @param rhs Right-hand side operator
+STATIC_INLINE_INTRINSIC(CXUInt32x2) CXUInt32x2Multiply(const CXUInt32x2 lhs, const CXUInt32x2 rhs)
+{
+    return vmul_u32(lhs, rhs);
+}

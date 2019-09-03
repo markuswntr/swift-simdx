@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CXInt32_t.h"
+#include "CXUInt32_t.h"
 
 // MARK: Designated Initializers
 
@@ -62,9 +63,9 @@ STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Negate(const CXInt32x3 storage)
 }
 
 /// Returns the absolute value (element-wise).
-STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Absolute(const CXInt32x3 storage)
+STATIC_INLINE_INTRINSIC(CXUInt32x3) CXInt32x3Absolute(const CXInt32x3 storage)
 {
-    return vabsq_s32(storage);
+    return vreinterpretq_u32_s32(vabsq_s32(storage));
 }
 
 // MARK: Additive

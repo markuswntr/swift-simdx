@@ -58,9 +58,9 @@ STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Negate(const CXInt64x2 storage)
 }
 
 /// Returns the absolute value (element-wise).
-STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Absolute(const CXInt64x2 storage)
+STATIC_INLINE_INTRINSIC(CXUInt64x2) CXInt64x2Absolute(const CXInt64x2 storage)
 {
-    return vabsq_s64(storage);
+    return vreinterpretq_u64_s64(vabsq_s64(storage));
 }
 
 // MARK: Additive
