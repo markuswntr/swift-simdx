@@ -4,7 +4,7 @@
 #include "CXInt32_t.h"
 #include "CXUInt32_t.h"
 
-// MARK: - Designated Initializers
+// MARK: Designated Initializers
 
 /// Returns an intrinsic initialized to the 2 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Make(Int32 value0, Int32 value1)

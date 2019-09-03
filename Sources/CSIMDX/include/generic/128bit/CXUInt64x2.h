@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "CXUInt64_t.h"
 
-// MARK: - Designated Initializers
+// MARK: Designated Initializers
 
 /// Returns an intrinsic initialized to the 2 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2Make(UInt64 value0, UInt64 value1)

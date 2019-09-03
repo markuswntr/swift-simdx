@@ -2,7 +2,7 @@
 
 #include "CXInt32_t.h"
 
-// MARK: - Designated Initializers
+// MARK: Designated Initializers
 
 /// Returns an intrinsic initialized to the 3 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Make(Int32 value0, Int32 value1, Int32 value2)
@@ -55,16 +55,16 @@ STATIC_INLINE_INTRINSIC(void) CXInt32x3SetElement(CXInt32x3* storage, const int 
 
 // MARK: - Arithmetics
 
-/// Returns the absolute value (element-wise).
-STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Absolute(const CXInt32x3 storage)
-{
-    return vabsq_s32(storage);
-}
-
 /// Returns the negated value (element-wise).
 STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Negate(const CXInt32x3 storage)
 {
     return vnegq_s32(storage);
+}
+
+/// Returns the absolute value (element-wise).
+STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Absolute(const CXInt32x3 storage)
+{
+    return vabsq_s32(storage);
 }
 
 // MARK: Additive

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "CXUInt32_t.h"
 
-// MARK: - Designated Initializers
+// MARK: Designated Initializers
 
 /// Returns an intrinsic initialized to the 4 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4Make(UInt32 value0, UInt32 value1, UInt32 value2, UInt32 value3)
