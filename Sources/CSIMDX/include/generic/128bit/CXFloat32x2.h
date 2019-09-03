@@ -3,7 +3,7 @@
 #include <math.h>
 #include "CXFloat32_t.h"
 
-// MARK: - Designated Initializers
+// MARK: Designated Initializers
 
 /// Returns an intrinsic initialized to the 2 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Make(Float32 value0, Float32 value1)
@@ -78,6 +78,21 @@ STATIC_INLINE_INTRINSIC(void) CXFloat32x2SetElement(CXFloat32x2* storage, const 
 
 // MARK: - Arithmetics
 
+/// Returns the negated value (element-wise).
+STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Negate(const CXFloat32x2 storage)
+{
+    CXFloat32x2 negStorage;
+#if __has_extension(attribute_ext_vector_type)
+    negStorage.internalElements = -(storage.internalElements);
+#else
+    negStorage.elements = (CXFloat32x2)[
+        -CXFloat32x2GetElement(storage, 0),
+        -CXFloat32x2GetElement(storage, 1)
+    ];
+#endif
+    return negStorage;
+}
+
 /// Returns the absolute value (element-wise).
 STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Absolute(const CXFloat32x2 storage)
 {
@@ -94,21 +109,6 @@ STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Absolute(const CXFloat32x2 stora
      ];
 #endif
     return absStorage;
-}
-
-/// Returns the negated value (element-wise).
-STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Negate(const CXFloat32x2 storage)
-{
-    CXFloat32x2 negStorage;
-#if __has_extension(attribute_ext_vector_type)
-    negStorage.internalElements = -(storage.internalElements);
-#else
-    negStorage.elements = (CXFloat32x2)[
-        -CXFloat32x2GetElement(storage, 0),
-        -CXFloat32x2GetElement(storage, 1)
-    ];
-#endif
-    return negStorage;
 }
 
 // MARK: Additive

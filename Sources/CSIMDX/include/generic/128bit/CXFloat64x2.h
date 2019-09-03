@@ -10,7 +10,7 @@ STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Make(Float64 value0, Float64 val
 {
     CXFloat64x2 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.internalElements = (ExtFloatStorage64x2){ value0, value1 };
+    storage.internalElements = (CEXStorageFloat64x2){ value0, value1 };
 #else
     storage.elements = [value0, value1];
 #endif
@@ -24,9 +24,9 @@ STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2MakeLoad(const Float64* pointer)
 {
     CXFloat64x2 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.internalElements = (ExtFloatStorage64x2){ pointer[0], pointer[1] };
+    storage.internalElements = (CEXStorageFloat64x2){ pointer[0], pointer[1] };
 #else
-    storage.elements = (ExtFloatStorage64x2)[ pointer[0], pointer[1] ];
+    storage.elements = (CEXStorageFloat64x2)[ pointer[0], pointer[1] ];
 #endif
     return storage;
 }
@@ -36,9 +36,9 @@ STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2MakeRepeatingElement(const Float
 {
     CXFloat64x2 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.internalElements = (ExtFloatStorage64x2){ value, value };
+    storage.internalElements = (CEXStorageFloat64x2){ value, value };
 #else
-    storage.elements = (ExtFloatStorage64x2)[ value, value ];
+    storage.elements = (CEXStorageFloat64x2)[ value, value ];
 #endif
     return storage;
 }
@@ -78,24 +78,6 @@ STATIC_INLINE_INTRINSIC(void) CXFloat64x2SetElement(CXFloat64x2* storage, const 
 
 // MARK: - Arithmetics
 
-/// Returns the absolute value (element-wise).
-STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Absolute(const CXFloat64x2 storage)
-{
-    CXFloat64x2 absStorage;
-#if __has_extension(attribute_ext_vector_type)
-    absStorage.internalElements = (ExtFloatStorage64x2){
-        fabs(CXFloat64x2GetElement(storage, 0)),
-        fabs(CXFloat64x2GetElement(storage, 1))
-    };
-#else
-    absStorage.elements = (CXFloat64x2)[
-         fabs(CXFloat64x2GetElement(storage, 0)),
-         fabs(CXFloat64x2GetElement(storage, 1))
-     ];
-#endif
-    return absStorage;
-}
-
 /// Returns the negated value (element-wise).
 STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Negate(const CXFloat64x2 storage)
 {
@@ -109,6 +91,24 @@ STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Negate(const CXFloat64x2 storage
     ];
 #endif
     return negStorage;
+}
+
+/// Returns the absolute value (element-wise).
+STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Absolute(const CXFloat64x2 storage)
+{
+    CXFloat64x2 absStorage;
+#if __has_extension(attribute_ext_vector_type)
+    absStorage.internalElements = (CEXStorageFloat64x2){
+        fabs(CXFloat64x2GetElement(storage, 0)),
+        fabs(CXFloat64x2GetElement(storage, 1))
+    };
+#else
+    absStorage.elements = (CXFloat64x2)[
+         fabs(CXFloat64x2GetElement(storage, 0)),
+         fabs(CXFloat64x2GetElement(storage, 1))
+     ];
+#endif
+    return absStorage;
 }
 
 // MARK: Additive

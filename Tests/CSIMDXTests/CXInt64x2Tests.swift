@@ -56,8 +56,8 @@ final class CXInt64x2Tests: XCTestCase {
         let normal = CXInt64x2Make(-1, 3)
         let absolute = CXInt64x2Absolute(normal)
 
-        XCTAssertEqual(CXInt64x2GetElement(absolute, 0), 1)
-        XCTAssertEqual(CXInt64x2GetElement(absolute, 1), 3)
+        XCTAssertEqual(CXUInt64x2GetElement(absolute, 0), 1)
+        XCTAssertEqual(CXUInt64x2GetElement(absolute, 1), 3)
     }
 
     func testNegate() {

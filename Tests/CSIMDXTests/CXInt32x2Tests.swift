@@ -56,8 +56,8 @@ final class CXInt32x2Tests: XCTestCase {
         let normal = CXInt32x2Make(-1, 3)
         let absolute = CXInt32x2Absolute(normal)
 
-        XCTAssertEqual(CXInt32x2GetElement(absolute, 0), 1)
-        XCTAssertEqual(CXInt32x2GetElement(absolute, 1), 3)
+        XCTAssertEqual(CXUInt32x2GetElement(absolute, 0), 1)
+        XCTAssertEqual(CXUInt32x2GetElement(absolute, 1), 3)
     }
 
     func testNegate() {

@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include "CXInt32_t.h"
+#include "CXUInt32_t.h"
 
 // MARK: - Designated Initializers
 
@@ -78,26 +79,6 @@ STATIC_INLINE_INTRINSIC(void) CXInt32x3SetElement(CXInt32x3* storage, const int 
 
 // MARK: - Arithmetics
 
-/// Returns the absolute value (element-wise).
-STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Absolute(const CXInt32x3 storage)
-{
-    CXInt32x3 absStorage;
-#if __has_extension(attribute_ext_vector_type)
-    absStorage.internalElements = (CEXStorageInt32x3){
-        abs(CXInt32x3GetElement(storage, 0)),
-        abs(CXInt32x3GetElement(storage, 1)),
-        abs(CXInt32x3GetElement(storage, 2))
-    };
-#else
-    absStorage.elements = (CXInt32x3)[
-        abs(CXInt32x3GetElement(storage, 0)),
-        abs(CXInt32x3GetElement(storage, 1)),
-        abs(CXInt32x3GetElement(storage, 2))
-     ];
-#endif
-    return absStorage;
-}
-
 /// Returns the negated value (element-wise).
 STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Negate(const CXInt32x3 storage)
 {
@@ -112,6 +93,26 @@ STATIC_INLINE_INTRINSIC(CXInt32x3) CXInt32x3Negate(const CXInt32x3 storage)
     ];
 #endif
     return negStorage;
+}
+
+/// Returns the absolute value (element-wise).
+STATIC_INLINE_INTRINSIC(CXUInt32x3) CXInt32x3Absolute(const CXInt32x3 storage)
+{
+    CXUInt32x3 absStorage;
+#if __has_extension(attribute_ext_vector_type)
+    absStorage.internalElements = (CEXStorageUInt32x3){
+        abs(CXInt32x3GetElement(storage, 0)),
+        abs(CXInt32x3GetElement(storage, 1)),
+        abs(CXInt32x3GetElement(storage, 2))
+    };
+#else
+    absStorage.elements = (CXUInt32x3)[
+        abs(CXInt32x3GetElement(storage, 0)),
+        abs(CXInt32x3GetElement(storage, 1)),
+        abs(CXInt32x3GetElement(storage, 2))
+     ];
+#endif
+    return absStorage;
 }
 
 // MARK: Additive

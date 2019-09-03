@@ -78,28 +78,6 @@ STATIC_INLINE_INTRINSIC(void) CXInt32x4SetElement(CXInt32x4* storage, const int 
 
 // MARK: - Arithmetics
 
-/// Returns the absolute value (element-wise).
-STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Absolute(const CXInt32x4 storage)
-{
-    CXInt32x4 absStorage;
-#if __has_extension(attribute_ext_vector_type)
-    absStorage.internalElements = (CEXStorageInt32x4){
-        abs(CXInt32x4GetElement(storage, 0)),
-        abs(CXInt32x4GetElement(storage, 1)),
-        abs(CXInt32x4GetElement(storage, 2)),
-        abs(CXInt32x4GetElement(storage, 3))
-    };
-#else
-    absStorage.elements = (CXInt32x4)[
-        abs(CXInt32x4GetElement(storage, 0)),
-        abs(CXInt32x4GetElement(storage, 1)),
-        abs(CXInt32x4GetElement(storage, 2)),
-        abs(CXInt32x4GetElement(storage, 3))
-     ];
-#endif
-    return absStorage;
-}
-
 /// Returns the negated value (element-wise).
 STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Negate(const CXInt32x4 storage)
 {
@@ -115,6 +93,28 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Negate(const CXInt32x4 storage)
     ];
 #endif
     return negStorage;
+}
+
+/// Returns the absolute value (element-wise).
+STATIC_INLINE_INTRINSIC(CXUInt32x4) CXInt32x4Absolute(const CXInt32x4 storage)
+{
+    CXUInt32x4 absStorage;
+#if __has_extension(attribute_ext_vector_type)
+    absStorage.internalElements = (CEXStorageUInt32x4){
+        abs(CXInt32x4GetElement(storage, 0)),
+        abs(CXInt32x4GetElement(storage, 1)),
+        abs(CXInt32x4GetElement(storage, 2)),
+        abs(CXInt32x4GetElement(storage, 3))
+    };
+#else
+    absStorage.elements = (CXUInt32x4)[
+        abs(CXInt32x4GetElement(storage, 0)),
+        abs(CXInt32x4GetElement(storage, 1)),
+        abs(CXInt32x4GetElement(storage, 2)),
+        abs(CXInt32x4GetElement(storage, 3))
+     ];
+#endif
+    return absStorage;
 }
 
 // MARK: Additive

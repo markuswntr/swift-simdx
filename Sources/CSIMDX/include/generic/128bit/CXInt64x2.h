@@ -3,14 +3,14 @@
 #include <stdlib.h>
 #include "CXInt64_t.h"
 
-// MARK: - Designated Initializers
+// MARK: Designated Initializers
 
 /// Returns an intrinsic initialized to the 2 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Make(Int64 value0, Int64 value1)
 {
     CXInt64x2 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.internalElements = (ExtIntStorage64x2){ value0, value1 };
+    storage.internalElements = (CEXStorageInt64x2){ value0, value1 };
 #else
     storage.elements = [value0, value1];
 #endif
@@ -24,9 +24,9 @@ STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2MakeLoad(const Int64* pointer)
 {
     CXInt64x2 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.internalElements = (ExtIntStorage64x2){ pointer[0], pointer[1] };
+    storage.internalElements = (CEXStorageInt64x2){ pointer[0], pointer[1] };
 #else
-    storage.elements = (ExtIntStorage64x2)[ pointer[0], pointer[1] ];
+    storage.elements = (CEXStorageInt64x2)[ pointer[0], pointer[1] ];
 #endif
     return storage;
 }
@@ -36,9 +36,9 @@ STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2MakeRepeatingElement(const Int64 val
 {
     CXInt64x2 storage;
 #if __has_extension(attribute_ext_vector_type)
-    storage.internalElements = (ExtIntStorage64x2){ value, value };
+    storage.internalElements = (CEXStorageInt64x2){ value, value };
 #else
-    storage.elements = (ExtIntStorage64x2)[ value, value ];
+    storage.elements = (CEXStorageInt64x2)[ value, value ];
 #endif
     return storage;
 }
@@ -78,24 +78,6 @@ STATIC_INLINE_INTRINSIC(void) CXInt64x2SetElement(CXInt64x2* storage, const int 
 
 // MARK: - Arithmetics
 
-/// Returns the absolute value (element-wise).
-STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Absolute(const CXInt64x2 storage)
-{
-    CXInt64x2 absStorage;
-#if __has_extension(attribute_ext_vector_type)
-    absStorage.internalElements = (ExtIntStorage64x2){
-        labs(CXInt64x2GetElement(storage, 0)),
-        labs(CXInt64x2GetElement(storage, 1))
-    };
-#else
-    absStorage.elements = (CXInt64x2)[
-         labs(CXInt64x2GetElement(storage, 0)),
-         labs(CXInt64x2GetElement(storage, 1))
-     ];
-#endif
-    return absStorage;
-}
-
 /// Returns the negated value (element-wise).
 STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Negate(const CXInt64x2 storage)
 {
@@ -109,6 +91,24 @@ STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Negate(const CXInt64x2 storage)
     ];
 #endif
     return negStorage;
+}
+
+/// Returns the absolute value (element-wise).
+STATIC_INLINE_INTRINSIC(CXUInt64x2) CXInt64x2Absolute(const CXInt64x2 storage)
+{
+    CXUInt64x2 absStorage;
+#if __has_extension(attribute_ext_vector_type)
+    absStorage.internalElements = (CEXStorageUInt64x2){
+        labs(CXInt64x2GetElement(storage, 0)),
+        labs(CXInt64x2GetElement(storage, 1))
+    };
+#else
+    absStorage.elements = (CXUInt64x2)[
+         labs(CXInt64x2GetElement(storage, 0)),
+         labs(CXInt64x2GetElement(storage, 1))
+     ];
+#endif
+    return absStorage;
 }
 
 // MARK: Additive
