@@ -1,6 +1,8 @@
 #pragma once
 
 #include "CXInt64_t.h"
+#include "CXFloat32_t.h"
+#include "CXFloat64_t.h"
 
 // MARK: Designated Initializers
 
