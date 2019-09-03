@@ -2,7 +2,7 @@
 
 #include "CXFloat32x4.h"
 
-// MARK: - Designated Initializers
+// MARK: Designated Initializers
 
 /// Returns an intrinsic initialized to the 2 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2Make(Float32 value0, Float32 value1)
@@ -53,6 +53,24 @@ STATIC_INLINE_INTRINSIC(Float32) CXFloat32x2GetElement(const CXFloat32x2 storage
 STATIC_INLINE_INTRINSIC(void) CXFloat32x2SetElement(CXFloat32x2* storage, const int index, const Float32 value)
 {
     CXFloat32x4SetElement(storage, index, value);
+}
+
+// MARK: - Conversion
+
+/// Converts a vector of 2 x Int32 into a storage of 2 x Float32.
+/// @param operand A 128-bit integer storage.
+/// @returns A 128-bit storage of 2 x Float32 containing the converted values.
+STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2FromCXInt32x2(CXInt32x2 operand)
+{
+    return CXFloat32x4FromCXInt32x4(operand);
+}
+
+/// Converts a vector of 2 x Float64 into a storage of 2 x Float32.
+/// @param operand A 128-bit of 2 x Float64 storage.
+/// @returns A 128-bit storage of 2 x Float32 containing the converted values.
+STATIC_INLINE_INTRINSIC(CXFloat32x2) CXFloat32x2FromCXFloat64x2(CXFloat64x2 operand)
+{
+    return _mm_cvtpd_ps(operand);
 }
 
 // MARK: - Arithmetics

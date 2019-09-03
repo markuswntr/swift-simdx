@@ -2,7 +2,7 @@
 
 #include "CXFloat32x4.h"
 
-// MARK: - Designated Initializers
+// MARK: Designated Initializers
 
 /// Returns an intrinsic initialized to the 3 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3Make(Float32 value0, Float32 value1, Float32 value2)
@@ -51,6 +51,16 @@ STATIC_INLINE_INTRINSIC(Float32) CXFloat32x3GetElement(const CXFloat32x3 storage
 STATIC_INLINE_INTRINSIC(void) CXFloat32x3SetElement(CXFloat32x3* storage, const int index, const Float32 value)
 {
     return CXFloat32x4SetElement(storage, index, value);
+}
+
+// MARK: - Conversion
+
+/// Converts a vector of 3 x Int32 into a storage of 3 x Float32.
+/// @param operand A 128-bit integer storage.
+/// @returns A 128-bit storage of 3 x Float32 containing the converted values.
+STATIC_INLINE_INTRINSIC(CXFloat32x3) CXFloat32x3FromCXInt32x3(CXInt32x3 operand)
+{
+    return CXFloat32x4FromCXInt32x4(operand);
 }
 
 // MARK: - Arithmetics

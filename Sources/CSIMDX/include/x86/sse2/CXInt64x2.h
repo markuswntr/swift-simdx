@@ -49,6 +49,34 @@ STATIC_INLINE_INTRINSIC(void) CXInt64x2SetElement(CXInt64x2* storage, const int 
     (*storage)[index] = value; // TODO: Function call instead?
 }
 
+// MARK: - Conversion
+
+/// Converts the 2 x Int32 elements of a CXInt32x2 into 2 x Int64 values, returned in a 128-bit storage.
+/// @param storage A storage of 2 x Int32 elements.
+/// @returns A storage of 2 x Int64 containing the converted values.
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2FromCXInt32x2(CXInt32x2 operand)
+{
+    return (__m128i)__builtin_convertvector( // TODO: NO intel intrinsic?
+        __builtin_shufflevector((__v4si)operand, (__v4si)operand, 0, 1), __v2di);
+}
+
+/// Converts the 2 x Float32 elements of a CXFloat32x2 into 2 x Int64 values, returned in a 128-bit storage.
+/// @param storage A storage of 2 x Float32 elements.
+/// @returns A storage of 2 x Int64 containing the converted values.
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2FromCXFloat32x2(CXFloat32x2 operand)
+{
+    return (__m128i)__builtin_convertvector( // TODO: NO intel intrinsic?
+        __builtin_shufflevector((__v4sf)operand, (__v4sf)operand, 0, 1), __v2di);
+}
+
+/// Converts the 2 x Float64 elements of a CXFloat64x2 into 2 x Int64 values, returned in a 128-bit storage.
+/// @param storage A storage of 2 x Float64 elements.
+/// @returns A storage of 2 x Int64 containing the converted values.
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2FromCXFloat64x2(CXFloat64x2 operand)
+{
+    return _mm_castpd_si128(operand);
+}
+
 // MARK: - Arithmetics
 
 /// Returns the negated value (element-wise).

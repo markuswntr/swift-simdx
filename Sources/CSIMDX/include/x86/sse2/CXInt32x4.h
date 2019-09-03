@@ -2,6 +2,7 @@
 
 #include "CXInt32_t.h"
 #include "CXUInt32_t.h"
+#include "CXFloat32_t.h"
 
 // MARK: Designated Initializers
 
@@ -48,6 +49,24 @@ STATIC_INLINE_INTRINSIC(Int32) CXInt32x4GetElement(const CXInt32x4 storage, cons
 STATIC_INLINE_INTRINSIC(void) CXInt32x4SetElement(CXInt32x4* storage, const int index, const Int32 value)
 {
     ((Int32*)storage)[index] = value;
+}
+
+// MARK: - Conversion
+
+/// Converts a vector of 4 x Float32 into a vector of 4 x Int32.
+/// @param operand A 128-bit vector of 4 x Float32.
+/// @returns A 128-bit integer vector of 4 x Int32 containing the converted values.
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4FromCXFloat32x4(CXFloat32x4 operand)
+{
+    return _mm_cvtps_epi32(operand);
+}
+
+/// Converts a vector of 4 x Float32 into a vector of 4 x Int32, truncating the result when it is inexact.
+/// @param operand A 128-bit vector of 4 x Float32.
+/// @returns A 128-bit vector of 4 x Int32 containing the converted values.
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4FromCXFloat32x4AllowTruncating(CXFloat32x4 operand)
+{
+    return _mm_cvttps_epi32(operand);
 }
 
 // MARK: - Arithmetics
