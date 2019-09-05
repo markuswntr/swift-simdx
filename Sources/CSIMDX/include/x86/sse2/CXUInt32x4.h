@@ -85,16 +85,6 @@ STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4Multiply(const CXUInt32x4 lhs, con
     return CXInt32x4Multiply(lhs, rhs);
 }
 
-STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4Divide(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
-{
-    return CXInt32x4Divide(lhs, rhs);
-}
-
-STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4Modulo(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
-{
-    return CXInt32x4Modulo(lhs, rhs);
-}
-
 // MARK: Logical
 
 /// Bitwise Not

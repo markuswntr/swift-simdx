@@ -138,21 +138,3 @@ STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2Multiply(const CXUInt64x2 lhs, con
 #endif
     return storage;
 }
-
-/// Divides two storages (element-wise) and returns the result.
-/// @param lhs Left-hand side operator
-/// @param rhs Right-hand side operator
-STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2Divide(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
-{
-    CXUInt64x2 storage;
-#if __has_extension(attribute_ext_vector_type)
-    storage.internalElements = lhs.internalElements / rhs.internalElements;
-#else
-    storage.elements = (CXUInt64x2)[
-         CXUInt64x2GetElement(lhs, 0) / CXUInt64x2GetElement(rhs, 0),
-         CXUInt64x2GetElement(lhs, 1) / CXUInt64x2GetElement(rhs, 1)
-     ];
-#endif
-    return storage;
-}
-

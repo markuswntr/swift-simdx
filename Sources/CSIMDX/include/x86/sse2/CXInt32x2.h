@@ -130,24 +130,6 @@ STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Multiply(const CXInt32x2 lhs, const 
     return CXInt32x4Multiply(lhs, rhs);
 }
 
-STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Divide(const CXInt32x2 lhs, const CXInt32x2 rhs)
-{
-    // TODO: SSE2 does not have a native integer division operation but find something better
-    return CXInt32x2Make(
-        CXInt32x2GetElement(lhs, 0) / CXInt32x2GetElement(rhs, 0),
-        CXInt32x2GetElement(lhs, 1) / CXInt32x2GetElement(rhs, 1)
-    );
-}
-
-STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Modulo(const CXInt32x2 lhs, const CXInt32x2 rhs)
-{
-    // TODO: SSE2 does not have a native integer division operation but find something better
-    return CXInt32x2Make(
-        CXInt32x2GetElement(lhs, 0) % CXInt32x2GetElement(rhs, 0),
-        CXInt32x2GetElement(lhs, 1) % CXInt32x2GetElement(rhs, 1)
-    );
-}
-
 // MARK: Logical
 
 /// Bitwise Not

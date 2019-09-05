@@ -49,84 +49,6 @@ where Element: BinaryInteger, Magnitude: BinaryIntegerRawStorage, Magnitude == M
     /// - Parameter source: An integer to convert to this type.
     init<Other>(clamping source: Other) where Other: NumericRawStorage, Other.Element: BinaryInteger
 
-    /// Returns the quotient of dividing the first storage by the second, element-wise.
-    ///
-    /// For integer types, any remainder of the division is discarded.
-    ///
-    ///     let x = 21 / 5
-    ///     // x == 4
-    ///
-    /// - Parameters:
-    ///   - lhs: The storage to divide element-wise.
-    ///   - rhs: The storage to divide `lhs` by. `rhs` must not contain zero.
-    static func / (lhs: Self, rhs: Self) -> Self
-
-    /// Divides the first storage by the second and stores the quotient in the left-hand-side variable.
-    ///
-    /// For integer types, any remainder of the division is discarded.
-    ///
-    ///     var x = 21
-    ///     x /= 5
-    ///     // x == 4
-    ///
-    /// - Parameters:
-    ///   - lhs: The storage to divide element-wise.
-    ///   - rhs: The storage to divide `lhs` by. `rhs` must not contain zero.
-    static func /= (lhs: inout Self, rhs: Self)
-
-    /// Returns the quotient of element-wise dividing the first storage by `element`.
-    ///
-    /// For integer types, any remainder of the division is discarded.
-    ///
-    ///     let x = 21 / 5
-    ///     // x == 4
-    ///
-    /// - Parameters:
-    ///   - lhs: The storage to divide element-wise.
-    ///   - rhs: The element to divide `lhs` element-wise by. `rhs` must not contain zero.
-    static func / (lhs: Self, rhs: Element) -> Self
-
-    /// Divides the first storage element-wise by `element` and stores the quotient in the left-hand-side variable.
-    ///
-    /// For integer types, any remainder of the division is discarded.
-    ///
-    ///     var x = 21
-    ///     x /= 5
-    ///     // x == 4
-    ///
-    /// - Parameters:
-    ///   - lhs: The storage to divide element-wise.
-    ///   - rhs: The element to divide `lhs` element-wise by. `rhs` must not contain zero.
-    static func /= (lhs: inout Self, rhs: Element)
-
-    /// Returns the remainders of dividing the first storage by the second.
-    /// 
-    /// - Parameters:
-    ///   - lhs: The storage to divide.
-    ///   - rhs: The storage to divide `lhs` by. `rhs` must not be zero.
-    static func % (lhs: Self, rhs: Self) -> Self
-
-    /// Divides the first storage by the second and stores the remainders in the left-hand-side variable.
-    ///
-    /// - Parameters:
-    ///   - lhs: The storage to divide.
-    ///   - rhs: The storage to divide `lhs` by. `rhs` must not be zero.
-    static func %= (lhs: inout Self, rhs: Self)
-
-    /// Returns the remainders of dividing the first storage element-wise by `element`.
-    ///
-    /// - Parameters:
-    ///   - lhs: The storage to divide.
-    ///   - rhs: The storage to divide `lhs` by. `rhs` must not be zero.
-    static func % (lhs: Self, rhs: Element) -> Self
-
-    /// Divides the first storage element-wise by `element` and stores the remainders in the left-hand-side variable.
-    ///
-    /// - Parameters:
-    ///   - lhs: The storage to divide.
-    ///   - rhs: The storage to divide `lhs` by. `rhs` must not be zero.
-    static func %= (lhs: inout Self, rhs: Element)
-
     /// Returns the inverse of the bits set in the argument.
     prefix static func ~ (x: Self) -> Self
 
@@ -230,36 +152,6 @@ extension BinaryIntegerRawStorage {
     /// Creates a new instance with the representable values that are closest to the given integer storages value.
     @inlinable public init<Other>(clamping source: Other) where Other: NumericRawStorage, Other.Element: BinaryInteger {
         self.init(source.map { Element.init(clamping: $0) })
-    }
-
-    /// Divides the first storage by the second and stores the quotient in the left-hand-side variable.
-    @inlinable public static func /= (lhs: inout Self, rhs: Self) {
-        lhs = lhs / rhs
-    }
-
-    /// Returns the quotient of element-wise dividing the first storage by element.
-    @inlinable public static func / (lhs: Self, rhs: Element) -> Self {
-        return lhs / .init(rhs)
-    }
-
-    /// Divides the first storage element-wise by the element and stores the quotient in the left-hand-side variable.
-    @inlinable public static func /= (lhs: inout Self, rhs: Element) {
-        lhs = lhs / rhs
-    }
-
-    /// Divides the first storage by the second and stores the remainders in the left-hand-side variable.
-    @inlinable public static func %= (lhs: inout Self, rhs: Self) {
-        lhs = lhs % rhs
-    }
-
-    /// Returns the remainders of dividing the first storage element-wise by `element`.
-    @inlinable public static func % (lhs: Self, rhs: Element) -> Self {
-        return lhs % .init(rhs)
-    }
-
-    /// Divides the first storage element-wise by `element` and stores the remainders in the left-hand-side variable.
-    @inlinable public static func %= (lhs: inout Self, rhs: Element) {
-        lhs = lhs % rhs
     }
 
     /// Stores the result of performing a bitwise AND operation on the two given storages in the lhs variable.

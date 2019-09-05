@@ -75,14 +75,6 @@ extension Int32x2 {
         .init(rawValue: CXInt32x2Multiply(lhs.rawValue, rhs.rawValue))
     }
 
-    @inlinable public static func / (lhs: Int32x2, rhs: Int32x2) -> Int32x2 {
-        return .init(rawValue: CXInt32x2Divide(lhs.rawValue, rhs.rawValue))
-    }
-
-    @inlinable public static func % (lhs: Int32x2, rhs: Int32x2) -> Int32x2 {
-        return .init(rawValue: CXInt32x2Modulo(lhs.rawValue, rhs.rawValue))
-    }
-
     // MARK: Logical
 
     @inlinable public  prefix static func ~ (operand: Int32x2) -> Int32x2 {
@@ -104,10 +96,10 @@ extension Int32x2 {
     // MARK: Shifting
 
     @inlinable public static func >> <RHS>(lhs: Int32x2, rhs: RHS) -> Int32x2 where RHS: BinaryInteger {
-        return .init(rawValue: CXInt32x2ShiftLeft(lhs.rawValue, Int32(rhs)))
+        return .init(rawValue: CXInt32x2ShiftLeft(lhs.rawValue, numericCast(rhs)))
     }
 
     @inlinable public static func << <RHS>(lhs: Int32x2, rhs: RHS) -> Int32x2 where RHS: BinaryInteger {
-        return .init(rawValue: CXInt32x2ShiftRight(lhs.rawValue, Int32(rhs)))
+        return .init(rawValue: CXInt32x2ShiftRight(lhs.rawValue, numericCast(rhs)))
     }
 }

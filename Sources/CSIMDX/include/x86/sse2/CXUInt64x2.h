@@ -85,24 +85,6 @@ STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2Multiply(const CXUInt64x2 lhs, con
     return CXInt64x2Multiply(lhs, rhs);
 }
 
-STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2Divide(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
-{
-    // TODO: SSE2 does not have a native integer division operation but find something better
-    return CXUInt64x2Make(
-        CXUInt64x2GetElement(lhs, 0) / CXUInt64x2GetElement(rhs, 0),
-        CXUInt64x2GetElement(lhs, 1) / CXUInt64x2GetElement(rhs, 1)
-    );
-}
-
-STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2Modulo(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
-{
-    // TODO: SSE2 does not have a native integer division operation but find something better
-    return CXUInt64x2Make(
-        CXUInt64x2GetElement(lhs, 0) % CXUInt64x2GetElement(rhs, 0),
-        CXUInt64x2GetElement(lhs, 1) % CXUInt64x2GetElement(rhs, 1)
-    );
-}
-
 // MARK: Logical
 
 /// Bitwise Not

@@ -67,14 +67,6 @@ extension UInt32x4 {
         .init(rawValue: CXUInt32x4Multiply(lhs.rawValue, rhs.rawValue))
     }
 
-    @inlinable public static func / (lhs: UInt32x4, rhs: UInt32x4) -> UInt32x4 {
-        return .init(rawValue: CXUInt32x4Divide(lhs.rawValue, rhs.rawValue))
-    }
-
-    @inlinable public static func % (lhs: UInt32x4, rhs: UInt32x4) -> UInt32x4 {
-        return .init(rawValue: CXUInt32x4Modulo(lhs.rawValue, rhs.rawValue))
-    }
-
     // MARK: Logical
 
     @inlinable public  prefix static func ~ (operand: UInt32x4) -> UInt32x4 {
@@ -96,10 +88,10 @@ extension UInt32x4 {
     // MARK: Shifting
 
     @inlinable public static func >> <RHS>(lhs: UInt32x4, rhs: RHS) -> UInt32x4 where RHS: BinaryInteger {
-        return .init(rawValue: CXUInt32x4ShiftLeft(lhs.rawValue, UInt32(rhs)))
+        return .init(rawValue: CXUInt32x4ShiftLeft(lhs.rawValue, numericCast(rhs)))
     }
 
     @inlinable public static func << <RHS>(lhs: UInt32x4, rhs: RHS) -> UInt32x4 where RHS: BinaryInteger {
-        return .init(rawValue: CXUInt32x4ShiftRight(lhs.rawValue, UInt32(rhs)))
+        return .init(rawValue: CXUInt32x4ShiftRight(lhs.rawValue, numericCast(rhs)))
     }
 }

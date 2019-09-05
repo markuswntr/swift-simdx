@@ -67,14 +67,6 @@ extension UInt64x2 {
         .init(rawValue: CXUInt64x2Multiply(lhs.rawValue, rhs.rawValue))
     }
 
-    @inlinable public static func / (lhs: UInt64x2, rhs: UInt64x2) -> UInt64x2 {
-        return .init(rawValue: CXUInt64x2Divide(lhs.rawValue, rhs.rawValue))
-    }
-
-    @inlinable public static func % (lhs: UInt64x2, rhs: UInt64x2) -> UInt64x2 {
-        return .init(rawValue: CXUInt64x2Modulo(lhs.rawValue, rhs.rawValue))
-    }
-
     // MARK: Logical
 
     @inlinable public  prefix static func ~ (operand: UInt64x2) -> UInt64x2 {
