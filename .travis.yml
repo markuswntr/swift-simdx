@@ -6,12 +6,21 @@ env:
   global:
     - SWIFT_VERSION=5.1-DEVELOPMENT-SNAPSHOT-2019-08-26-a
 
+# Packages
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - qemu
+      - qemu-system-arm
+
 # Build Matrix
 matrix:
   allow_failures:
     - os: linux # Debug builds error in SIL (release works though...)
   include:
-    - os: osx # macOS 10.14 / x86
+    - os: osx   # macOS  10.14 / x86
       osx_image: xcode11
     - os: linux # ubuntu 14.04 / x86
       dist: trusty
@@ -19,24 +28,10 @@ matrix:
       dist: xenial
     - os: linux # ubuntu 18.04 / x86
       dist: bionic
-    #- os: linux # ARM linux
-    #  env: CROSS_COMPILE=1 ARM_ARCH_DIR=arm-linux-gnueabi
-    #  addons:
-    #    apt:
-    #      sources:
-    #        - ubuntu-toolchain-r-test
-    #      packages:
-    #        - qemu
-    #        - qemu-system-arm
-    #- os: linux # AArch64 Linux
-    #  env: CROSS_COMPILE=1 ARM_ARCH_DIR=aarch64-linux-gnu
-    #  addons:
-    #    apt:
-    #      sources:
-    #        - ubuntu-toolchain-r-test
-    #      packages:
-    #        - qemu
-    #        - qemu-system-arm
+    - os: linux # ubuntu 16.04 / arm
+      env: CROSS_COMPILE=1 ARM_ARCH_DIR=arm-linux-gnueabi
+    - os: linux # ubuntu 16.04 / aarch64
+      env: CROSS_COMPILE=1 ARM_ARCH_DIR=aarch64-linux-gnu
 
 # Allow script execution
 before_install:
