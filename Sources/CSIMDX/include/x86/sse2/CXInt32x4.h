@@ -123,3 +123,71 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Multiply(const CXInt32x4 lhs, const 
         _mm_shuffle_epi32(temp1, _MM_SHUFFLE(0, 0, 2, 0))
     );
 }
+
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Divide(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    // TODO: SSE2 does not have a native integer division operation but find something better
+    return CXInt32x4Make(
+        CXInt32x4GetElement(lhs, 0) / CXInt32x4GetElement(rhs, 0),
+        CXInt32x4GetElement(lhs, 1) / CXInt32x4GetElement(rhs, 1),
+        CXInt32x4GetElement(lhs, 2) / CXInt32x4GetElement(rhs, 2),
+        CXInt32x4GetElement(lhs, 3) / CXInt32x4GetElement(rhs, 3)
+    );
+}
+
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Modulo(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    // TODO: SSE2 does not have a native integer division operation but find something better
+    return CXInt32x4Make(
+        CXInt32x4GetElement(lhs, 0) % CXInt32x4GetElement(rhs, 0),
+        CXInt32x4GetElement(lhs, 1) % CXInt32x4GetElement(rhs, 1),
+        CXInt32x4GetElement(lhs, 2) % CXInt32x4GetElement(rhs, 2),
+        CXInt32x4GetElement(lhs, 3) % CXInt32x4GetElement(rhs, 3)
+    );
+}
+
+// MARK: Logical
+
+/// Bitwise Not
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4BitwiseNot(const CXInt32x4 operand)
+{
+    return _mm_xor_si128(operand, _mm_set1_epi64(_mm_cvtsi64_m64(-1LL)));
+}
+
+/// Bitwise And
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4BitwiseAnd(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    return _mm_and_si128(rhs, lhs);
+}
+
+/// Bitwise And Not
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4BitwiseAndNot(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    return _mm_andnot_si128(lhs, rhs);
+}
+
+/// Bitwise Or
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4BitwiseOr(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    return _mm_or_si128(lhs, rhs);
+}
+
+/// Bitwise Exclusive Or
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4BitwiseExclusiveOr(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    return _mm_xor_si128(lhs, rhs);
+}
+
+// MARK: Shifting
+
+/// Left-shifts each 64-bit value in the 128-bit integer storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4ShiftLeft(const CXInt32x4 lhs, const Int32 rhs)
+{
+    return _mm_sll_epi32(lhs, _mm_cvtsi32_si128(rhs));
+}
+
+/// Right-shifts each 64-bit value in the 128-bit integer storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4ShiftRight(const CXInt32x4 lhs, const Int32 rhs)
+{
+    return _mm_sra_epi32(lhs, _mm_cvtsi32_si128(rhs));
+}

@@ -129,3 +129,80 @@ STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Multiply(const CXInt64x2 lhs, const 
         CXInt64x2GetElement(lhs, 1) * CXInt64x2GetElement(rhs, 1)
     );
 }
+
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Divide(const CXInt64x2 lhs, const CXInt64x2 rhs)
+{
+    // TODO: SSE2 does not have a native integer division operation but find something better
+    return CXInt64x2Make(
+        CXInt64x2GetElement(lhs, 0) / CXInt64x2GetElement(rhs, 0),
+        CXInt64x2GetElement(lhs, 1) / CXInt64x2GetElement(rhs, 1)
+    );
+}
+
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2Modulo(const CXInt64x2 lhs, const CXInt64x2 rhs)
+{
+    // TODO: SSE2 does not have a native integer division operation but find something better
+    return CXInt64x2Make(
+        CXInt64x2GetElement(lhs, 0) % CXInt64x2GetElement(rhs, 0),
+        CXInt64x2GetElement(lhs, 1) % CXInt64x2GetElement(rhs, 1)
+    );
+}
+
+// MARK: Logical
+
+/// Bitwise Not
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2BitwiseNot(const CXInt64x2 operand)
+{
+    return _mm_xor_si128(operand, _mm_set1_epi64(_mm_cvtsi64_m64(-1LL)));
+}
+
+/// Bitwise And
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2BitwiseAnd(const CXInt64x2 lhs, const CXInt64x2 rhs)
+{
+    return _mm_and_si128(rhs, lhs);
+}
+
+/// Bitwise And Not
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2BitwiseAndNot(const CXInt64x2 lhs, const CXInt64x2 rhs)
+{
+    return _mm_andnot_si128(lhs, rhs);
+}
+
+/// Bitwise Or
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2BitwiseOr(const CXInt64x2 lhs, const CXInt64x2 rhs)
+{
+    return _mm_or_si128(lhs, rhs);
+}
+
+/// Bitwise Exclusive Or
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2BitwiseExclusiveOr(const CXInt64x2 lhs, const CXInt64x2 rhs)
+{
+    return _mm_xor_si128(lhs, rhs);
+}
+
+// MARK: Shifting
+
+/// Left-shifts each 64-bit value in the 128-bit integer storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2ShiftLeft(const CXInt64x2 lhs, const Int64 rhs)
+{
+    return _mm_sll_epi64(lhs, _mm_cvtsi64_si128(rhs));
+}
+
+/// Right-shifts each 64-bit value in the 128-bit integer storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXInt64x2) CXInt64x2ShiftRight(const CXInt64x2 lhs, const Int64 rhs)
+{
+    // SSE2 does not have a right shift intrinsic
+    __m128i bb, shi, slo, sra2;
+    if (rhs <= 32) {
+        bb = _mm_cvtsi32_si128(rhs);               // b
+        shi = _mm_sra_epi32(lhs, bb);              // a >> b signed dwords
+        slo = _mm_srl_epi64(lhs, bb);              // a >> b unsigned qwords
+    } else {  // b > 32
+        bb = _mm_cvtsi32_si128(rhs - 32);          // b - 32
+        shi = _mm_srai_epi32(lhs, 31);             // sign of a
+        sra2 = _mm_sra_epi32(lhs, bb);             // a >> (b-32) signed dwords
+        slo = _mm_srli_epi64(sra2, 32);          // a >> (b-32) >> 32 (second shift unsigned qword)
+    }
+    __m128i mask = _mm_setr_epi32(0, -1, 0, -1); // mask for high part containing only sign
+    return _mm_or_si128(_mm_and_si128(mask, shi), _mm_andnot_si128(mask, slo));
+}

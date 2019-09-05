@@ -129,3 +129,67 @@ STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Multiply(const CXInt32x2 lhs, const 
 {
     return CXInt32x4Multiply(lhs, rhs);
 }
+
+STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Divide(const CXInt32x2 lhs, const CXInt32x2 rhs)
+{
+    // TODO: SSE2 does not have a native integer division operation but find something better
+    return CXInt32x2Make(
+        CXInt32x2GetElement(lhs, 0) / CXInt32x2GetElement(rhs, 0),
+        CXInt32x2GetElement(lhs, 1) / CXInt32x2GetElement(rhs, 1)
+    );
+}
+
+STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Modulo(const CXInt32x2 lhs, const CXInt32x2 rhs)
+{
+    // TODO: SSE2 does not have a native integer division operation but find something better
+    return CXInt32x2Make(
+        CXInt32x2GetElement(lhs, 0) % CXInt32x2GetElement(rhs, 0),
+        CXInt32x2GetElement(lhs, 1) % CXInt32x2GetElement(rhs, 1)
+    );
+}
+
+// MARK: Logical
+
+/// Bitwise Not
+STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2BitwiseNot(const CXInt32x2 operand)
+{
+    return _mm_xor_si128(operand, _mm_set1_epi64(_mm_cvtsi64_m64(-1LL)));
+}
+
+/// Bitwise And
+STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2BitwiseAnd(const CXInt32x2 lhs, const CXInt32x2 rhs)
+{
+    return _mm_and_si128(rhs, lhs);
+}
+
+/// Bitwise And Not
+STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2BitwiseAndNot(const CXInt32x2 lhs, const CXInt32x2 rhs)
+{
+    return _mm_andnot_si128(lhs, rhs);
+}
+
+/// Bitwise Or
+STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2BitwiseOr(const CXInt32x2 lhs, const CXInt32x2 rhs)
+{
+    return _mm_or_si128(lhs, rhs);
+}
+
+/// Bitwise Exclusive Or
+STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2BitwiseExclusiveOr(const CXInt32x2 lhs, const CXInt32x2 rhs)
+{
+    return _mm_xor_si128(lhs, rhs);
+}
+
+// MARK: Shifting
+
+/// Left-shifts each 64-bit value in the 128-bit integer storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2ShiftLeft(const CXInt32x2 lhs, const Int32 rhs)
+{
+    return _mm_sll_epi32(lhs, _mm_cvtsi32_si128(rhs));
+}
+
+/// Right-shifts each 64-bit value in the 128-bit integer storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2ShiftRight(const CXInt32x2 lhs, const Int32 rhs)
+{
+    return _mm_sra_epi32(lhs, _mm_cvtsi32_si128(rhs));
+}

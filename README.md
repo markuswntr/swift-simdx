@@ -9,12 +9,14 @@ routes([<sup>1</sup>](#1)) those through the fastest available instructions.
 > **Note:** This is far from finished, and not guarantueed to perform faster. There have been no performance tests, no benchmarks, no nothing.
 
 **TODO:**
+- [ ] Properly defining the numeric storages
 - [ ] Casting different vector types
+- [ ] Boolean vectors
 - [ ] Comparison (Equal, Greater/LowerThan, ...)
 - [ ] Documentation
 - [ ] 256bit (Length) storages
 - [ ] Matrices
-- [ ] Properly defining the numeric storages
+- [ ] Instance from RandomNumberGenerator
 
 /// Reference: https://github.com/llvm-mirror/clang/blob/b165125115794a302175c79b63a1c964323cf6fb/test/Preprocessor/feature_tests.c
 // !__has_builtin(__builtin_shufflevector) || \

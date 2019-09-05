@@ -74,4 +74,40 @@ extension Int64x2 {
     @inlinable public static func * (lhs: Int64x2, rhs: Int64x2) -> Int64x2  {
         .init(rawValue: CXInt64x2Multiply(lhs.rawValue, rhs.rawValue))
     }
+
+    @inlinable public static func / (lhs: Int64x2, rhs: Int64x2) -> Int64x2 {
+        return .init(rawValue: CXInt64x2Divide(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inlinable public static func % (lhs: Int64x2, rhs: Int64x2) -> Int64x2 {
+        return .init(rawValue: CXInt64x2Modulo(lhs.rawValue, rhs.rawValue))
+    }
+
+    // MARK: Logical
+
+    @inlinable public  prefix static func ~ (operand: Int64x2) -> Int64x2 {
+        return .init(rawValue: CXInt64x2BitwiseNot(operand.rawValue))
+    }
+
+    @inlinable public static func & (lhs: Int64x2, rhs: Int64x2) -> Int64x2 {
+        return .init(rawValue: CXInt64x2BitwiseAnd(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inlinable public static func | (lhs: Int64x2, rhs: Int64x2) -> Int64x2 {
+        return .init(rawValue: CXInt64x2BitwiseOr(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inlinable public static func ^ (lhs: Int64x2, rhs: Int64x2) -> Int64x2 {
+        return .init(rawValue: CXInt64x2BitwiseExclusiveOr(lhs.rawValue, rhs.rawValue))
+    }
+
+    // MARK: Shifting
+
+    @inlinable public static func >> <RHS>(lhs: Int64x2, rhs: RHS) -> Int64x2 where RHS: BinaryInteger {
+        return .init(rawValue: CXInt64x2ShiftLeft(lhs.rawValue, Int64(rhs)))
+    }
+
+    @inlinable public static func << <RHS>(lhs: Int64x2, rhs: RHS) -> Int64x2 where RHS: BinaryInteger {
+        return .init(rawValue: CXInt64x2ShiftRight(lhs.rawValue, Int64(rhs)))
+    }
 }

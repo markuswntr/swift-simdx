@@ -54,8 +54,3 @@ extension FloatingPointRawStorage {
         return storage / .init(element)
     }
 }
-
-// TODO: This type is not properly defined yet
-public protocol BinaryFloatingPointRawStorage: FloatingPointRawStorage where Element: BinaryFloatingPoint {
-
-}

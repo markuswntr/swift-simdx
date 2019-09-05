@@ -84,3 +84,59 @@ STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4Multiply(const CXUInt32x4 lhs, con
 {
     return CXInt32x4Multiply(lhs, rhs);
 }
+
+STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4Divide(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
+{
+    return CXInt32x4Divide(lhs, rhs);
+}
+
+STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4Modulo(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
+{
+    return CXInt32x4Modulo(lhs, rhs);
+}
+
+// MARK: Logical
+
+/// Bitwise Not
+STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4BitwiseNot(const CXUInt32x4 operand)
+{
+    return CXInt32x4BitwiseNot(operand);
+}
+
+/// Bitwise And
+STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4BitwiseAnd(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
+{
+    return CXInt32x4BitwiseAnd(lhs, rhs);
+}
+
+/// Bitwise And Not
+STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4BitwiseAndNot(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
+{
+    return CXInt32x4BitwiseAndNot(lhs, rhs);
+}
+
+/// Bitwise Or
+STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4BitwiseOr(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
+{
+    return CXInt32x4BitwiseOr(lhs, rhs);
+}
+
+/// Bitwise Exclusive Or
+STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4BitwiseExclusiveOr(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
+{
+    return CXInt32x4BitwiseExclusiveOr(lhs, rhs);
+}
+
+// MARK: Shifting
+
+/// Left-shifts each 64-bit value in the 128-bit integer storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4ShiftLeft(const CXUInt32x4 lhs, const UInt32 rhs)
+{
+    return CXInt32x4ShiftLeft(lhs, rhs);
+}
+
+/// Right-shifts each 64-bit value in the 128-bit integer storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4ShiftRight(const CXUInt32x4 lhs, const UInt32 rhs)
+{
+    return CXInt32x4ShiftRight(lhs, rhs);
+}

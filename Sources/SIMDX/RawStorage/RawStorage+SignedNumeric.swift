@@ -19,7 +19,6 @@ extension SignedNumericRawStorage {
 }
 
 /// Returns the absolute values of the given storage.
-/// The absolute values of `storage` must be representable in the same type.
 ///
 /// - Parameter value: A signed numeric raw storage.
 /// - Returns: The absolute value of `storage`.

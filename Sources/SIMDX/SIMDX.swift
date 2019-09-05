@@ -133,6 +133,12 @@ extension SIMDX where Storage: SignedNumericRawStorage {
     }
 }
 
+extension SIMDX where Storage: BinaryIntegerRawStorage {
+
+    /// A Boolean value indicating whether this storage contains signed integer types.
+    @inlinable static var isSigned: Bool { return Storage.isSigned }
+}
+
 // MARK: Fixed Width Integer
 
 extension SIMDX where Storage: FixedWidthIntegerRawStorage {

@@ -6,9 +6,6 @@ public protocol AdditiveArithmeticStorage: EquatableStorage where Element: Addit
     /// The zero value.
     static var zero: Self { get }
 
-    /// Returns the given storage unchanged.
-    static prefix func + (operand: Self) -> Self
-
     /// Adds two storages and produces their element-wise sums.
     static func + (lhs: Self, rhs: Self) -> Self
 
