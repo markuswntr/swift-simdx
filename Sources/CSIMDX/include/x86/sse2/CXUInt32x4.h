@@ -1,6 +1,5 @@
 #pragma once
 
-#include "CXUInt32_t.h"
 #include "CXInt32x4.h"
 
 // MARK: Designated Initializers

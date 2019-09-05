@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CXFloat32x4.h"
-#include "CXFloat64_t.h"
 
 // MARK: Designated Initializers
 

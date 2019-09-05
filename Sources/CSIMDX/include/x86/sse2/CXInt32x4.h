@@ -1,8 +1,9 @@
 #pragma once
 
-#include "CXInt32_t.h"
-#include "CXUInt32_t.h"
-#include "CXFloat32_t.h"
+#include "CXInt_t.h"
+#include "CXUInt_t.h"
+#include "CXFloat_t.h"
+#include "Attributes.h"
 
 // MARK: Designated Initializers
 
