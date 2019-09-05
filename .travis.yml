@@ -1,7 +1,5 @@
-language: generic
+language: swift
 sudo: required
-dist: trusty
-osx_image: xcode11
 
 # Environment
 env:
@@ -10,9 +8,15 @@ env:
 
 # Build Matrix
 matrix:
+  allow_failures:
+    - os: linux # Debug builds error in SIL (release works though...)
   include:
-    - os: osx
-    - os: linux
+    - os: osx # macOS 10.14 / x86
+      osx_image: xcode11
+    - os: linux # ubuntu 14.04 / x86
+      dist: trusty
+    - os: linux # ubuntu 18.04 / x86
+      dist: bionic
     #- os: linux # ARM linux
     #  env: CROSS_COMPILE=1 ARM_ARCH_DIR=arm-linux-gnueabi
     #  addons:
@@ -38,10 +42,12 @@ before_install:
   - chmod +x .travis/build.sh
   - chmod +x .travis/notify.sh
 
-# Install dependencies & build
+# Install Dependencies
 install: ./.travis/deps.sh
+
+# Build
 script: ./.travis/build.sh
 
-# Notify build status
+# Notify status
 after_success: ./notify.sh success $WEBHOOK_URL # Success
 after_failure: ./notify.sh failure $WEBHOOK_URL # Failure
