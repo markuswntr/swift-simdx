@@ -1,4 +1,4 @@
-language: swift
+language: minimal
 sudo: required
 
 # Environment
