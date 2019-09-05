@@ -1,5 +1,6 @@
 import Foundation
 
+/// A storage type that can be compared for value equality.
 public protocol EquatableStorage: RawStorage where Element: Equatable {
 
     /// Returns a Boolean value indicating whether the values of two storages are element-wise equal.

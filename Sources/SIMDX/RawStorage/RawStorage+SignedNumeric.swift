@@ -1,6 +1,6 @@
 import Foundation
 
-/// A storage that can store both positive and negative values.
+/// A storage type that can contain both positive and negative values.
 public protocol SignedNumericRawStorage: NumericRawStorage where Element: SignedNumeric {
 
     /// Returns the additive inverse of the specified storage.

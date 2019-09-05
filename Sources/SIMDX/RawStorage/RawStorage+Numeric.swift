@@ -1,6 +1,6 @@
 import Foundation
 
-/// A storage type that support addition, subtraction and multiplication.
+/// A storage type with values that support multiplication.
 public protocol NumericRawStorage: AdditiveArithmeticStorage where Element: Numeric {
 
     /// Creates a new instance from the given integer storage, if it can be represented exactly.

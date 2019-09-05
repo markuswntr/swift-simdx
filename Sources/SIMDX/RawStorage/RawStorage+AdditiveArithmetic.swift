@@ -1,5 +1,6 @@
 import Foundation
 
+/// A storage type with values that support addition and subtraction.
 public protocol AdditiveArithmeticStorage: EquatableStorage where Element: AdditiveArithmetic {
 
     /// The zero value.
