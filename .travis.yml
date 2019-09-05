@@ -29,10 +29,10 @@ matrix:
       dist: xenial
     - os: linux # ubuntu 18.04 / x86
       dist: bionic
-    - os: linux # ubuntu 16.04 / arm
-      env: CROSS_COMPILE=1 ARM_ARCH_DIR=arm-linux-gnueabi
-    - os: linux # ubuntu 16.04 / aarch64
-      env: CROSS_COMPILE=1 ARM_ARCH_DIR=aarch64-linux-gnu
+    # - os: linux # ubuntu 16.04 / arm
+    #   env: CROSS_COMPILE=1 ARM_ARCH_DIR=arm-linux-gnueabi
+    # - os: linux # ubuntu 16.04 / aarch64
+    #   env: CROSS_COMPILE=1 ARM_ARCH_DIR=aarch64-linux-gnu
 
 # Allow script execution
 before_install:
