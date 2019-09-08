@@ -277,7 +277,7 @@ STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Divide(const CXFloat64x2 lhs, co
 ///
 /// @param operant The storage of which to calculate square root values.
 /// @return CXFloat64x2(operand[0] * operand[0], operand[1] * operand[1])
-STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Sqrt(const CXFloat64x2 operand)
+STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2SquareRoot(const CXFloat64x2 operand)
 {
     return _mm_sqrt_pd(operand);
 }

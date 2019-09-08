@@ -62,6 +62,28 @@ STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4FromCXInt32x4(CXInt32x4 operand)
     return _mm_cvtepi32_ps(operand);
 }
 
+// MARK: Minimum & Maximum
+
+/// Performs element-by-element comparison of the two 128-bit storages of 4 x Float32.
+/// Returns the storage containing the lesser of each pair of values.
+/// @param lhs A 128-bit storage of 4 x Float32 containing one of the operands.
+/// @param rhs A 128-bit storage of 4 x Float32 containing one of the operands.
+/// @return A 128-bit storage of 4 x Float32 containing the minimum values between both operands.
+STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4Minimum(const CXFloat32x4 lhs, const CXFloat32x4 rhs)
+{
+    return _mm_min_ps(lhs, rhs);
+}
+
+/// Performs element-by-element comparison of the two 128-bit storages of 4 x Float32.
+/// Returns the storage containing the greatre of each pair of values.
+/// @param lhs A 128-bit storage of 4 x Float32 containing one of the operands.
+/// @param rhs A 128-bit storage of 4 x Float32 containing one of the operands.
+/// @return A 128-bit storage of 4 x Float32 containing the minimum values between both operands.
+STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4Maximum(const CXFloat32x4 lhs, const CXFloat32x4 rhs)
+{
+    return _mm_max_ps(lhs, rhs);
+}
+
 // MARK: - Arithmetics
 
 /// Returns the negated value (element-wise).
@@ -113,4 +135,13 @@ STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4Multiply(const CXFloat32x4 lhs, 
 STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4Divide(const CXFloat32x4 lhs, const CXFloat32x4 rhs)
 {
     return _mm_div_ps(lhs, rhs);
+}
+
+/// Calculates the square root of the each of two values stored in a 128-bit storage of 4 x Float32.
+///
+/// @param operant The storage of which to calculate square root values.
+/// @return CXFloat32x4(operand[0] * operand[0], operand[1] * operand[1])
+STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4SquareRoot(const CXFloat32x4 operand)
+{
+    return _mm_sqrt_ps(operand);
 }

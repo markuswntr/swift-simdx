@@ -44,6 +44,18 @@ extension Float32x4 {
     }
 }
 
+// MARK: - Comparison
+extension Float32x4 {
+
+    @inlinable public static func minimum(_ lhs: Float32x4, _ rhs: Float32x4) -> Float32x4 {
+        .init(rawValue: CXFloat32x4Minimum(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inlinable public static func maximum(_ lhs: Float32x4, _ rhs: Float32x4) -> Float32x4 {
+        .init(rawValue: CXFloat32x4Maximum(lhs.rawValue, rhs.rawValue))
+    }
+}
+
 // MARK: - Arithmetics
 extension Float32x4 {
 
@@ -77,5 +89,9 @@ extension Float32x4 {
 
     @inlinable public static func / (lhs: Float32x4, rhs: Float32x4) -> Float32x4  {
         .init(rawValue: CXFloat32x4Divide(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inlinable public func squareRoot() -> Float32x4 {
+        .init(rawValue: CXFloat32x4SquareRoot(rawValue))
     }
 }

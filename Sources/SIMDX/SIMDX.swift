@@ -97,6 +97,14 @@ extension SIMDX where Storage: AdditiveArithmeticStorage {
 
 extension SIMDX where Storage: NumericRawStorage {
 
+    /// Creates a new instance from the given integer storage, if all can be represented exactly.
+    @inlinable public init?<Source>(
+        exactly value: Source
+    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryInteger {
+        guard let rawValue = Storage.init(exactly: value.rawValue) else { return nil }
+        self.init(rawValue: rawValue)
+    }
+
     /// Multiplies two storages and produces their element-wise products.
     @inlinable public static func * (lhs: Self, rhs: Self) -> Self {
         return .init(rawValue: lhs.rawValue * rhs.rawValue)
@@ -133,10 +141,87 @@ extension SIMDX where Storage: SignedNumericRawStorage {
     }
 }
 
+// MARK: Binary Integer
+
 extension SIMDX where Storage: BinaryIntegerRawStorage {
 
     /// A Boolean value indicating whether this storage contains signed integer types.
-    @inlinable static var isSigned: Bool { return Storage.isSigned }
+    @inlinable public static var isSigned: Bool { return Storage.isSigned }
+
+    @inlinable public init?<Source>(
+        exactly value: Source
+    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryFloatingPoint {
+        guard let rawValue = Storage.init(exactly: value.rawValue) else { return nil }
+        self.init(rawValue: rawValue)
+    }
+
+    @inlinable public init<Source>(
+        _ value: Source
+    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryFloatingPoint {
+        self.init(rawValue: Storage.init(value.rawValue))
+    }
+
+    @inlinable public init<Source>(
+        _ value: Source
+    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryInteger {
+        self.init(rawValue: Storage.init(value.rawValue))
+    }
+
+    @inlinable public init<Source>(
+        truncatingIfNeeded value: Source
+    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryInteger {
+        self.init(rawValue: Storage.init(truncatingIfNeeded: value.rawValue))
+    }
+
+    @inlinable public init<Source>(
+        clamping value: Source
+    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryInteger {
+        self.init(rawValue: Storage.init(clamping: value.rawValue))
+    }
+
+    @inlinable public prefix static func ~ (operand: Self) -> Self {
+        .init(rawValue: ~(operand.rawValue))
+    }
+
+    @inlinable public static func & (lhs: Self, rhs: Self) -> Self {
+        .init(rawValue: lhs.rawValue & rhs.rawValue)
+    }
+
+    @inlinable public static func &= (lhs: inout Self, rhs: Self) {
+        lhs.rawValue &= rhs.rawValue
+    }
+
+    @inlinable public static func | (lhs: Self, rhs: Self) -> Self {
+        .init(rawValue: lhs.rawValue | rhs.rawValue)
+    }
+
+    @inlinable public static func |= (lhs: inout Self, rhs: Self) {
+        lhs.rawValue |= rhs.rawValue
+    }
+
+    @inlinable public static func ^ (lhs: Self, rhs: Self) -> Self {
+        .init(rawValue: lhs.rawValue ^ rhs.rawValue)
+    }
+
+    @inlinable public static func ^= (lhs: inout Self, rhs: Self) {
+        lhs.rawValue ^= rhs.rawValue
+    }
+
+    @inlinable public static func >> <RHS>(lhs: Self, rhs: RHS) -> Self where RHS : BinaryInteger {
+        .init(rawValue: lhs.rawValue >> rhs)
+    }
+
+    @inlinable public static func >>= <RHS>(lhs: inout Self, rhs: RHS) where RHS : BinaryInteger {
+        lhs.rawValue >>= rhs
+    }
+
+    @inlinable public static func << <RHS>(lhs: Self, rhs: RHS) -> Self where RHS : BinaryInteger {
+        .init(rawValue: lhs.rawValue << rhs)
+    }
+
+    @inlinable public static func <<= <RHS>(lhs: inout Self, rhs: RHS) where RHS : BinaryInteger {
+        lhs.rawValue <<= rhs
+    }
 }
 
 // MARK: Fixed Width Integer
@@ -147,32 +232,104 @@ extension SIMDX where Storage: FixedWidthIntegerRawStorage {
     ///
     /// For unsigned integer types, this value is `(2 ** bitWidth) - 1`, where
     /// `**` is exponentiation. For signed integer types, this value is `(2 ** (bitWidth - 1)) - 1`.
-    @inlinable public static var max: Self { .init(rawValue: .max) }
+    @inlinable public static var max: Self { return .init(rawValue: .max) }
 
     /// The minimum representable integer in this type.
     ///
     /// For unsigned integer types, this value is always `0`. For signed integer
     /// types, this value is `-(2 ** (bitWidth - 1))`, where `**` is exponentiation.
-    @inlinable public static var min: Self { .init(rawValue: .min) }
+    @inlinable public static var min: Self { return .init(rawValue: .min) }
 }
 
 // MARK: Floating Point
 
 extension SIMDX where Storage: FloatingPointRawStorage {
 
+    @inlinable public init<Source>(
+        _ value: Source
+    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryInteger {
+        self.init(rawValue: Storage.init(value.rawValue))
+    }
+
+    @inlinable public init?<Source>(
+        exactly value: Source
+    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryInteger {
+        guard let rawValue = Storage.init(exactly: value.rawValue) else { return nil }
+        self.init(rawValue: rawValue)
+    }
+
+    @inlinable public static var infinity: Self {
+        return .init(rawValue: .infinity)
+    }
+
+    @inlinable public static var greatestFiniteMagnitude: Self {
+        return .init(rawValue: .greatestFiniteMagnitude)
+    }
+
+    @inlinable public static var pi: Self {
+        return .init(rawValue: .pi)
+    }
+
+    @inlinable public static var ulpOfOne: Self {
+        return .init(rawValue: .ulpOfOne)
+    }
+
+    @inlinable public static var leastNormalMagnitude: Self {
+        return .init(rawValue: .leastNormalMagnitude)
+    }
+
+    @inlinable public static var leastNonzeroMagnitude: Self {
+        return .init(rawValue: .leastNonzeroMagnitude)
+    }
+
     @inlinable public static func / (lhs: Self, rhs: Self) -> Self  {
-        .init(rawValue: lhs.rawValue / rhs.rawValue)
+        return .init(rawValue: lhs.rawValue / rhs.rawValue)
     }
 
     @inlinable public static func /= (lhs: inout Self, rhs: Self) {
-        lhs = .init(rawValue: lhs.rawValue / rhs.rawValue)
+        lhs.rawValue /= rhs.rawValue
     }
 
     @inlinable public static func / (storage: Self, element: Element) -> Self  {
-        .init(rawValue: storage.rawValue / element)
+        return .init(rawValue: storage.rawValue / element)
     }
 
     @inlinable public static func /= (lhs: inout Self, rhs: Element) {
-        lhs = .init(rawValue: lhs.rawValue / rhs)
+        lhs.rawValue /= rhs
+    }
+
+    @inlinable public func squareRoot() -> Self {
+        return .init(rawValue: rawValue.squareRoot())
+    }
+
+    /// Replaces this storage with its square root, rounded to a representable value.
+    @inlinable public mutating func formSquareRoot() {
+        rawValue.formSquareRoot()
+    }
+
+    @inlinable public static func minimum(_ lhs: Self, _ rhs: Self) -> Self {
+        return .init(rawValue: .minimum(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inlinable public static func maximum(_ lhs: Self, _ rhs: Self) -> Self {
+        return .init(rawValue: .maximum(lhs.rawValue, rhs.rawValue))
+    }
+}
+
+// MARK: Binary FloatingPoint
+
+extension SIMDX where Storage: BinaryFloatingPointRawStorage {
+
+    @inlinable public init<Source>(
+        _ value: Source
+    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryFloatingPoint {
+        self.init(rawValue: Storage.init(value.rawValue))
+    }
+
+    @inlinable public init?<Source>(
+        exactly value: Source
+    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryFloatingPoint {
+        guard let rawValue = Storage.init(exactly: value.rawValue) else { return nil }
+        self.init(rawValue: rawValue)
     }
 }
