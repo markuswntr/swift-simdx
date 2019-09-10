@@ -1,11 +1,6 @@
 #pragma once
 
-#include "CXInt_t.h"
-#include "CXUInt_t.h"
-#include "CXFloat_t.h"
-#include "Attributes.h"
-
-// MARK: Designated Initializers
+#include "CXTypes_t.h"
 
 /// Returns an intrinsic initialized to the 2 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Make(Float64 value0, Float64 value1)
@@ -273,10 +268,10 @@ STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Divide(const CXFloat64x2 lhs, co
     return _mm_div_pd(lhs, rhs);
 }
 
-/// Calculates the square root of the each of two values stored in a 128-bit storage of 2 x Float64.
+/// Calculates the square root of each value stored in `operand` and returns the results.
 ///
 /// @param operant The storage of which to calculate square root values.
-/// @return CXFloat64x2(operand[0] * operand[0], operand[1] * operand[1])
+/// @return [ sqrt(operand[0]), sqrt(operand[1] ]
 STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2SquareRoot(const CXFloat64x2 operand)
 {
     return _mm_sqrt_pd(operand);

@@ -1,8 +1,6 @@
 #pragma once
 
-#include "CXUInt64_t.h"
-
-// MARK: Designated Initializers
+#include "CXTypes_t.h"
 
 /// Returns an intrinsic initialized to the 2 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2Make(UInt64 value0, UInt64 value1)
@@ -82,9 +80,65 @@ STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2Subtract(const CXUInt64x2 lhs, con
 /// @param rhs Right-hand side operator
 STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2Multiply(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
 {
-    // TODO: NEON does not have a native multiply operation for storages with 64 bit ints
-    return CXUInt64x2Make(
-        CXUInt64x2GetElement(lhs, 0) * CXUInt64x2GetElement(rhs, 0),
-        CXUInt64x2GetElement(lhs, 1) * CXUInt64x2GetElement(rhs, 1)
-    );
+    // TODO: NEON does not have a native multiply intrinsic for storages with 64 bit ints
+    return lhs * rhs;
+}
+
+// MARK: - Bitwise
+
+/// Bitwise Not
+STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2BitwiseNot(const CXUInt64x2 operand)
+{
+    // TODO: NEON does not have a native bitwise not operation for storages with 64 bit ints
+    return ~operand;
+}
+
+/// Bitwise And
+STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2BitwiseAnd(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
+{
+    return vandq_u64(lhs, rhs);
+}
+
+/// Bitwise And Not
+STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2BitwiseAndNot(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
+{
+    return CXUInt64x2BitwiseAnd(CXUInt64x2BitwiseNot(lhs), rhs);
+}
+
+/// Bitwise Or
+STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2BitwiseOr(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
+{
+    return vorrq_u64(lhs, rhs);
+}
+
+/// Bitwise Exclusive Or
+STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2BitwiseExclusiveOr(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
+{
+    return veorq_u64(lhs, rhs);
+}
+
+// MARK: Shifting
+
+/// Left-shifts each element in the storage operand by the specified number of bits in each lane of rhs.
+STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2ShiftElementWiseLeft(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
+{
+    return vshlq_u64(lhs, rhs);
+}
+
+/// Left-shifts each element in the storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2ShiftLeft(const CXUInt64x2 lhs, const UInt64 rhs)
+{
+    return CXUInt64x2ShiftElementWiseLeft(lhs, CXUInt64x2MakeRepeatingElement(rhs));
+}
+
+/// Right-shifts each element in the storage operand by the specified number of bits in each lane of rhs.
+STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2ShiftElementWiseRight(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
+{
+    return vreinterpretq_s64_u64(vshlq_s64(vreinterpretq_s64_u64(lhs), vnegq_s64(vreinterpretq_s64_u64(rhs))));
+}
+
+/// Right-shifts each element in the storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXUInt64x2) CXUInt64x2ShiftRight(const CXUInt64x2 lhs, const UInt64 rhs)
+{
+    return CXUInt64x2ShiftElementWiseRight(lhs, CXUInt64x2MakeRepeatingElement(rhs));
 }

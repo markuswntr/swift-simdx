@@ -1,11 +1,6 @@
 #pragma once
 
-#include "CXInt_t.h"
-#include "CXUInt_t.h"
-#include "CXFloat_t.h"
-#include "Attributes.h"
-
-// MARK: Designated Initializers
+#include "CXTypes_t.h"
 
 /// Returns an intrinsic initialized to the 4 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXFloat32x4) CXFloat32x4Make(Float32 value0, Float32 value1, Float32 value2, Float32 value3)

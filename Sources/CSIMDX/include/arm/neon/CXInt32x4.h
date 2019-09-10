@@ -1,9 +1,6 @@
 #pragma once
 
-#include "CXInt32_t.h"
-#include "CXUInt32_t.h"
-
-// MARK: Designated Initializers
+#include "CXTypes_t.h"
 
 /// Returns an intrinsic initialized to the 4 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Make(Int32 value0, Int32 value1, Int32 value2, Int32 value3)
@@ -90,4 +87,62 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Subtract(const CXInt32x4 lhs, const 
 STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Multiply(const CXInt32x4 lhs, const CXInt32x4 rhs)
 {
     return vmulq_s32(lhs, rhs);
+}
+
+// MARK: - Bitwise
+
+/// Bitwise Not
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4BitwiseNot(const CXInt32x4 operand)
+{
+    return vmvnq_s32(operand);
+}
+
+/// Bitwise And
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4BitwiseAnd(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    return vandq_s32(lhs, rhs);
+}
+
+/// Bitwise And Not
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4BitwiseAndNot(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    return CXInt32x4BitwiseAnd(CXInt32x4BitwiseNot(lhs), rhs);
+}
+
+/// Bitwise Or
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4BitwiseOr(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    return vorrq_s32(lhs, rhs);
+}
+
+/// Bitwise Exclusive Or
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4BitwiseExclusiveOr(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    return veorq_s32(lhs, rhs);
+}
+
+// MARK: Shifting
+
+/// Left-shifts each element in the storage operand by the specified number of bits in each lane of rhs.
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4ShiftElementWiseLeft(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    return vshlq_s32(lhs, rhs);
+}
+
+/// Left-shifts each element in the storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4ShiftLeft(const CXInt32x4 lhs, const Int32 rhs)
+{
+    return CXInt32x4ShiftElementWiseLeft(lhs, CXInt32x4MakeRepeatingElement(rhs));
+}
+
+/// Right-shifts each element in the storage operand by the specified number of bits in each lane of rhs.
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4ShiftElementWiseRight(const CXInt32x4 lhs, const CXInt32x4 rhs)
+{
+    return CXInt32x4ShiftElementWiseLeft(lhs, CXInt32x4Negate(rhs));
+}
+
+/// Right-shifts each element in the storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4ShiftRight(const CXInt32x4 lhs, const Int32 rhs)
+{
+    return CXInt32x4ShiftElementWiseRight(lhs, CXInt32x4MakeRepeatingElement(rhs));
 }

@@ -1,8 +1,7 @@
 #pragma once
 
+#include "CXTypes_t.h"
 #include "CXInt32x4.h"
-
-// MARK: Designated Initializers
 
 /// Returns an intrinsic initialized to the 4 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4Make(UInt32 value0, UInt32 value1, UInt32 value2, UInt32 value3)
@@ -85,7 +84,7 @@ STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4Multiply(const CXUInt32x4 lhs, con
     return CXInt32x4Multiply(lhs, rhs);
 }
 
-// MARK: Logical
+// MARK: - Bitwise
 
 /// Bitwise Not
 STATIC_INLINE_INTRINSIC(CXUInt32x4) CXUInt32x4BitwiseNot(const CXUInt32x4 operand)

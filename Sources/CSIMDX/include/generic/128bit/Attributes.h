@@ -1,9 +1,8 @@
 #pragma once
-#warning "No 128bit width SIMD instructions set detected, using fallback mode."
 
-// ==============================================================================
-// References: https://clang.llvm.org/doxygen/immintrin_8h_source.html
-// ==============================================================================
+// == References ========================================================
+//  - https://clang.llvm.org/docs/LanguageExtensions.html#langext-vectors
+// ======================================================================
 
 /// The default function attributes for intrinsic wrapping functions
 #define DEFAULT_FUNCTION_ATTRIBUTES  __attribute__((__always_inline__, __nodebug__))

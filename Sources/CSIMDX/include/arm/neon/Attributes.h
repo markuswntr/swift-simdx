@@ -1,8 +1,9 @@
 #pragma once
 
-// ==============================================================================
-// References: https://clang.llvm.org/doxygen/immintrin_8h_source.html
-// ==============================================================================
+// == References ===============================================================================
+//  - https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/intrinsics
+//  - http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0472k/chr1359125040547.html
+// =============================================================================================
 
 /// The default function attributes for intrinsic wrapping functions
 #define DEFAULT_FUNCTION_ATTRIBUTES  __attribute__((__always_inline__, __nodebug__))

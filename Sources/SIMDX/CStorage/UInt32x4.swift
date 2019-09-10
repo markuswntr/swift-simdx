@@ -44,30 +44,8 @@ extension UInt32x4 {
     }
 }
 
-// MARK: - Arithmetics
+// MARK: - Bitwise
 extension UInt32x4 {
-
-    @inlinable public static var zero: UInt32x4 { .init(rawValue: CXUInt32x4MakeZero()) }
-
-    @inlinable public var magnitude: UInt32x4 { .init(rawValue: CXUInt32x4Absolute(rawValue)) }
-
-    // MARK: Additive
-
-    @inlinable public static func + (lhs: UInt32x4, rhs: UInt32x4) -> UInt32x4 {
-        .init(rawValue: CXUInt32x4Add(lhs.rawValue, rhs.rawValue))
-    }
-
-    @inlinable public static func - (lhs: UInt32x4, rhs: UInt32x4) -> UInt32x4  {
-        .init(rawValue: CXUInt32x4Subtract(lhs.rawValue, rhs.rawValue))
-    }
-
-    // MARK: Multiplicative
-
-    @inlinable public static func * (lhs: UInt32x4, rhs: UInt32x4) -> UInt32x4  {
-        .init(rawValue: CXUInt32x4Multiply(lhs.rawValue, rhs.rawValue))
-    }
-
-    // MARK: Logical
 
     @inlinable public  prefix static func ~ (operand: UInt32x4) -> UInt32x4 {
         return .init(rawValue: CXUInt32x4BitwiseNot(operand.rawValue))
@@ -93,5 +71,29 @@ extension UInt32x4 {
 
     @inlinable public static func << <RHS>(lhs: UInt32x4, rhs: RHS) -> UInt32x4 where RHS: BinaryInteger {
         return .init(rawValue: CXUInt32x4ShiftRight(lhs.rawValue, numericCast(rhs)))
+    }
+}
+
+// MARK: - Arithmetics
+extension UInt32x4 {
+
+    @inlinable public static var zero: UInt32x4 { .init(rawValue: CXUInt32x4MakeZero()) }
+
+    @inlinable public var magnitude: UInt32x4 { .init(rawValue: CXUInt32x4Absolute(rawValue)) }
+
+    // MARK: Additive
+
+    @inlinable public static func + (lhs: UInt32x4, rhs: UInt32x4) -> UInt32x4 {
+        .init(rawValue: CXUInt32x4Add(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inlinable public static func - (lhs: UInt32x4, rhs: UInt32x4) -> UInt32x4  {
+        .init(rawValue: CXUInt32x4Subtract(lhs.rawValue, rhs.rawValue))
+    }
+
+    // MARK: Multiplicative
+
+    @inlinable public static func * (lhs: UInt32x4, rhs: UInt32x4) -> UInt32x4  {
+        .init(rawValue: CXUInt32x4Multiply(lhs.rawValue, rhs.rawValue))
     }
 }

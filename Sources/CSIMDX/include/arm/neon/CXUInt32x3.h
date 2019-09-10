@@ -1,8 +1,7 @@
 #pragma once
 
-#include "CXUInt32_t.h"
-
-// MARK: Designated Initializers
+#include "CXTypes_t.h"
+#include "CXUInt32x4.h"
 
 /// Returns an intrinsic initialized to the 3 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3Make(UInt32 value0, UInt32 value1, UInt32 value2)
@@ -16,7 +15,7 @@ STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3Make(UInt32 value0, UInt32 value1,
 STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3MakeLoad(const UInt32* pointer)
 {
     CXUInt32x3 storage = vld1q_u32(pointer);
-    storage[3] = 0;
+    vsetq_lane_u32(0, storage, 3);
     return storage;
 }
 
@@ -24,7 +23,7 @@ STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3MakeLoad(const UInt32* pointer)
 STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3MakeRepeatingElement(const UInt32 value)
 {
     CXUInt32x3 storage = vdupq_n_u32(value);
-    storage[3] = 0;
+    vsetq_lane_u32(0, storage, 3);
     return storage;
 }
 
@@ -87,4 +86,64 @@ STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3Subtract(const CXUInt32x3 lhs, con
 STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3Multiply(const CXUInt32x3 lhs, const CXUInt32x3 rhs)
 {
     return vmulq_u32(lhs, rhs);
+}
+
+// MARK: - Bitwise
+
+/// Bitwise Not
+STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3BitwiseNot(const CXUInt32x3 operand)
+{
+    CXUInt32x3 storage = CXUInt32x4BitwiseNot(operand);
+    vsetq_lane_u32(0, storage, 3);
+    return storage;
+}
+
+/// Bitwise And
+STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3BitwiseAnd(const CXUInt32x3 lhs, const CXUInt32x3 rhs)
+{
+    return CXUInt32x4BitwiseAnd(lhs, rhs);
+}
+
+/// Bitwise And Not
+STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3BitwiseAndNot(const CXUInt32x3 lhs, const CXUInt32x3 rhs)
+{
+    return CXUInt32x3BitwiseAnd(CXUInt32x3BitwiseNot(lhs), rhs);
+}
+
+/// Bitwise Or
+STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3BitwiseOr(const CXUInt32x3 lhs, const CXUInt32x3 rhs)
+{
+    return CXUInt32x4BitwiseOr(lhs, rhs);
+}
+
+/// Bitwise Exclusive Or
+STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3BitwiseExclusiveOr(const CXUInt32x3 lhs, const CXUInt32x3 rhs)
+{
+    return CXUInt32x4BitwiseExclusiveOr(lhs, rhs);
+}
+
+// MARK: Shifting
+
+/// Left-shifts each element in the storage operand by the specified number of bits in each lane of rhs.
+STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3ShiftElementWiseLeft(const CXUInt32x3 lhs, const CXUInt32x3 rhs)
+{
+    return CXUInt32x4ShiftElementWiseLeft(lhs, rhs);
+}
+
+/// Left-shifts each element in the storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3ShiftLeft(const CXUInt32x3 lhs, const UInt32 rhs)
+{
+    return CXUInt32x4ShiftLeft(lhs, rhs);
+}
+
+/// Right-shifts each element in the storage operand by the specified number of bits in each lane of rhs.
+STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3ShiftElementWiseRight(const CXUInt32x3 lhs, const CXUInt32x3 rhs)
+{
+    return CXUInt32x4ShiftElementWiseRight(lhs, rhs);
+}
+
+/// Right-shifts each element in the storage operand by the specified number of bits.
+STATIC_INLINE_INTRINSIC(CXUInt32x3) CXUInt32x3ShiftRight(const CXUInt32x3 lhs, const UInt32 rhs)
+{
+    return CXUInt32x4ShiftRight(lhs, rhs);
 }

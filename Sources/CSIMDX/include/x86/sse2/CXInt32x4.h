@@ -1,11 +1,6 @@
 #pragma once
 
-#include "CXInt_t.h"
-#include "CXUInt_t.h"
-#include "CXFloat_t.h"
-#include "Attributes.h"
-
-// MARK: Designated Initializers
+#include "CXTypes_t.h"
 
 /// Returns an intrinsic initialized to the 4 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Make(Int32 value0, Int32 value1, Int32 value2, Int32 value3)
@@ -124,7 +119,7 @@ STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4Multiply(const CXInt32x4 lhs, const 
     );
 }
 
-// MARK: Logical
+// MARK: - Bitwise
 
 /// Bitwise Not
 STATIC_INLINE_INTRINSIC(CXInt32x4) CXInt32x4BitwiseNot(const CXInt32x4 operand)

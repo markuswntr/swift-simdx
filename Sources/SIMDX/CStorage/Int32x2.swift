@@ -44,6 +44,36 @@ extension Int32x2 {
     }
 }
 
+// MARK: - Bitwise
+extension Int32x2 {
+
+    @inlinable public  prefix static func ~ (operand: Int32x2) -> Int32x2 {
+        return .init(rawValue: CXInt32x2BitwiseNot(operand.rawValue))
+    }
+
+    @inlinable public static func & (lhs: Int32x2, rhs: Int32x2) -> Int32x2 {
+        return .init(rawValue: CXInt32x2BitwiseAnd(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inlinable public static func | (lhs: Int32x2, rhs: Int32x2) -> Int32x2 {
+        return .init(rawValue: CXInt32x2BitwiseOr(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inlinable public static func ^ (lhs: Int32x2, rhs: Int32x2) -> Int32x2 {
+        return .init(rawValue: CXInt32x2BitwiseExclusiveOr(lhs.rawValue, rhs.rawValue))
+    }
+
+    // MARK: Shifting
+
+    @inlinable public static func >> <RHS>(lhs: Int32x2, rhs: RHS) -> Int32x2 where RHS: BinaryInteger {
+        return .init(rawValue: CXInt32x2ShiftLeft(lhs.rawValue, numericCast(rhs)))
+    }
+
+    @inlinable public static func << <RHS>(lhs: Int32x2, rhs: RHS) -> Int32x2 where RHS: BinaryInteger {
+        return .init(rawValue: CXInt32x2ShiftRight(lhs.rawValue, numericCast(rhs)))
+    }
+}
+
 // MARK: - Arithmetics
 extension Int32x2 {
 
@@ -73,33 +103,5 @@ extension Int32x2 {
 
     @inlinable public static func * (lhs: Int32x2, rhs: Int32x2) -> Int32x2  {
         .init(rawValue: CXInt32x2Multiply(lhs.rawValue, rhs.rawValue))
-    }
-
-    // MARK: Logical
-
-    @inlinable public  prefix static func ~ (operand: Int32x2) -> Int32x2 {
-        return .init(rawValue: CXInt32x2BitwiseNot(operand.rawValue))
-    }
-
-    @inlinable public static func & (lhs: Int32x2, rhs: Int32x2) -> Int32x2 {
-        return .init(rawValue: CXInt32x2BitwiseAnd(lhs.rawValue, rhs.rawValue))
-    }
-
-    @inlinable public static func | (lhs: Int32x2, rhs: Int32x2) -> Int32x2 {
-        return .init(rawValue: CXInt32x2BitwiseOr(lhs.rawValue, rhs.rawValue))
-    }
-
-    @inlinable public static func ^ (lhs: Int32x2, rhs: Int32x2) -> Int32x2 {
-        return .init(rawValue: CXInt32x2BitwiseExclusiveOr(lhs.rawValue, rhs.rawValue))
-    }
-
-    // MARK: Shifting
-
-    @inlinable public static func >> <RHS>(lhs: Int32x2, rhs: RHS) -> Int32x2 where RHS: BinaryInteger {
-        return .init(rawValue: CXInt32x2ShiftLeft(lhs.rawValue, numericCast(rhs)))
-    }
-
-    @inlinable public static func << <RHS>(lhs: Int32x2, rhs: RHS) -> Int32x2 where RHS: BinaryInteger {
-        return .init(rawValue: CXInt32x2ShiftRight(lhs.rawValue, numericCast(rhs)))
     }
 }

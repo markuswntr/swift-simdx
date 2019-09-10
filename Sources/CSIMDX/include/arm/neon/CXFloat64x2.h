@@ -1,8 +1,6 @@
 #pragma once
 
-#include "CXFloat64_t.h"
-
-// MARK: Designated Initializers
+#include "CXTypes_t.h"
 
 /// Returns an intrinsic initialized to the 2 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Make(Float64 value0, Float64 value1)
@@ -47,6 +45,59 @@ STATIC_INLINE_INTRINSIC(Float64) CXFloat64x2GetElement(const CXFloat64x2 storage
 STATIC_INLINE_INTRINSIC(void) CXFloat64x2SetElement(CXFloat64x2* storage, const int index, const Float64 value)
 {
     (*storage)[index] = value; // TODO: Function call instead?
+}
+
+// MARK: - Conversion
+
+/// Converts the elements of `operand`, load them in the new storage and returns the result.
+/// @returns `(CXFloat64x2){ (Float64)(operand[0]), (Float64)(operand[1]) }`
+STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2FromCXFloat32x2(CXFloat32x2 operand)
+{
+    return vcvt_f64_f32(operand);
+}
+
+/// Converts the elements of `operand`, load them in the new storage and returns the result.
+/// @returns `(CXFloat64x2){ (Float64)(operand[0]), (Float64)(operand[1]) }`
+STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2FromCXInt32x2(CXInt32x2 operand)
+{
+    return CXFloat64x2FromCXFloat32x2(vreinterpret_f32_s32(operand));
+}
+
+/// Converts the elements of `operand`, load them in the new storage and returns the result.
+/// @returns `(CXFloat64x2){ (Float64)(operand[0]), (Float64)(operand[1]) }`
+STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2FromCXUInt32x2(CXUInt32x2 operand)
+{
+    return CXFloat64x2FromCXFloat32x2(vreinterpret_f32_u32(operand));
+}
+
+/// Converts the elements of `operand`, load them in the new storage and returns the result.
+/// @returns `(CXFloat64x2){ (Float64)(operand[0]), (Float64)(operand[1]) }`
+STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2FromCXInt64x2(CXInt64x2 operand)
+{
+    return vcvtq_f64_s64(operand);
+}
+
+/// Converts the elements of `operand`, load them in the new storage and returns the result.
+/// @returns `(CXFloat64x2){ (Float64)(operand[0]), (Float64)(operand[1]) }`
+STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2FromCXUInt64x2(CXUInt64x2 operand)
+{
+    return vcvtq_f64_u64(operand);
+}
+
+// MARK: Minimum & Maximum
+
+/// Performs element-by-element comparison of both storages and returns the lesser of each pair in the result.
+/// @return `(CXFloat64x2){ lhs[0] < rhs[0] ? lhs[0] : rhs[0], lhs[1] < rhs[1] ? lhs[1] : rhs[1] }`
+STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Minimum(const CXFloat64x2 lhs, const CXFloat64x2 rhs)
+{
+    return vminq_f64(lhs, rhs);
+}
+
+/// Performs element-by-element comparison of both storages and returns the greater of each pair in the result.
+/// @return `(CXFloat32x3){ lhs[0] > rhs[0] ? lhs[0] : rhs[0], lhs[1] > rhs[1] ? lhs[1] : rhs[1], ... }`
+STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Maximum(const CXFloat64x2 lhs, const CXFloat64x2 rhs)
+{
+    return vmaxq_f64(lhs, rhs);
 }
 
 // MARK: - Arithmetics
@@ -97,4 +148,11 @@ STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Multiply(const CXFloat64x2 lhs, 
 STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2Divide(const CXFloat64x2 lhs, const CXFloat64x2 rhs)
 {
     return vdivq_f64(lhs, rhs);
+}
+
+/// Calculates the square root (element-wise).
+/// @return `(CXFloat64x2){ sqrt(operand[0]), sqrt(operand[1]) }`
+STATIC_INLINE_INTRINSIC(CXFloat64x2) CXFloat64x2SquareRoot(const CXFloat64x2 operand)
+{
+    return vsqrtq_f64(operand);
 }

@@ -1,6 +1,6 @@
 // 1. (ARM) NEON has no restrictions. If NEON is available, use NEON intrinsics.
 // 2. SSE2/AVX (et al) must not be used if NEON is available. This is not possible,
-//    (at least as far as I know) but it does not hurt to be defined in the module map.
+//    but it does not hurt to be defined in the module map.
 // 3. SSE2/AVX (et al) dependencies are aligned with their release/dependency cycle.
 //    So if AVX is available, SSE2 is available. If AVX2 is available, AVX is available
 //    therefore SSE2 is available - and so on.
@@ -27,23 +27,20 @@ module CSIMDX {
 
     module avx {
         requires avx
-        requires !neon
         umbrella "x86/avx"
-        export sse2
     }
 
     // MARK: Fallbacks
 
     module generic128 {
-        requires !sse2
         requires !neon
+        requires !sse2
         umbrella "generic/128bit"
     }
 
     module generic256 {
         requires !avx
         umbrella "generic/256bit"
-        export generic128
     }
 }
 
