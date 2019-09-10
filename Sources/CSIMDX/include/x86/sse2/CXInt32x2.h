@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CXTypes_t.h"
+#include "CXInt32x4.h"
 
 /// Returns an intrinsic initialized to the 2 given values, from least- to most-significant bits.
 STATIC_INLINE_INTRINSIC(CXInt32x2) CXInt32x2Make(Int32 value0, Int32 value1)
