@@ -18,6 +18,8 @@ routes([<sup>1</sup>](#1)) those through the fastest available instructions.
 - [ ] Properly defining the numeric storages 
     - [ ] Instance from RandomNumberGenerator
     - [ ] Casting different vector types natively
+- [ ] Make `count`on SIMDX static
+- [ ] Extension on Array: `init(SIMDX)` that uses native stores
 
 /// Reference: https://github.com/llvm-mirror/clang/blob/b165125115794a302175c79b63a1c964323cf6fb/test/Preprocessor/feature_tests.c
 // !__has_builtin(__builtin_shufflevector) || \
@@ -61,7 +63,7 @@ I gathered them while writting this library, and I am pretty sure I will need th
 - https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/intrinsics
 
 ----
-Footnotes: <a class="anchor" id="1">1</a>. It barely "routes" anything. All instructions are marked to be inline whenever possible.
+Footnotes: <a class="anchor" id="1">(<sup>1</sup>)</a> It barely "routes" anything. All instructions are marked to be inline whenever possible.
 
 
 
