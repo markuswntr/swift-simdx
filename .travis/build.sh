@@ -16,7 +16,7 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         swift test -c release;
     fi
 
-elif # macOS
+else # macOS
 
     if [[ "$CROSS_COMPILE" == 1 ]]; then
         sh ./ios-build.sh;
