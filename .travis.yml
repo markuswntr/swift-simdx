@@ -45,5 +45,5 @@ install: ./.travis/deps.sh
 script: ./.travis/build.sh
 
 # Notify status
-after_success: ./notify.sh success $WEBHOOK_URL # Success
-after_failure: ./notify.sh failure $WEBHOOK_URL # Failure
+after_success: ./.travis/notify.sh success $WEBHOOK_URL # Success
+after_failure: ./.travis/notify.sh failure $WEBHOOK_URL # Failure
