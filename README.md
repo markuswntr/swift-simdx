@@ -1,146 +1,109 @@
 # SIMDX
 
-_SIMDX_ provides a unified implementation for built-in vector and matrix intrinsics, such as **SSE/AVX on x86** and **NEON on ARM**, 
-in C (see `CSIMDX` target) and exposes them to Swift as generic types (see `SIMDX` target) . Furthermore, _SIMDX_ provides a fast
-and portable implementation of SIMD like intrinsics on **hardware which doesn't natively support** them, making _SIMDX_ independent
-of the target hardware. Therefore it allows vector and matrix calculations on any (Swift supporting) hardware and automatically
-routes([<sup>1</sup>](#1)) those through the fastest available instructions.
+*SIMDX* provides a unified implementation for built-in vector and matrix intrinsics, such as **SSE/AVX on x86** and **Neon on Arm**, in C (see `CSIMDX` target) and exposes them to Swift as generic types (see `SIMDX` target). Furthermore, *SIMDX* provides a fast and portable implementation of SIMD like intrinsics on **hardware which doesn't natively support** them, making *SIMDX* independent of the target hardware. Therefore it allows vector and matrix calculations on any (Swift supporting) hardware and automatically inlines the appropriate intrinsic functions those through the fastest available instructions.
 
-> **Note:** This is far from finished, and not guarantueed to perform faster. There have been no performance tests, no benchmarks, no nothing.
+If you want to know the details reading the following [Blog post]() #link
 
-**TODO:**
+## Disclaimer
 
+The library is approaching its first alpha release – it is neither finished nor fully defined. Now is the time for feedback and I encourage you to look at it. If you want to report a bug or an unexpected behaviour, feel free to open an issue. If have suggestions or really anything else that helps evolving the library and/or are interested in the details feel free to contact me or leave a comment in the [Swift Forum]() #link post.
+
+#linktoswiftforumspost
+
+## TODO
+
+Move TODOs to Issues or a Project at some point
+
+- [x] 64-bit storage
+- [x] 128-bit storage
+- [x] Int32, UInt32, Float32 and Float64 storable
+- [x] Conform to common `Numeric` protocols functions (see [Blog post]() #link )
 - [ ] Documentation
-- [ ] Boolean vectors
-- [ ] Comparison (Equal, Greater/LowerThan, ...)
-- [ ] 256bit (Length) storages
-- [ ] Matrices
-- [ ] Properly defining the numeric storages 
+- [ ] Int8, UInt8, Int16 and UInt16 storable
+- [ ] Boolean storage
+- [ ] Comparison (Equal, GreaterThan, LowerThan, ...)
+- [ ] 256-bit storage
+- [ ] Multi-dimensional storage (Matrix)
+- [ ] Extend conformance to the `Numeric` protocols
     - [ ] Instance from RandomNumberGenerator
-    - [ ] Casting different vector types natively
-- [ ] Make `count`on SIMDX static
-- [ ] Extension on Array: `init(SIMDX)` that uses native stores
+    - [ ] Cast most vector types natively using intrinsics
+- [ ] Make `count` on SIMDX static
+- [ ] Extension on Array `init(SIMDX)` that uses native intrinsics store
+- [ ] 512-bit storage
 
-/// Reference: https://github.com/llvm-mirror/clang/blob/b165125115794a302175c79b63a1c964323cf6fb/test/Preprocessor/feature_tests.c
-// !__has_builtin(__builtin_shufflevector) || \
-// !__has_builtin(__builtin_convertvector) || \
+## Coding example
+
+Given a `color` that should be modified in `brightness` on each channel separately and then multiplied by a `scale` factor on each lanes equally.
+
+**Example 1.1:**
+
+```swift
+// A color to be modify
+let color: [Float] = [0.11, 0.2, 0.64, 1.0] // RGBA
+
+// Add a modification value to each channel seperatly
+let brightness: [Float] = [0.25, 0.3, -0.35, 0.0]
+
+// Scale the resulting color on each channel equally
+let scale: Float = 0.8
+
+var newColor: [Float] = .init(repeating: 0.0, count: 4)
+for index in 0...3 {
+    // operation on each element
+    newColor[index] = (color[index] + brightness[index]) * scale 
+}
+
+print(newColor)
+// [0.288, 0.4, 0,232, 1.0]
+```
+
+The *SIMDX* library allows to rewrite the example:
+
+**Example 1.2:**
+
+```swift
+import SIMDX
+
+// A color to be modify
+let color: SIMDX4<Float> = [0.11, 0.2, 0.64, 1.0]
+
+// Add a modification value to each channel seperatly
+let brightness: SIMDX4<Float> = [0.25, 0.3, -0.35, 0.0]
+
+// Scale the resulting color on each channel equally
+let scale: Float = 0.8
+
+// Do all operations on SIMD in parallel using SIMDX
+let newColor = (color + brightness) * scale
+
+print(newColor)
+// [0.288, 0.4, 0,232, 1.0]
+```
+
+Example 1.2 does the same as example 1.1, but more efficiently because it utilises SIMD instructions that do four additions and four multiplications in a single instruction. Today, modern CPU's have these instructions which may give you a throughput of four floating point additions and four multiplications per clock cycle. A good compiler may actually convert example 1.1 automatically to use the SIMD instructions, but in more complicated cases you cannot be sure that the compiler is able to vectorise your code in an optimal way.
+
+## How it works
+
+The type `SIMDX4<Float>` in example 1.2 is a struct that encapsulates a 128-bit intrinsic type holding 4 floating point numbers of 32 bits each. The operators `+` and `*` represent the SIMDs instruction for adding and multiplying the intrinsic types. These operators are inlined so that no extra code is generated other than the SIMD instructions. More specifically, the type `SIMDX4<Float>` masks a `__m128` intrinsic type on x86 with SSE2 or a `float32x4_t` intrinsic type on Arm with Neon. If neither of both are available, the module instructs the compiler to optimise the vector code. If this is not possible on the target hardware, the library provides a fallback to a C-array of float type and fixed length, i.e. `float array[4]`.
 
 ## References 
 
-I started with almost zero knownledge of SIMD/Intrinsics or builtin clang functions and was DuckDuckGoing (is that a thing?) alot 
-prior to started writting this lib. The following references contain some of the most useful instructions I could find across the internet.
-I gathered them while writting this library, and I am pretty sure I will need them and re-visit them quite a lot so I leave them here.
+I started with almost zero knowledge of SIMD/Intrinsics or builtin clang functions and was DuckDuckGoing (is that a thing?) alot prior to started writing this lib. The following references contain some of the most useful instructions I could find across the internet.
+I gathered them while writing this library, and I am pretty sure I will need them and re-visit them quite a lot so I leave them here.
 
-### General Knownledge
-
-- https://www.eduonix.com/courses/Software-Development/Learn-the-Basics-of-C-Programming-Language (:D **just kidding** - kind of)
-- https://en.wikipedia.org/wiki/SIMD (_**not** kidding_)
-
-### Built-in Vector Support in `clang`
+### Intrinsic functions
 
 - https://clang.llvm.org/docs/LanguageExtensions.html#langext-vectors
-- https://clang.llvm.org/docs/LanguageExtensions.html#vectors-and-extended-vectors
-- https://clang.llvm.org/docs/LanguageExtensions.html#builtin-shufflevector
-- https://clang.llvm.org/docs/LanguageExtensions.html#langext-builtin-convertvector
-
-### x86 Intrinsics
-
 - https://software.intel.com/sites/landingpage/IntrinsicsGuide/
-- https://en.wikipedia.org/wiki/Advanced_Vector_Extensions
-- https://clang.llvm.org/doxygen/immintrin_8h.html
-- https://clang.llvm.org/doxygen/immintrin_8h_source.html
-- http://www.g-truc.net/post-0359.html
+- https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/intrinsics
 
 ### Other Libraries
 
 - https://github.com/QuantStack/xsimd
 - https://github.com/nemequ/simde
-- https://github.com/vectorclass/version2
-- https://github.com/HandmadeMath/Handmade-Math
 
-### NEON Intrinsics
+## License
 
-- https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/intrinsics
+The **SIMDX** library is licensed under the Apache License, version 2.0.
 
-----
-Footnotes: <a class="anchor" id="1">(<sup>1</sup>)</a> It barely "routes" anything. All instructions are marked to be inline whenever possible.
-
-
-
-
-
-
-#### Check available intrinsics
-
-`clang -dM -E - < /dev/null | egrep "SSE|AVX" | sort`
-
-Example output:
-```
-#define __SSE__ 1
-#define __SSE2__ 1
-#define __SSE2_MATH__ 1
-#define __SSE3__ 1
-#define __SSSE3__ 1
-#define __SSE4_1__ 1
-#define __SSE_MATH__ 1
-```
-
-> incl. AVX(2)
-
-`clang -mavx2 -dM -E - < /dev/null | egrep "SSE|AVX" | sort`
-
-Example output:
-```
-#define __AVX2__ 1
-#define __AVX__ 1
-#define __SSE2_MATH__ 1
-#define __SSE2__ 1
-#define __SSE3__ 1
-#define __SSE4_1__ 1
-#define __SSE4_2__ 1
-#define __SSE_MATH__ 1
-#define __SSE__ 1
-#define __SSSE3__ 1
-```
-
-
-
-Was necessary but is currently unused as defined in the `modulemap`.
-Kept for a while until I am pretty sure I will never ever need it again.
-```
-// MARK: - x86 Intrinsics -
-
-/// This modules starts supporting SIMD instructions starting at AVX (immintrin) supporting processors.
-/// This includes Intel processors starting 2008/Sandy Bridge and AMD processors starting 2011/Bulldozer.
-///
-/// AVX Reference: https://en.wikipedia.org/wiki/Advanced_Vector_Extensions
-///
-/// Header-File Reference: http://www.g-truc.net/post-0359.html
-///
-/// +----------------+------------------------------------------------------------------------------------------+
-/// |     Header     |                                         Purpose                                          |
-/// +----------------+------------------------------------------------------------------------------------------+
-/// | x86intrin.h    | Everything, including non-vector x86 instructions like _rdtsc().                         |
-/// | mmintrin.h     | MMX (Pentium MMX!)                                                                       |
-/// | mm3dnow.h      | 3dnow! (K6-2) (deprecated)                                                               |
-/// | xmmintrin.h    | SSE + MMX (Pentium 3, Athlon XP)                                                         |
-/// | emmintrin.h    | SSE2 + SSE + MMX (Pentium 4, Athlon 64)                                                  |
-/// | pmmintrin.h    | SSE3 + SSE2 + SSE + MMX (Pentium 4 Prescott, Athlon 64 San Diego)                        |
-/// | tmmintrin.h    | SSSE3 + SSE3 + SSE2 + SSE + MMX (Core 2, Bulldozer)                                      |
-/// | popcntintrin.h | POPCNT (Nehalem (Core i7), Phenom)                                                       |
-/// | ammintrin.h    | SSE4A + SSE3 + SSE2 + SSE + MMX (AMD-only, starting with Phenom)                         |
-/// | smmintrin.h    | SSE4_1 + SSSE3 + SSE3 + SSE2 + SSE + MMX (Penryn, Bulldozer)                             |
-/// | nmmintrin.h    | SSE4_2 + SSE4_1 + SSSE3 + SSE3 + SSE2 + SSE + MMX (Nehalem (aka Core i7), Bulldozer)     |
-/// | wmmintrin.h    | AES (Core i7 Westmere, Bulldozer)                                                        |
-/// | immintrin.h    | AVX, AVX2, AVX512, all SSE+MMX (except SSE4A and XOP), popcnt, BMI/BMI2, FMA             |
-/// +----------------+------------------------------------------------------------------------------------------+
-#if __AVX__
-#define CX_AVX_INSTRUCTIONS_AVAILABLE 1
-#elif __AVX2__
-#define CX_AVX_INSTRUCTIONS_AVAILABLE 1
-#elif __AVX512__
-#define CX_AVX_INSTRUCTIONS_AVAILABLE 1
-#elif __AVX512F__
-#define CX_AVX_INSTRUCTIONS_AVAILABLE 1
-#endif
-```
+You may not use the files except in compliance with this License. You may obtain a copy of the license at www.apache.org/licenses/LICENSE-2.0
