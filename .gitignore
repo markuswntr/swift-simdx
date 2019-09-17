@@ -5,9 +5,12 @@
 
 # Swift Package Manager
 .build/
-.swiftpm
+/.swiftpm
 
 # Xcode
 build/
 DerivedData/
+/*.xcodeproj
 
+# CLion
+/.idea

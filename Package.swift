@@ -3,6 +3,13 @@ import PackageDescription
 
 let package = Package(
     name: "SIMDX",
+    platforms: [
+        .iOS(.v12),
+        .tvOS(.v12),
+        .watchOS(.v5),
+        .macOS(.v10_14),
+        // .ubuntu(.v16.04)
+    ],
     products: [
         .library(name: "SIMDX", targets: ["SIMDX"])
     ],

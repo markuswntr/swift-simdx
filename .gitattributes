@@ -1,7 +1,7 @@
 ## GitHub Linguist Hints
 # https://github.com/github/linguist#overrides
 
-# Header Files as C (not C++)
+# Treat header files as part of C (not C++)
 *.h linguist-language=C
 
 # Ignore Travis Scripts
