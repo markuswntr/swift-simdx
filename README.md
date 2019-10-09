@@ -1,18 +1,16 @@
 # SIMDX
 
-*SIMDX* provides a unified implementation for built-in vector and matrix intrinsics, such as **SSE/AVX on x86** and **Neon on Arm**, in C (see `CSIMDX` target) and exposes them to Swift as generic types (see `SIMDX` target). Furthermore, *SIMDX* provides a fast and portable implementation of SIMD like intrinsics on **hardware which doesn't natively support** them, making *SIMDX* independent of the target hardware. Therefore it allows vector and matrix calculations on any (Swift supporting) hardware and automatically inlines the appropriate intrinsic functions those through the fastest available instructions.
+*SIMDX* provides a unified implementation for built-in vector and matrix intrinsics, such as **SSE/AVX on x86** and **Neon on Arm**, in C
+(see `CSIMDX` target) and exposes them to Swift as generic types (see `SIMDX` target). Furthermore, *SIMDX* provides a fast and portable
+implementation of SIMD like intrinsics on **hardware which doesn't natively support** them, making *SIMDX* independent of the target 
+hardware. Therefore it allows vector and matrix calculations on any (Swift supporting) hardware and automatically inlines the appropriate 
+intrinsic functions of the target hardware.
 
-If you want to know the details reading the following [Blog post]() #link
-
-## Disclaimer
-
-The library is approaching its first alpha release – it is neither finished nor fully defined. Now is the time for feedback and I encourage you to look at it. If you want to report a bug or an unexpected behaviour, feel free to open an issue. If have suggestions or really anything else that helps evolving the library and/or are interested in the details feel free to contact me or leave a comment in the [Swift Forum]() #link post.
-
-#linktoswiftforumspost
+> **Warning.** Not meant to be used in production, created for learning purposes! <br/> See [**Stumbling on SIMD**](https://blog.wntr.me/posts/001-the-properties-of-space/) series to learn how this project came to be. <br/>If you want to report a bug or an unexpected behaviour, feel free to open an issue. If have suggestions or really anything else that helps evolving the library and/or are interested in the details feel free to contact me on [GitHub](https://github.com/markuswntr) or [Twitter](https://twitter.com/markuswntr).
 
 ## TODO
 
-Move TODOs to Issues or a Project at some point
+Move TODOs to Issues and/or a Project at some point
 
 - [x] 64-bit storage
 - [x] 128-bit storage
@@ -30,6 +28,8 @@ Move TODOs to Issues or a Project at some point
 - [ ] Make `count` on SIMDX static
 - [ ] Extension on Array `init(SIMDX)` that uses native intrinsics store
 - [ ] 512-bit storage
+- [ ] Remove the ARM 64 requirement and any other platform restriction in Package.swift
+- [ ] Re-evaluate the necessity of SIMDX being ExpressibleByArrayLiteral
 
 ## Coding example
 
@@ -88,7 +88,7 @@ The type `SIMDX4<Float>` in example 1.2 is a struct that encapsulates a 128-bit 
 
 ## References 
 
-I started with almost zero knowledge of SIMD/Intrinsics or builtin clang functions and was DuckDuckGoing (is that a thing?) alot prior to started writing this lib. The following references contain some of the most useful instructions I could find across the internet.
+I started with almost zero knowledge of SIMD/Intrinsics or builtin clang functions and was DuckDuckGoing (is that a thing?) alot prior to started writing this lib. The following references contain some of the most useful instructions I found across the internet.
 I gathered them while writing this library, and I am pretty sure I will need them and re-visit them quite a lot so I leave them here.
 
 ### Intrinsic functions

@@ -1,0 +1,16 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or the definition README at
+// https://github.com/microsoft/vscode-dev-containers/tree/master/containers/docker-existing-dockerfile
+{
+	"name": "Swift",
+	//"context": "..",
+	"dockerFile": "Dockerfile",
+	"runArgs": [
+		"-u", "vscode",
+		"--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"
+	],
+
+	"settings": { "terminal.integrated.shell.linux": "/bin/bash" },
+
+	"postCreateCommand": "apt-get update && apt-get install -y git",
+	"extensions": ["unpublished.sourcekit-lsp"]
+}

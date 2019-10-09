@@ -8,7 +8,7 @@ let package = Package(
         .tvOS(.v12),
         .watchOS(.v5),
         .macOS(.v10_14),
-        // .ubuntu(.v16.04)
+        // .ubuntu(.v14.04)
     ],
     products: [
         .library(name: "SIMDX", targets: ["SIMDX"])
