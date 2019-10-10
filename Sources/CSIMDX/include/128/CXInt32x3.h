@@ -48,7 +48,7 @@ CX_INLINE(CXInt32x3) CXInt32x3MakeLoad(const Int32* pointer)
     return storage;
 #elif defined(CX_X86_128)
     CXInt32x3 storage = _mm_loadu_si128((const __m128i*)pointer);
-    storage[3] = 0;
+    ((Int32*)&storage)[3] = 0;
     return storage;
 #elif defined(CX_EXT_VECTOR)
     return (CXInt32x3){ pointer[0], pointer[1], pointer[2] };
@@ -333,7 +333,9 @@ CX_INLINE(CXInt32x3) CXInt32x3BitwiseNot(const CXInt32x3 operand)
 #if defined(CX_NEON_128)
     return vmvnq_s32(operand);
 #elif defined(CX_X86_128)
-    return _mm_xor_si128(operand, _mm_set1_epi64(_mm_cvtsi64_m64(-1LL)));
+    CXInt32x3 storage = _mm_xor_si128(operand, _mm_set1_epi64(_mm_cvtsi64_m64(-1LL)));
+    ((Int32*)&storage)[3] = 0;
+    return storage;
 #elif defined(CX_EXT_VECTOR)
     return ~operand;
 #else
