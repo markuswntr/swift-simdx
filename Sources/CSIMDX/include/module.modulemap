@@ -12,35 +12,36 @@ module CSIMDX {
 
     // MARK: ARM
 
-    module neon {
+    module arm_128 {
         requires neon
-        umbrella "arm/neon"
+        header "modules/arm/128.h"
     }
 
     // MARK: x86
 
-    module sse2 {
+    module x86_128 {
         requires sse2
-        requires !neon
-        umbrella "x86/sse2"
+        requires !arm_128
+        header "modules/x86/128.h"
     }
 
-    module avx {
-        requires avx
-        umbrella "x86/avx"
+//    module x86_256 {
+//        requires avx
+//        requires x86_128
+//        header "modules/x86/avx.h"
+//    }
+
+    // MARK: Fallback in C
+
+    module generic_128 {
+        requires !arm_128
+        requires !x86_128
+        header "modules/generic/128.h"
     }
 
-    // MARK: Fallbacks
-
-    module generic128 {
-        requires !neon
-        requires !sse2
-        umbrella "generic/128bit"
-    }
-
-    module generic256 {
-        requires !avx
-        umbrella "generic/256bit"
-    }
+//    module generic_256 {
+//        requires !x86_256
+//        header "modules/generic/256.h"
+//    }
 }
 

@@ -30,6 +30,7 @@ Move TODOs to Issues and/or a Project at some point
 - [ ] 512-bit storage
 - [ ] Remove the ARM 64 requirement and any other platform restriction in Package.swift
 - [ ] Re-evaluate the necessity of SIMDX being ExpressibleByArrayLiteral
+- [ ] The generic implementation is not the fastest it could be. Do some more magic.
 
 ## Coding example
 
