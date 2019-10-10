@@ -15,13 +15,7 @@
 #pragma once
 
 #include "Types.h"
-#if defined(CX_NEON_128)
-#include <arm_neon.h>
-#elif defined(CX_X86_128)
-#include <emmintrin.h>
-#else
 #include <math.h>
-#endif
 
 /// Initializes a storage to given elements, from least-significant to most-significant bits.
 /// @return `(CXFloat32x4){ element0, element1, element2, element3 }`
@@ -327,7 +321,7 @@ CX_INLINE(CXFloat32x4) CXFloat32x4Multiply(const CXFloat32x4 lhs, const CXFloat3
 /// @return `(CXFloat32x4){ lhs[0] / rhs[0], lhs[1] / rhs[1] }`
 CX_INLINE(CXFloat32x4) CXFloat32x4Divide(const CXFloat32x4 lhs, const CXFloat32x4 rhs)
 {
-#if defined(CX_NEON_128)
+#if defined(CX_NEON_128_WITH_AARCH64)
     return vdivq_f32(lhs, rhs);
 #elif defined(CX_X86_128)
     return _mm_div_ps(lhs, rhs);
@@ -347,7 +341,7 @@ CX_INLINE(CXFloat32x4) CXFloat32x4Divide(const CXFloat32x4 lhs, const CXFloat32x
 /// @return `(CXFloat32x4){ sqrt(operand[0]), sqrt(operand[1]) }`
 CX_INLINE(CXFloat32x4) CXFloat32x4SquareRoot(const CXFloat32x4 operand)
 {
-#if defined(CX_NEON_128)
+#if defined(CX_NEON_128_WITH_AARCH64)
     return vsqrtq_f32(operand);
 #elif defined(CX_X86_128)
     return _mm_sqrt_ps(operand);

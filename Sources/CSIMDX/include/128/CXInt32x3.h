@@ -15,13 +15,7 @@
 #pragma once
 
 #include "Types.h"
-#if defined(CX_NEON_128)
-#include <arm_neon.h>
-#elif defined(CX_X86_128)
-#include <emmintrin.h>
-#else
 #include <stdlib.h>
-#endif
 
 /// Initializes a storage to given elements, from least-significant to most-significant bits.
 /// @return `(CXInt32x3){ element0, element1, element2 }`

@@ -19,6 +19,8 @@
 #include <arm_neon.h>
 #elif defined(CX_X86_128)
 #include <emmintrin.h>
+#else
+#include <stdlib.h>
 #endif
 
 // MARK: Numeric Types

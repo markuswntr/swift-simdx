@@ -25,8 +25,12 @@
 /// Additionally, use the extend set of aarch64 if available
 #ifdef __aarch64__
 #define CX_NEON_128_WITH_AARCH64
-#elif __has_extension(attribute_ext_vector_type)
-#define CX_EXT_VECTOR // Fallback to extended vector support on float64 (if possible)
+#endif
+
+// Some instructions may fallback to clang provided extended vector support if Arm features
+// are missing (still faster than generic) - like float64 on none aarch64 hardware.
+#if __has_extension(attribute_ext_vector_type)
+#define CX_EXT_VECTOR
 #endif
 
 /// Function pre-fix to make it static and to try force inlining by the compiler. Takes the return value as input.

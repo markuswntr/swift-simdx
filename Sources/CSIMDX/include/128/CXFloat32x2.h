@@ -14,14 +14,8 @@
 
 #pragma once
 
-#include "Types.h"
-#if defined(CX_NEON_128)
-#include <arm_neon.h>
-#elif defined(CX_X86_128)
-#include <emmintrin.h>
-#else
 #include <math.h>
-#endif
+#include "Types.h"
 
 /// Initializes a storage to given elements, from least-significant to most-significant bits.
 /// @return `(CXFloat32x2){ element0, element1 }`
@@ -155,7 +149,7 @@ CX_INLINE(CXFloat32x2) CXFloat32x2FromCXUInt32x2(CXUInt32x2 operand)
 /// @returns `(CXFloat32x2){ (Float32)(operand[0]), (Float32)(operand[1]) }`
 CX_INLINE(CXFloat32x2) CXFloat32x2FromCXInt64x2(CXInt64x2 operand)
 {
-#if defined(CX_NEON_128)
+#if defined(CX_NEON_128_WITH_AARCH64)
     return CXFloat32x2FromCXFloat64x2(vreinterpretq_f64_s64(operand));
 #elif defined(CX_X86_128)
     //  Only works for inputs in the range: [-2^51, 2^51]
@@ -174,7 +168,7 @@ CX_INLINE(CXFloat32x2) CXFloat32x2FromCXInt64x2(CXInt64x2 operand)
 /// @returns `(CXFloat32x2){ (Float32)(operand[0]), (Float32)(operand[1]) }`
 CX_INLINE(CXFloat32x2) CXFloat32x2FromCXUInt64x2(CXUInt64x2 operand)
 {
-#if defined(CX_NEON_128)
+#if defined(CX_NEON_128_WITH_AARCH64)
     return CXFloat32x2FromCXFloat64x2(vreinterpretq_f64_u64(operand));
 #elif defined(CX_X86_128)
     //  Only works for inputs in the range: [-2^51, 2^51]
@@ -351,13 +345,13 @@ CX_INLINE(CXFloat32x2) CXFloat32x2Multiply(const CXFloat32x2 lhs, const CXFloat3
 /// @return `(CXFloat32x2){ lhs[0] / rhs[0], lhs[1] / rhs[1] }`
 CX_INLINE(CXFloat32x2) CXFloat32x2Divide(const CXFloat32x2 lhs, CXFloat32x2 rhs)
 {
-#if defined(CX_NEON_128)
+#if defined(CX_NEON_128_WITH_AARCH)
     return vdiv_f32(lhs, rhs);
 #elif defined(CX_X86_128)
     CXFloat32x2SetElement(&rhs, 2, 1.f); // Prepare rhs value, to avoid a ...
     CXFloat32x2SetElement(&rhs, 3, 1.f); // ... division by zero, but 1 instead
     return _mm_div_ps(lhs, rhs);
-#elif defined(CX_EXT_VECTOR)
+#elif defined(CX_EXT_VECTOR) || defined(CX_NEON_128) // TODO: No aarch64 nor extended vector support - improve
     return lhs / rhs;
 #else
     return (CXFloat32x2){ .val = [
@@ -371,14 +365,14 @@ CX_INLINE(CXFloat32x2) CXFloat32x2Divide(const CXFloat32x2 lhs, CXFloat32x2 rhs)
 /// @return `(CXFloat32x2){ sqrt(operand[0]), sqrt(operand[1]) }`
 CX_INLINE(CXFloat32x2) CXFloat32x2SquareRoot(const CXFloat32x2 operand)
 {
-#if defined(CX_NEON_128)
+#if defined(CX_NEON_128_WITH_AARCH)
     return vsqrt_f32(operand);
 #elif defined(CX_X86_128)
     return _mm_sqrt_ps(operand);
-#elif defined(CX_EXT_VECTOR)
+#elif defined(CX_EXT_VECTOR) || defined(CX_NEON_128) // TODO: No aarch64 nor extended vector support - improve
     return (CXFloat32x2){
-        sqrtf(CXFloat32x2GetElement(operand, 0)),
-        sqrtf(CXFloat32x2GetElement(operand, 1))
+        (Float32)sqrtf((Float32)CXFloat32x2GetElement(operand, 0)),
+        (Float32)sqrtf((Float32)CXFloat32x2GetElement(operand, 1))
     };
 #else
     return (CXFloat32x2){ .val = [

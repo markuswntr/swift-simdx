@@ -15,13 +15,6 @@
 #pragma once
 
 #include "Types.h"
-#if defined(CX_NEON_128)
-#include <arm_neon.h>
-#elif defined(CX_X86_128)
-#include <emmintrin.h>
-#else
-#include <stdlib.h>
-#endif
 
 /// Initializes a storage to given elements, from least-significant to most-significant bits.
 /// @return `(CXUInt64x2){ element0, element1 }`
@@ -107,7 +100,7 @@ CX_INLINE(void) CXUInt64x2SetElement(CXUInt64x2* storage, const int index, const
 CX_INLINE(CXUInt64x2) CXUInt64x2FromCXFloat32x2(CXFloat32x2 operand)
 {
 #if defined(CX_NEON_128)
-    return vcvtq_u64_f64(vcvt_f64_f32(operand));
+    return vmovl_u32(vcvt_u32_f32(operand));
 #elif defined(CX_X86_128)
     return (__m128i)__builtin_convertvector( // TODO: NO intel intrinsic?
         __builtin_shufflevector((__v4sf)operand, (__v4sf)operand, 0, 1), __v2di);
@@ -153,7 +146,7 @@ CX_INLINE(CXUInt64x2) CXUInt64x2FromCXUInt32x2(CXUInt32x2 operand)
 /// @returns `(CXUInt64x2){ (UInt64)(operand[0]), (UInt64)(operand[1]) }`
 CX_INLINE(CXUInt64x2) CXUInt64x2FromCXFloat64x2(CXFloat64x2 operand)
 {
-#if defined(CX_NEON_128)
+#if defined(CX_NEON_128_WITH_AARCH64)
     return vcvtq_u64_f64(operand);
 #elif defined(CX_X86_128)
     return _mm_castpd_si128(operand);
@@ -185,8 +178,8 @@ CX_INLINE(CXUInt64x2) CXUInt64x2FromCXInt64x2(CXInt64x2 operand)
 /// @return `(CXUInt64x2){ lhs[0] < rhs[0] ? lhs[0] : rhs[0], lhs[1] < rhs[1] ? lhs[1] : rhs[1] }`
 CX_INLINE(CXUInt64x2) CXUInt64x2Minimum(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
 {
-#if defined(CX_NEON_128)
-    return vcvtq_f64_u64(vminq_f64(vcvtq_u64_f64(lhs), vcvtq_u64_f64(rhs)));
+#if defined(CX_NEON_128_WITH_AARCH64)
+    return vcvtq_u64_f64(vminq_f64(vcvtq_f64_u64(lhs), vcvtq_f64_u64(rhs)));
 #elif defined(CX_X86_128)
     return _mm_castpd_si128(_mm_min_pd(_mm_castsi128_pd(lhs), _mm_castsi128_pd(rhs)));
 #else
@@ -210,8 +203,8 @@ CX_INLINE(CXUInt64x2) CXUInt64x2Minimum(const CXUInt64x2 lhs, const CXUInt64x2 r
 /// @return `(CXUInt64x3){ lhs[0] > rhs[0] ? lhs[0] : rhs[0], lhs[1] > rhs[1] ? lhs[1] : rhs[1], ... }`
 CX_INLINE(CXUInt64x2) CXUInt64x2Maximum(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
 {
-#if defined(CX_NEON_128)
-    return vcvtq_f64_u64(vmaxq_f64(vcvtq_u64_f64(lhs), vcvtq_u64_f64(rhs)));
+#if defined(CX_NEON_128_WITH_AARCH64)
+    return vcvtq_u64_f64(vmaxq_f64(vcvtq_f64_u64(lhs), vcvtq_f64_u64(rhs)));
 #elif defined(CX_X86_128)
     return _mm_castpd_si128(_mm_max_pd(_mm_castsi128_pd(lhs), _mm_castsi128_pd(rhs)));
 #else
@@ -431,8 +424,8 @@ CX_INLINE(CXUInt64x2) CXUInt64x2ShiftLeft(const CXUInt64x2 lhs, const UInt64 rhs
 /// Right-shifts each element in the storage operand by the specified number of bits in each lane of rhs.
 CX_INLINE(CXUInt64x2) CXUInt64x2ShiftElementWiseRight(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
 {
-#if defined(CX_NEON_128)
-    return CXUInt64x2ShiftElementWiseLeft(lhs, vnegq_s64(rhs));
+#if defined(CX_NEON_128_WITH_AARCH64)
+    return CXUInt64x2ShiftElementWiseLeft(lhs, vreinterpretq_u64_s64(vnegq_s64(vreinterpretq_s64_u64(rhs))));
 #elif defined(CX_X86_128)
     return CXUInt64x2ShiftElementWiseLeft(lhs, _mm_sub_epi64(CXUInt64x2MakeZero(), rhs));
 #elif defined(CX_EXT_VECTOR)

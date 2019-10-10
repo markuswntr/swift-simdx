@@ -15,13 +15,7 @@
 #pragma once
 
 #include "Types.h"
-#if defined(CX_NEON_128)
-#include <arm_neon.h>
-#elif defined(CX_X86_128)
-#include <emmintrin.h>
-#else
 #include <stdlib.h>
-#endif
 
 /// Initializes a storage to given elements, from least-significant to most-significant bits.
 /// @return `(CXInt32x2){ element0, element1 }`
@@ -136,7 +130,7 @@ CX_INLINE(CXInt32x2) CXInt32x2FromCXUInt32x2(CXUInt32x2 operand)
 /// @returns `(CXInt32x2){ (Int32)(operand[0]), (Int32)(operand[1]) }`
 CX_INLINE(CXInt32x2) CXInt32x2FromCXFloat64x2(CXFloat64x2 operand)
 {
-#if defined(CX_NEON_128)
+#if defined(CX_NEON_128_WITH_AARCH64)
     return vcvt_s32_f32(vcvt_f32_f64(operand));
 #elif defined(CX_X86_128)
     return _mm_cvtpd_epi32(operand);

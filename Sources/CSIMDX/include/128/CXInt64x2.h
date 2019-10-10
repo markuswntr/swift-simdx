@@ -15,14 +15,7 @@
 #pragma once
 
 #include "Types.h"
-#if defined(CX_NEON_128)
-#include <arm_neon.h>
-#elif defined(CX_X86_128)
-#include <emmintrin.h>
 #include <stdlib.h>
-#else
-#include <stdlib.h>
-#endif
 
 /// Initializes a storage to given elements, from least-significant to most-significant bits.
 /// @return `(CXInt64x2){ element0, element1 }`
@@ -107,7 +100,7 @@ CX_INLINE(void) CXInt64x2SetElement(CXInt64x2* storage, const int index, const I
 /// @returns `(CXInt64x2){ (Int64)(operand[0]), (Int64)(operand[1]) }`
 CX_INLINE(CXInt64x2) CXInt64x2FromCXFloat32x2(CXFloat32x2 operand)
 {
-#if defined(CX_NEON_128)
+#if defined(CX_NEON_128_WITH_AARCH64)
     return vcvtq_s64_f64(vcvt_f64_f32(operand));
 #elif defined(CX_X86_128)
     return (__m128i)__builtin_convertvector( // TODO: NO intel intrinsic?
@@ -154,7 +147,7 @@ CX_INLINE(CXInt64x2) CXInt64x2FromCXUInt32x2(CXUInt32x2 operand)
 /// @returns `(CXInt64x2){ (Int64)(operand[0]), (Int64)(operand[1]) }`
 CX_INLINE(CXInt64x2) CXInt64x2FromCXFloat64x2(CXFloat64x2 operand)
 {
-#if defined(CX_NEON_128)
+#if defined(CX_NEON_128_WITH_AARCH64)
     return vcvtq_s64_f64(operand);
 #elif defined(CX_X86_128)
     return _mm_castpd_si128(operand);
@@ -186,8 +179,8 @@ CX_INLINE(CXInt64x2) CXInt64x2FromCXUInt64x2(CXUInt64x2 operand)
 /// @return `(CXInt64x2){ lhs[0] < rhs[0] ? lhs[0] : rhs[0], lhs[1] < rhs[1] ? lhs[1] : rhs[1] }`
 CX_INLINE(CXInt64x2) CXInt64x2Minimum(const CXInt64x2 lhs, const CXInt64x2 rhs)
 {
-#if defined(CX_NEON_128)
-    return vcvtq_f64_s64(vminq_f64(vcvtq_s64_f64(lhs), vcvtq_s64_f64(rhs)));
+#if defined(CX_NEON_128_WITH_AARCH64)
+    return vcvtq_s64_f64(vminq_f64(vcvtq_f64_s64(lhs), vcvtq_f64_s64(rhs)));
 #elif defined(CX_X86_128)
     // SSE2 has no min on Int32, but on Float64 so use it temporarily
     return _mm_castpd_si128(_mm_min_pd(_mm_castsi128_pd(lhs), _mm_castsi128_pd(rhs)));
@@ -212,8 +205,8 @@ CX_INLINE(CXInt64x2) CXInt64x2Minimum(const CXInt64x2 lhs, const CXInt64x2 rhs)
 /// @return `(CXInt64x3){ lhs[0] > rhs[0] ? lhs[0] : rhs[0], lhs[1] > rhs[1] ? lhs[1] : rhs[1], ... }`
 CX_INLINE(CXInt64x2) CXInt64x2Maximum(const CXInt64x2 lhs, const CXInt64x2 rhs)
 {
-#if defined(CX_NEON_128)
-    return vcvtq_f64_s64(vmaxq_f64(vcvtq_s64_f64(lhs), vcvtq_s64_f64(rhs)));
+#if defined(CX_NEON_128_WITH_AARCH64)
+    return vcvtq_s64_f64(vmaxq_f64(vcvtq_f64_s64(lhs), vcvtq_f64_s64(rhs)));
 #elif defined(CX_X86_128)
     // SSE2 has no min on Int32, but on Float64 so use it temporarily
     return _mm_castpd_si128(_mm_max_pd(_mm_castsi128_pd(lhs), _mm_castsi128_pd(rhs)));
@@ -240,7 +233,7 @@ CX_INLINE(CXInt64x2) CXInt64x2Maximum(const CXInt64x2 lhs, const CXInt64x2 rhs)
 /// @return `(CXInt64x2){ -(operand[0]), -(operand[1]) }`
 CX_INLINE(CXInt64x2) CXInt64x2Negate(const CXInt64x2 operand)
 {
-#if defined(CX_NEON_128)
+#if defined(CX_NEON_128_WITH_AARCH64)
     return vnegq_s64(operand);
 #elif defined(CX_X86_128)
     return _mm_sub_epi64(CXInt64x2MakeZero(), operand);
@@ -258,7 +251,7 @@ CX_INLINE(CXInt64x2) CXInt64x2Negate(const CXInt64x2 operand)
 /// @return `(CXUInt64x2){ abs(operand[0]), abs(operand[1]) }`
 CX_INLINE(CXUInt64x2) CXInt64x2Absolute(const CXInt64x2 operand)
 {
-#if defined(CX_NEON_128)
+#if defined(CX_NEON_128_WITH_AARCH64)
     return vreinterpretq_u64_s64(vabsq_s64(operand));
 #elif defined(CX_X86_128)
      // TODO: SSE2 does not have a native abs operation for storages with 64 bit ints
@@ -484,7 +477,6 @@ CX_INLINE(CXInt64x2) CXInt64x2ShiftElementWiseRight(const CXInt64x2 lhs, const C
     ]};
 #endif
 }
-
 
 /// Right-shifts each element in the storage operand by the specified number of bits.
 CX_INLINE(CXInt64x2) CXInt64x2ShiftRight(const CXInt64x2 lhs, const Int64 rhs)
