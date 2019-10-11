@@ -7,10 +7,9 @@
 .build/
 /.swiftpm
 
-# Xcode
+# IDEs
 build/
 DerivedData/
 /*.xcodeproj
-
-# CLion
 /.idea
+/.devcontainer
