@@ -8,31 +8,10 @@ calculations on any (Swift supporting) hardware and automatically inlines the ap
 target hardware.
 
 > **Warning.** Not meant to be used in production, created for learning purposes!
-> <br/><br/> See [**Stumbling on SIMD**](https://blog.wntr.me/posts/001-the-properties-of-space/) series to learn how this project came to be. If you want to report a bug or an unexpected behaviour, feel free to open an issue. If have suggestions or really anything else that helps evolving the library and/or are interested in the details feel free to contact me on [GitHub](https://github.com/markuswntr) or [Twitter](https://twitter.com/markuswntr).
-
-## TODO
-
-Move TODOs to Issues and/or a Project at some point
-
-- [x] 64-bit storage
-- [x] 128-bit storage
-- [x] Int32, UInt32, Float32 and Float64 storable
-- [x] Conform to common `Numeric` protocols functions (see upcoming blog post #link )
-- [ ] Documentation
-- [ ] Int8, UInt8, Int16 and UInt16 storable
-- [ ] Boolean storage
-- [ ] Comparison (Equal, GreaterThan, LowerThan, ...)
-- [ ] 256-bit storage
-- [ ] Multi-dimensional storage (Matrix)
-- [ ] Extend conformance to the `Numeric` protocols
-    - [ ] Instance from RandomNumberGenerator
-    - [ ] Cast most vector types natively using intrinsics
-- [ ] Make `count` on SIMDX static
-- [ ] Extension on Array `init(SIMDX)` that uses native intrinsics store
-- [ ] 512-bit storage
-- [x] Remove the ARM 64 requirement and any other platform restriction in Package.swift
-- [ ] Re-evaluate the necessity of SIMDX being ExpressibleByArrayLiteral
-- [ ] The generic implementation is not the fastest it could be. Do some more magic.
+> <br/><br/> See [**Stumbling on SIMD**](https://blog.wntr.me/posts/001-the-properties-of-space/) series to learn how
+this project came to be. If you want to report a bug or an unexpected behaviour, feel free to open an issue. If have
+suggestions or really anything else that helps evolving the library and/or are interested in the details feel free to
+contact me on [GitHub](https://github.com/markuswntr) or [Twitter](https://twitter.com/markuswntr).
 
 ## Coding example
 
@@ -98,6 +77,31 @@ specifically, the type `SIMDX4<Float>` masks a `__m128` intrinsic type on x86 wi
 type on Arm with Neon. If neither of both are available, the module instructs the compiler to optimise the vector code.
 If this is not possible on the target hardware, the library provides a fallback to a C-array of float type and fixed
 length, i.e. `float array[4]`.
+
+## TODO
+
+Move TODOs to Issues and/or a Project at some point
+
+- [x] 64-bit storage
+- [x] 128-bit storage
+- [x] Int32, UInt32, Float32 and Float64 storable
+- [x] Conform to common `Numeric` protocols functions (see upcoming blog post #link )
+- [ ] Documentation
+- [ ] Int8, UInt8, Int16 and UInt16 storable
+- [ ] Boolean storage
+- [ ] Comparison (Equal, GreaterThan, LowerThan, ...)
+- [ ] 256-bit storage
+- [ ] Multi-dimensional storage (Matrix)
+- [ ] Extend conformance to the `Numeric` protocols
+    - [ ] Instance from RandomNumberGenerator
+    - [ ] Cast most vector types natively using intrinsics
+- [ ] Make `count` on SIMDX static
+- [ ] Extension on Array `init(SIMDX)` that uses native intrinsics store
+- [ ] 512-bit storage
+- [x] Remove the ARM 64 requirement and any other platform restriction in Package.swift
+- [ ] Not all intrinsics route through the fastest way possible. Re-visit and improve.
+- [ ] Re-evaluate the necessity of SIMDX being ExpressibleByArrayLiteral
+- [ ] The generic implementation is not the fastest it could be. Do some more magic.
 
 ## References 
 
