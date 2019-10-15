@@ -30,6 +30,12 @@ public protocol FixedWidthIntegerRawStorage: BinaryIntegerRawStorage where Eleme
     /// For unsigned integer types, the minimum value is always `0`. For signed integer
     /// types, this value is `-(2 ** (bitWidth - 1))`, where `**` is exponentiation.
     static var min: Self { get }
+
+    /// Performs element-by-element comparison and returns the greater of each comparison in a new storage.
+    static func maximum(_ lhs: Self, _ rhs: Self) -> Self
+
+    /// Performs element-by-element comparison and returns the lesser of each comparison in a new storage.
+    static func minimum(_ lhs: Self, _ rhs: Self) -> Self
 }
 
 extension FixedWidthIntegerRawStorage {

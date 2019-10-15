@@ -58,6 +58,18 @@ extension Int32x2 {
     }
 }
 
+// MARK: - Comparison
+extension Int32x2 {
+
+    @inlinable public static func minimum(_ lhs: Int32x2, _ rhs: Int32x2) -> Int32x2 {
+        .init(rawValue: CXInt32x2Minimum(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inlinable public static func maximum(_ lhs: Int32x2, _ rhs: Int32x2) -> Int32x2 {
+        .init(rawValue: CXInt32x2Maximum(lhs.rawValue, rhs.rawValue))
+    }
+}
+
 // MARK: - Bitwise
 extension Int32x2 {
 

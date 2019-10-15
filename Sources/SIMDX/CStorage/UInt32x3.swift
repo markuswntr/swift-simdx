@@ -58,6 +58,18 @@ extension UInt32x3 {
     }
 }
 
+// MARK: - Comparison
+extension UInt32x3 {
+
+    @inlinable public static func minimum(_ lhs: UInt32x3, _ rhs: UInt32x3) -> UInt32x3 {
+        .init(rawValue: CXUInt32x3Minimum(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inlinable public static func maximum(_ lhs: UInt32x3, _ rhs: UInt32x3) -> UInt32x3 {
+        .init(rawValue: CXUInt32x3Maximum(lhs.rawValue, rhs.rawValue))
+    }
+}
+
 // MARK: - Bitwise
 extension UInt32x3 {
 

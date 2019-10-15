@@ -58,6 +58,18 @@ extension UInt64x2 {
     }
 }
 
+// MARK: - Comparison
+extension UInt64x2 {
+
+    @inlinable public static func minimum(_ lhs: UInt64x2, _ rhs: UInt64x2) -> UInt64x2 {
+        .init(rawValue: CXUInt64x2Minimum(lhs.rawValue, rhs.rawValue))
+    }
+
+    @inlinable public static func maximum(_ lhs: UInt64x2, _ rhs: UInt64x2) -> UInt64x2 {
+        .init(rawValue: CXUInt64x2Maximum(lhs.rawValue, rhs.rawValue))
+    }
+}
+
 // MARK: - Bitwise
 extension UInt64x2 {
 
