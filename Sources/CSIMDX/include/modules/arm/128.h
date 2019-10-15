@@ -20,17 +20,16 @@
 // =============================================================================================
 
 /// Use the neon intrinsic path
-#define CX_NEON_128
+#define CX_NEON_128 1
 
 /// Additionally, use the extend set of aarch64 if available
 #ifdef __aarch64__
-#define CX_NEON_128_WITH_AARCH64
+#define CX_NEON_128_WITH_AARCH64 1
 #endif
 
-// Some instructions may fallback to clang provided extended vector support if Arm features
-// are missing (still faster than generic) - like float64 on none aarch64 hardware.
-#if __has_extension(attribute_ext_vector_type)
-#define CX_EXT_VECTOR
+// Some instructions may fallback to clang provided extended vector support if available.
+#if defined(__has_extension) && __has_extension(attribute_ext_vector_type)
+#define CX_EXT_VECTOR 1
 #endif
 
 /// Function pre-fix to make it static and to try force inlining by the compiler. Takes the return value as input.
@@ -39,8 +38,3 @@
 
 /// Include the 128 bit instructions
 #include "128/128.h"
-
-#undef CX_INLINE
-#undef CX_EXT_VECTOR
-#undef CX_NEON_128_WITH_AARCH64
-#undef CX_NEON_128

@@ -12,8 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#pragma once
+#include <stdint.h>
 
-#include "Types/CXFloat.h"
-#include "Types/CXInt.h"
-#include "Types/CXUInt.h"
+/// The 32-bit floating point type
+#define Float32 float
+/// The 64-bit floating point type
+#define Float64 double
+
+/// The 32-bit signed integer type
+#define Int32 int32_t
+/// The 64-bit signed integer type
+#define Int64 int64_t
+
+/// The 32-bit unsigned integer type
+#define UInt32 uint32_t
+/// The 64-bit unsigned integer type
+#define UInt64 uint64_t

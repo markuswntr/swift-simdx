@@ -19,16 +19,13 @@
 // ======================================================================
 
 /// Use the vector extensions of clang if possible
-#if __has_extension(attribute_ext_vector_type)
-#define CX_EXT_VECTOR
+#if defined(__has_extension) && __has_extension(attribute_ext_vector_type)
+#define CX_EXT_VECTOR 1
 #endif
 
 /// Function pre-fix to make it static and to try force inlining by the compiler. Takes the return value as input.
 /// Adds the default function attributes for intrinsic wrapping functions.
 #define CX_INLINE(returnType) static __inline__ returnType __attribute__((__always_inline__, __nodebug__))
 
-/// Include the 128 bit instructions and use the fallback instruction path (no arguments)s
+/// Include the 128 bit instructions and use the fallback instruction path (no arguments)
 #include "128/128.h"
-
-#undef CX_INLINE
-#undef CX_EXT_VECTOR

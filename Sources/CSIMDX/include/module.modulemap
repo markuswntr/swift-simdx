@@ -14,6 +14,7 @@ module CSIMDX {
 
     module arm_128 {
         requires neon
+        requires aarch64
         header "modules/arm/128.h"
     }
 

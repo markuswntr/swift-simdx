@@ -21,7 +21,7 @@
 // ==============================================================================================
 
 /// Use the x86 intrinsic path
-#define CX_X86_128
+#define CX_X86_128 1
 
 /// The default function attributes for intrinsic wrapping functions
 #define DEFAULT_FUNCTION_ATTRIBUTES  __attribute__((__always_inline__, __nodebug__, __min_vector_width__(128)))
@@ -30,8 +30,5 @@
 #define CX_INLINE(returnType) static __inline__ returnType DEFAULT_FUNCTION_ATTRIBUTES
 
 /// Include the 128 bit instructions
+#include <emmintrin.h>
 #include "128/128.h"
-
-#undef CX_INLINE
-#undef DEFAULT_FUNCTION_ATTRIBUTES
-#undef CX_X86_128

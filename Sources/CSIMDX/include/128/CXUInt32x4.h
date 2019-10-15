@@ -14,16 +14,16 @@
 
 #pragma once
 
-#include "Types.h"
+#include "types.h"
 #include <stdlib.h>
 
 /// Initializes a storage to given elements, from least-significant to most-significant bits.
 /// @return `(CXUInt32x4){ element0, element1, element2, element3 }`
 CX_INLINE(CXUInt32x4) CXUInt32x4Make(UInt32 element0, UInt32 element1, UInt32 element2, UInt32 element3)
 {
-#if defined(CX_NEON_128) || defined(CX_EXT_VECTOR)
+#if CX_NEON_128 || CX_EXT_VECTOR
     return (CXUInt32x4){ element0, element1, element2, element3 };
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return _mm_setr_epi32(element0, element1, element2, element3);
 #else
     return (CXUInt32x4){ .val = [ element0, element1, element2, element3 ] };
@@ -34,11 +34,11 @@ CX_INLINE(CXUInt32x4) CXUInt32x4Make(UInt32 element0, UInt32 element1, UInt32 el
 /// @return `(CXUInt32x4){ pointer[0], pointer[1], pointer[2], pointer[3] }`
 CX_INLINE(CXUInt32x4) CXUInt32x4MakeLoad(const UInt32* pointer)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vld1q_u32(pointer);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return _mm_loadu_si128((const __m128i*)pointer);
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return (CXUInt32x4){ pointer[0], pointer[1], pointer[2], pointer[3] };
 #else
     return (CXUInt32x4){ .val = [ pointer[0], pointer[1], pointer[2], pointer[3] ] };
@@ -49,11 +49,11 @@ CX_INLINE(CXUInt32x4) CXUInt32x4MakeLoad(const UInt32* pointer)
 /// @return `(CXUInt32x4){ value, value, value, value }`
 CX_INLINE(CXUInt32x4) CXUInt32x4MakeRepeatingElement(const UInt32 value)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vdupq_n_u32(value);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return _mm_set1_epi32(value);
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return (CXUInt32x4)(value);
 #else
     return (CXUInt32x4){ .val = [ value, value, value, value ] };
@@ -64,7 +64,7 @@ CX_INLINE(CXUInt32x4) CXUInt32x4MakeRepeatingElement(const UInt32 value)
 /// @return `(CXUInt32x4){ 0, 0, 0, 0 }`
 CX_INLINE(CXUInt32x4) CXUInt32x4MakeZero(void)
 {
-#if defined(CX_X86_128)
+#if CX_X86_128
     return _mm_setzero_si128();
 #else
     return CXUInt32x4MakeRepeatingElement(0);
@@ -77,7 +77,7 @@ CX_INLINE(CXUInt32x4) CXUInt32x4MakeZero(void)
 /// @return `storage[index]`
 CX_INLINE(UInt32) CXUInt32x4GetElement(const CXUInt32x4 storage, const int index)
 {
-#if defined(CX_NEON_128) || defined(CX_X86_128) || defined(CX_EXT_VECTOR)
+#if CX_NEON_128 || CX_X86_128 || CX_EXT_VECTOR
     return ((UInt32*)&(storage))[index];
 #else
     return storage.val[index];
@@ -87,7 +87,7 @@ CX_INLINE(UInt32) CXUInt32x4GetElement(const CXUInt32x4 storage, const int index
 /// Sets the element at `index` from `storage` to given value, i.e. `(*storage)[index] = value;`
 CX_INLINE(void) CXUInt32x4SetElement(CXUInt32x4* storage, const int index, const UInt32 value)
 {
-#if defined(CX_NEON_128) || defined(CX_X86_128) || defined(CX_EXT_VECTOR)
+#if CX_NEON_128 || CX_X86_128 || CX_EXT_VECTOR
     ((UInt32*)storage)[index] = value;
 #else
     (*storage).val[index] = value;
@@ -100,11 +100,11 @@ CX_INLINE(void) CXUInt32x4SetElement(CXUInt32x4* storage, const int index, const
 /// @returns `(CXUInt32x4){ (UInt32)(operand[0]), (UInt32)(operand[1]), (UInt32)(operand[2]), (UInt32)(operand[3]) }`
 CX_INLINE(CXUInt32x4) CXUInt32x4FromCXFloat32x4(CXFloat32x4 operand)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vcvtq_u32_f32(operand);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return _mm_cvtps_epi32(operand);
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return __builtin_convertvector(operand, CXUInt32x4);
 #else
     return (CXUInt32x4){ .val = [
@@ -120,11 +120,11 @@ CX_INLINE(CXUInt32x4) CXUInt32x4FromCXFloat32x4(CXFloat32x4 operand)
 /// @returns `(CXUInt32x4){ (UInt32)(operand[0]), (UInt32)(operand[1]), (UInt32)(operand[2]), (UInt32)(operand[3]) }`
 CX_INLINE(CXUInt32x4) CXUInt32x4FromCXInt32x4(CXInt32x4 operand)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vreinterpretq_u32_s32(operand);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return operand;
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return __builtin_convertvector(operand, CXUInt32x4);
 #else
     return (CXUInt32x4){ .val = [
@@ -142,9 +142,9 @@ CX_INLINE(CXUInt32x4) CXUInt32x4FromCXInt32x4(CXInt32x4 operand)
 /// @return `(CXUInt32x4){ lhs[0] < rhs[0] ? lhs[0] : rhs[0], lhs[1] < rhs[1] ? lhs[1] : rhs[1], ... }`
 CX_INLINE(CXUInt32x4) CXUInt32x4Minimum(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vminq_u32(lhs, rhs);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     // SSE2 has no min on Int32, but on Float64 so use it temporarily
     return _mm_cvtpd_epi32(_mm_min_pd(_mm_cvtepi32_pd(lhs), _mm_cvtepi32_pd(rhs)));
 #else
@@ -152,7 +152,7 @@ CX_INLINE(CXUInt32x4) CXUInt32x4Minimum(const CXUInt32x4 lhs, const CXUInt32x4 r
     UInt32 lhs1 = CXUInt32x4GetElement(lhs, 1), rhs1 = CXUInt32x4GetElement(rhs, 1);
     UInt32 lhs2 = CXUInt32x4GetElement(lhs, 2), rhs2 = CXUInt32x4GetElement(rhs, 2);
     UInt32 lhs3 = CXUInt32x4GetElement(lhs, 3), rhs3 = CXUInt32x4GetElement(rhs, 3);
-    #if defined(CX_EXT_VECTOR)
+    #if CX_EXT_VECTOR
         return (CXUInt32x4){
             lhs0 < rhs0 ? lhs0 : rhs0,
             lhs1 < rhs1 ? lhs1 : rhs1,
@@ -174,9 +174,9 @@ CX_INLINE(CXUInt32x4) CXUInt32x4Minimum(const CXUInt32x4 lhs, const CXUInt32x4 r
 /// @return `(CXUInt32x4){ lhs[0] > rhs[0] ? lhs[0] : rhs[0], lhs[1] > rhs[1] ? lhs[1] : rhs[1], ... }`
 CX_INLINE(CXUInt32x4) CXUInt32x4Maximum(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vmaxq_u32(lhs, rhs);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     // SSE2 has no min on Int32, but on Float64 so use it temporarily
     return _mm_cvtpd_epi32(_mm_max_pd(_mm_cvtepi32_pd(lhs), _mm_cvtepi32_pd(rhs)));
 #else
@@ -184,7 +184,7 @@ CX_INLINE(CXUInt32x4) CXUInt32x4Maximum(const CXUInt32x4 lhs, const CXUInt32x4 r
     UInt32 lhs1 = CXUInt32x4GetElement(lhs, 1), rhs1 = CXUInt32x4GetElement(rhs, 1);
     UInt32 lhs2 = CXUInt32x4GetElement(lhs, 2), rhs2 = CXUInt32x4GetElement(rhs, 2);
     UInt32 lhs3 = CXUInt32x4GetElement(lhs, 3), rhs3 = CXUInt32x4GetElement(rhs, 3);
-    #if defined(CX_EXT_VECTOR)
+    #if CX_EXT_VECTOR
         return (CXUInt32x4){
             lhs0 > rhs0 ? lhs0 : rhs0,
             lhs1 > rhs1 ? lhs1 : rhs1,
@@ -217,11 +217,11 @@ CX_INLINE(CXUInt32x4) CXUInt32x4Absolute(const CXUInt32x4 operand)
 /// @return `(CXUInt32x4){ lhs[0] + rhs[0], lhs[1] + rhs[1], ... }`
 CX_INLINE(CXUInt32x4) CXUInt32x4Add(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vaddq_u32(lhs, rhs);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return _mm_add_epi32(lhs, rhs);
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return lhs + rhs;
 #else
     return (CXUInt32x4){ .val = [
@@ -237,11 +237,11 @@ CX_INLINE(CXUInt32x4) CXUInt32x4Add(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
 /// @return `(CXUInt32x4){ lhs[0] - rhs[0], lhs[1] - rhs[1], ... }`
 CX_INLINE(CXUInt32x4) CXUInt32x4Subtract(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vsubq_u32(lhs, rhs);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return _mm_sub_epi32(lhs, rhs);
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return lhs - rhs;
 #else
     return (CXUInt32x4){ .val = [
@@ -259,9 +259,9 @@ CX_INLINE(CXUInt32x4) CXUInt32x4Subtract(const CXUInt32x4 lhs, const CXUInt32x4 
 /// @return `(CXUInt32x4){ lhs[0] * rhs[0], lhs[1] * rhs[1], ... }`
 CX_INLINE(CXUInt32x4) CXUInt32x4Multiply(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vmulq_u32(lhs, rhs);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     // SSE2 does not have a native multiply operation for 32bit ints
     __m128i temp0 = _mm_mul_epu32(lhs, rhs);
     __m128i temp1 = _mm_mul_epu32(_mm_srli_si128(lhs, 4), _mm_srli_si128(rhs, 4));
@@ -269,7 +269,7 @@ CX_INLINE(CXUInt32x4) CXUInt32x4Multiply(const CXUInt32x4 lhs, const CXUInt32x4 
         _mm_shuffle_epi32(temp0, _MM_SHUFFLE(0, 0, 2, 0)),
         _mm_shuffle_epi32(temp1, _MM_SHUFFLE(0, 0, 2, 0))
     );
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return lhs * rhs;
 #else
     return (CXUInt32x4){ .val = [
@@ -286,11 +286,11 @@ CX_INLINE(CXUInt32x4) CXUInt32x4Multiply(const CXUInt32x4 lhs, const CXUInt32x4 
 /// Bitwise Not
 CX_INLINE(CXUInt32x4) CXUInt32x4BitwiseNot(const CXUInt32x4 operand)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vmvnq_u32(operand);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return _mm_xor_si128(operand, _mm_set1_epi64(_mm_cvtsi64_m64(-1LL)));
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return ~operand;
 #else
     return (CXUInt32x4){ .val = [
@@ -305,11 +305,11 @@ CX_INLINE(CXUInt32x4) CXUInt32x4BitwiseNot(const CXUInt32x4 operand)
 /// Bitwise And
 CX_INLINE(CXUInt32x4) CXUInt32x4BitwiseAnd(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vandq_u32(lhs, rhs);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return _mm_and_si128(rhs, lhs);
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return lhs & rhs;
 #else
     return (CXUInt32x4){ .val = [
@@ -324,11 +324,11 @@ CX_INLINE(CXUInt32x4) CXUInt32x4BitwiseAnd(const CXUInt32x4 lhs, const CXUInt32x
 /// Bitwise And Not
 CX_INLINE(CXUInt32x4) CXUInt32x4BitwiseAndNot(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return CXUInt32x4BitwiseAnd(CXUInt32x4BitwiseNot(lhs), rhs);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return _mm_andnot_si128(lhs, rhs);
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return CXUInt32x4BitwiseNot(lhs) & rhs;
 #else
     return (CXUInt32x4){ .val = [
@@ -343,11 +343,11 @@ CX_INLINE(CXUInt32x4) CXUInt32x4BitwiseAndNot(const CXUInt32x4 lhs, const CXUInt
 /// Bitwise Or
 CX_INLINE(CXUInt32x4) CXUInt32x4BitwiseOr(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vorrq_u32(lhs, rhs);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return _mm_or_si128(lhs, rhs);
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return lhs | rhs;
 #else
     return (CXUInt32x4){ .val = [
@@ -362,11 +362,11 @@ CX_INLINE(CXUInt32x4) CXUInt32x4BitwiseOr(const CXUInt32x4 lhs, const CXUInt32x4
 /// Bitwise Exclusive Or
 CX_INLINE(CXUInt32x4) CXUInt32x4BitwiseExclusiveOr(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return veorq_u32(lhs, rhs);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return _mm_xor_si128(lhs, rhs);
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return lhs ^ rhs;
 #else
     return (CXUInt32x4){ .val = [
@@ -383,11 +383,11 @@ CX_INLINE(CXUInt32x4) CXUInt32x4BitwiseExclusiveOr(const CXUInt32x4 lhs, const C
 /// Left-shifts each element in the storage operand by the specified number of bits in each lane of rhs.
 CX_INLINE(CXUInt32x4) CXUInt32x4ShiftElementWiseLeft(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vshlq_u32(lhs, rhs);
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return _mm_sll_epi32(lhs, rhs);
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return (CXUInt32x4){
          CXUInt32x4GetElement(lhs, 0) << CXUInt32x4GetElement(rhs, 0),
          CXUInt32x4GetElement(lhs, 1) << CXUInt32x4GetElement(rhs, 1),
@@ -407,9 +407,9 @@ CX_INLINE(CXUInt32x4) CXUInt32x4ShiftElementWiseLeft(const CXUInt32x4 lhs, const
 /// Left-shifts each element in the storage operand by the specified number of bits.
 CX_INLINE(CXUInt32x4) CXUInt32x4ShiftLeft(const CXUInt32x4 lhs, const UInt32 rhs)
 {
-#if defined(CX_NEON_128) || defined(CX_X86_128)
+#if CX_NEON_128 || CX_X86_128
     return CXUInt32x4ShiftElementWiseLeft(lhs, CXUInt32x4MakeRepeatingElement(rhs));
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return lhs << rhs;
 #else
     return (CXUInt32x4){ .val = [
@@ -424,11 +424,11 @@ CX_INLINE(CXUInt32x4) CXUInt32x4ShiftLeft(const CXUInt32x4 lhs, const UInt32 rhs
 /// Right-shifts each element in the storage operand by the specified number of bits in each lane of rhs.
 CX_INLINE(CXUInt32x4) CXUInt32x4ShiftElementWiseRight(const CXUInt32x4 lhs, const CXUInt32x4 rhs)
 {
-#if defined(CX_NEON_128)
+#if CX_NEON_128
     return vreinterpretq_s32_u32(vshlq_s32(vreinterpretq_s32_u32(lhs), vnegq_s32(vreinterpretq_s32_u32(rhs))));
-#elif defined(CX_X86_128)
+#elif CX_X86_128
     return _mm_sra_epi32(lhs, rhs);
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return (CXUInt32x4){
          CXUInt32x4GetElement(lhs, 0) >> CXUInt32x4GetElement(rhs, 0),
          CXUInt32x4GetElement(lhs, 1) >> CXUInt32x4GetElement(rhs, 1),
@@ -448,9 +448,9 @@ CX_INLINE(CXUInt32x4) CXUInt32x4ShiftElementWiseRight(const CXUInt32x4 lhs, cons
 /// Right-shifts each element in the storage operand by the specified number of bits.
 CX_INLINE(CXUInt32x4) CXUInt32x4ShiftRight(const CXUInt32x4 lhs, const UInt32 rhs)
 {
-#if defined(CX_NEON_128) || defined(CX_X86_128)
+#if CX_NEON_128 || CX_X86_128
     return CXUInt32x4ShiftElementWiseRight(lhs, CXUInt32x4MakeRepeatingElement(rhs));
-#elif defined(CX_EXT_VECTOR)
+#elif CX_EXT_VECTOR
     return lhs >> rhs;
 #else
     return (CXUInt32x4){ .val = [
