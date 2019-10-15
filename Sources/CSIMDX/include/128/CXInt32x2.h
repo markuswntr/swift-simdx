@@ -191,26 +191,18 @@ CX_INLINE(CXInt32x2) CXInt32x2Minimum(const CXInt32x2 lhs, const CXInt32x2 rhs)
 {
 #if CX_NEON_128
     return vmin_s32(lhs, rhs);
-#elif CX_X86_128
-    // SSE2 has no min on Int32, but on Float64 so use it temporarily
-    return _mm_cvtpd_epi32(_mm_min_pd(_mm_cvtepi32_pd(lhs), _mm_cvtepi32_pd(rhs)));
+//#elif CX_X86_128
+//    // SSE2 has no min on Int32, but on Float64 so use it temporarily
+//    return _mm_cvtpd_epi32(_mm_min_pd(_mm_cvtepi32_pd(lhs), _mm_cvtepi32_pd(rhs)));
 #else
     Int32 lhs0 = CXInt32x2GetElement(lhs, 0);
     Int32 rhs0 = CXInt32x2GetElement(rhs, 0);
     Int32 lhs1 = CXInt32x2GetElement(lhs, 1);
     Int32 rhs1 = CXInt32x2GetElement(rhs, 1);
-
-    #if CX_EXT_VECTOR
-        return (CXInt32x2){
-            lhs0 < rhs0 ? lhs0 : rhs0,
-            lhs1 < rhs1 ? lhs1 : rhs1
-        };
-    #else
-        return (CXInt32x2){ .val = [
-            lhs0 < rhs0 ? lhs0 : rhs0,
-            lhs1 < rhs1 ? lhs1 : rhs1
-        ]};
-    #endif
+    return CXInt32x2Make(
+        lhs0 < rhs0 ? lhs0 : rhs0,
+        lhs1 < rhs1 ? lhs1 : rhs1
+    );
 #endif
 }
 
@@ -220,26 +212,18 @@ CX_INLINE(CXInt32x2) CXInt32x2Maximum(const CXInt32x2 lhs, const CXInt32x2 rhs)
 {
 #if CX_NEON_128
     return vmax_s32(lhs, rhs);
-#elif CX_X86_128
-    // SSE2 has no min on Int32, but on Float64 so use it temporarily
-    return _mm_cvtpd_epi32(_mm_max_pd(_mm_cvtepi32_pd(lhs), _mm_cvtepi32_pd(rhs)));
+//#elif CX_X86_128
+//    // SSE2 has no min on Int32, but on Float64 so use it temporarily
+//    return _mm_cvtpd_epi32(_mm_max_pd(_mm_cvtepi32_pd(lhs), _mm_cvtepi32_pd(rhs)));
 #else
     Int32 lhs0 = CXInt32x2GetElement(lhs, 0);
     Int32 rhs0 = CXInt32x2GetElement(rhs, 0);
     Int32 lhs1 = CXInt32x2GetElement(lhs, 1);
     Int32 rhs1 = CXInt32x2GetElement(rhs, 1);
-
-    #if CX_EXT_VECTOR
-        return (CXInt32x2){
-            lhs0 > rhs0 ? lhs0 : rhs0,
-            lhs1 > rhs1 ? lhs1 : rhs1
-        };
-    #else
-        return (CXInt32x2){ .val = [
-            lhs0 > rhs0 ? lhs0 : rhs0,
-            lhs1 > rhs1 ? lhs1 : rhs1
-        ]};
-    #endif
+    return CXInt32x2Make(
+        lhs0 > rhs0 ? lhs0 : rhs0,
+        lhs1 > rhs1 ? lhs1 : rhs1
+    );
 #endif
 }
 

@@ -3,6 +3,8 @@ import CSIMDX
 
 final class CXFloat32x3Tests: XCTestCase {
 
+    // MARK: Make
+
     func testMake() {
         let collection = CXFloat32x3Make(1, 2, 3)
 
@@ -11,7 +13,7 @@ final class CXFloat32x3Tests: XCTestCase {
         XCTAssertEqual(CXFloat32x3GetElement(collection, 2), 3)
     }
 
-    func testLoad() {
+    func testMakeLoad() {
         var array: [Float32] = [1, 2, 3]
         let collection = CXFloat32x3MakeLoad(&array)
 
@@ -20,7 +22,7 @@ final class CXFloat32x3Tests: XCTestCase {
         XCTAssertEqual(CXFloat32x3GetElement(collection, 2), 3)
     }
 
-    func testMakeRepeatingValues() {
+    func testMakeRepeatingElement() {
         let collection = CXFloat32x3MakeRepeatingElement(3)
 
         XCTAssertEqual(CXFloat32x3GetElement(collection, 0), 3)
@@ -28,7 +30,17 @@ final class CXFloat32x3Tests: XCTestCase {
         XCTAssertEqual(CXFloat32x3GetElement(collection, 2), 3)
     }
 
-    func testGetter() {
+    func testMakeZero() {
+        let collection = CXFloat32x3MakeZero()
+
+        XCTAssertEqual(CXFloat32x3GetElement(collection, 0), 0)
+        XCTAssertEqual(CXFloat32x3GetElement(collection, 1), 0)
+        XCTAssertEqual(CXFloat32x3GetElement(collection, 2), 0)
+    }
+
+    // MARK: Access
+
+    func testGetElement() {
         let collection = CXFloat32x3Make(1, 2, 3)
 
         XCTAssertEqual(CXFloat32x3GetElement(collection, 0), 1)
@@ -36,7 +48,7 @@ final class CXFloat32x3Tests: XCTestCase {
         XCTAssertEqual(CXFloat32x3GetElement(collection, 2), 3)
     }
 
-    func testSetter() {
+    func testSetElement() {
         var collection = CXFloat32x3Make(1, 2, 3)
 
         XCTAssertEqual(CXFloat32x3GetElement(collection, 0), 1)
@@ -52,13 +64,49 @@ final class CXFloat32x3Tests: XCTestCase {
         XCTAssertEqual(CXFloat32x3GetElement(collection, 2), 7)
     }
 
-    func testZero() {
-        let collection = CXFloat32x3MakeZero()
+    // MARK: Conversion
 
-        XCTAssertEqual(CXFloat32x3GetElement(collection, 0), 0)
-        XCTAssertEqual(CXFloat32x3GetElement(collection, 1), 0)
-        XCTAssertEqual(CXFloat32x3GetElement(collection, 2), 0)
+    func testConvertFromInt32x3() {
+        let fromStorage = CXInt32x3Make(-2, 1, 0)
+        let storage = CXFloat32x3FromCXInt32x3(fromStorage)
+
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 0), -2.0)
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 1), 1.0)
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 2), 0.0)
     }
+    
+    func testConvertFromUInt32x3() {
+        let fromStorage = CXUInt32x3Make(2, 5, 3)
+        let storage = CXFloat32x3FromCXUInt32x3(fromStorage)
+
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 0), 2)
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 1), 5)
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 2), 3)
+    }
+
+    // MARK: Comparison
+
+    func testMinimum() {
+        let lhs = CXFloat32x3Make(34, 12, 0)
+        let rhs = CXFloat32x3Make(-34, 24, -0)
+        let storage = CXFloat32x3Minimum(lhs, rhs)
+
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 0), -34)
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 1), 12)
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 2), 0)
+    }
+
+    func testMaximum() {
+        let lhs = CXFloat32x3Make(34, 12, 0)
+        let rhs = CXFloat32x3Make(-34, 24, -0)
+        let storage = CXFloat32x3Maximum(lhs, rhs)
+
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 0), 34)
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 1), 24)
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 2), 0)
+    }
+
+    // MARK: Arithmetic
 
     func testAbsolute() {
         let normal = CXFloat32x3Make(-1, 0, 3)
@@ -118,18 +166,31 @@ final class CXFloat32x3Tests: XCTestCase {
         XCTAssertEqual(CXFloat32x3GetElement(product, 2), -1)
     }
 
+    func testSquareRoot() {
+        let storage =  CXFloat32x3SquareRoot(CXFloat32x3Make(25, 144, 64))
+
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 0), 5)
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 1), 12)
+        XCTAssertEqual(CXFloat32x3GetElement(storage, 2), 8)
+    }
+
     static var allTests = [
         ("testMake", testMake),
-        ("testLoad", testLoad),
-        ("testMakeRepeatingValues", testMakeRepeatingValues),
-        ("testGetter", testGetter),
-        ("testSetter", testSetter),
-        ("testZero", testZero),
-        ("testAbsolute", testAbsolute),
+        ("testMakeLoad", testMakeLoad),
+        ("testMakeRepeatingElement", testMakeRepeatingElement),
+        ("testMakeZero", testMakeZero),
+        ("testGetElement", testGetElement),
+        ("testSetElement", testSetElement),
+        ("testConvertFromInt32x3", testConvertFromInt32x3),
+        ("testConvertFromUInt32x3", testConvertFromUInt32x3),
+        ("testMinimum", testMinimum),
+        ("testMaximum", testMaximum),
         ("testNegate", testNegate),
+        ("testAbsolute", testAbsolute),
         ("testAdd", testAdd),
         ("testSubtract", testSubtract),
         ("testMultiply", testMultiply),
-        ("testDivide", testDivide)
+        ("testDivide", testDivide),
+        ("testSquareRoot", testSquareRoot),
     ]
 }

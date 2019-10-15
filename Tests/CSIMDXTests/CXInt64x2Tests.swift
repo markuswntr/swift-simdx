@@ -3,6 +3,8 @@ import CSIMDX
 
 final class CXInt64x2Tests: XCTestCase {
 
+    // MARK: Make
+
     func testMake() {
         let collection = CXInt64x2Make(1, 2)
 
@@ -10,7 +12,7 @@ final class CXInt64x2Tests: XCTestCase {
         XCTAssertEqual(CXInt64x2GetElement(collection, 1), 2)
     }
 
-    func testLoad() {
+    func testMakeLoad() {
         var array: [Int64] = [1, 2]
         let collection = CXInt64x2MakeLoad(&array)
 
@@ -18,21 +20,30 @@ final class CXInt64x2Tests: XCTestCase {
         XCTAssertEqual(CXInt64x2GetElement(collection, 1), 2)
     }
 
-    func testMakeRepeatingValues() {
+    func testMakeRepeatingElement() {
         let collection = CXInt64x2MakeRepeatingElement(3)
 
         XCTAssertEqual(CXInt64x2GetElement(collection, 0), 3)
         XCTAssertEqual(CXInt64x2GetElement(collection, 1), 3)
     }
 
-    func testGetter() {
+    func testMakeZero() {
+        let collection = CXInt64x2MakeZero()
+
+        XCTAssertEqual(CXInt64x2GetElement(collection, 0), 0)
+        XCTAssertEqual(CXInt64x2GetElement(collection, 1), 0)
+    }
+
+    // MARK: Access
+
+    func testGetElement() {
         let collection = CXInt64x2Make(1, 2)
 
         XCTAssertEqual(CXInt64x2GetElement(collection, 0), 1)
         XCTAssertEqual(CXInt64x2GetElement(collection, 1), 2)
     }
 
-    func testSetter() {
+    func testSetElement() {
         var collection = CXInt64x2Make(1, 2)
 
         XCTAssertEqual(CXInt64x2GetElement(collection, 0), 1)
@@ -45,12 +56,69 @@ final class CXInt64x2Tests: XCTestCase {
         XCTAssertEqual(CXInt64x2GetElement(collection, 1), 6)
     }
 
-    func testZero() {
-        let collection = CXInt64x2MakeZero()
+    // MARK: Conversion
 
-        XCTAssertEqual(CXInt64x2GetElement(collection, 0), 0)
-        XCTAssertEqual(CXInt64x2GetElement(collection, 1), 0)
+    func testConvertFromFloat32x2() {
+        let fromStorage = CXFloat32x2Make(2.49, 0.51)
+        let storage = CXInt64x2FromCXFloat32x2(fromStorage)
+
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), 2)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), 0)
     }
+
+    func testConvertFromInt32x2() {
+        let fromStorage = CXInt32x2Make(-34, 12)
+        let storage = CXInt64x2FromCXInt32x2(fromStorage)
+
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), -34)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), 12)
+    }
+
+    func testConvertFromUInt32x2() {
+        let fromStorage = CXUInt32x2Make(2, 5)
+        let storage = CXInt64x2FromCXUInt32x2(fromStorage)
+
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), 2)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), 5)
+    }
+
+    func testConvertFromFloat64x2() {
+        let fromStorage = CXFloat64x2Make(2.0000000, 1.9999999)
+        let storage = CXInt64x2FromCXFloat64x2(fromStorage)
+
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), 2)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), 1)
+    }
+
+    func testConvertFromUInt64x2() {
+        let fromStorage = CXUInt64x2Make(34, 12)
+        let storage = CXInt64x2FromCXUInt64x2(fromStorage)
+
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), 34)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), 12)
+    }
+
+    // MARK: Comparison
+
+    func testMinimum() {
+        let lhs = CXInt64x2Make(34, 12)
+        let rhs = CXInt64x2Make(-34, 24)
+        let storage = CXInt64x2Minimum(lhs, rhs)
+
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), -34)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), 12)
+    }
+
+    func testMaximum() {
+        let lhs = CXInt64x2Make(34, 12)
+        let rhs = CXInt64x2Make(-34, 24)
+        let storage = CXInt64x2Maximum(lhs, rhs)
+
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), 34)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), 24)
+    }
+
+    // MARK: Arithmetic
 
     func testAbsolute() {
         let normal = CXInt64x2Make(-1, 3)
@@ -96,17 +164,87 @@ final class CXInt64x2Tests: XCTestCase {
         XCTAssertEqual(CXInt64x2GetElement(product, 1), 6)
     }
 
+    // MARK: Binary
+
+    func testBitwiseNot() {
+        let operand = CXInt64x2Make(0b0000_1111, 0b1111_0000)
+        let storage = CXInt64x2BitwiseNot(operand)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), ~(0b0000_1111))
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), ~(0b1111_0000))
+    }
+
+    func testBitwiseAnd() {
+        let lhs = CXInt64x2Make(0b0000_1111, 0b1111_0000)
+        let rhs = CXInt64x2Make(0b1111_1111, 0b0000_0000)
+        let storage = CXInt64x2BitwiseAnd(lhs, rhs)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), 0b0000_1111 & 0b1111_1111)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), 0b1111_0000 & 0b0000_0000)
+    }
+
+    func testBitwiseAndNot() {
+        let lhs = CXInt64x2Make(0b0000_1111, 0b1111_0000)
+        let rhs = CXInt64x2Make(0b1111_1111, 0b0000_0000)
+        let storage = CXInt64x2BitwiseAndNot(lhs, rhs)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), (~0b0000_1111) & 0b1111_1111)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), (~0b1111_0000) & 0b0000_0000)
+    }
+
+    func testBitwiseOr() {
+        let lhs = CXInt64x2Make(0b0000_1111, 0b1111_0000)
+        let rhs = CXInt64x2Make(0b1111_1111, 0b0000_0000)
+        let storage = CXInt64x2BitwiseOr(lhs, rhs)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), 0b0000_1111 | 0b1111_1111)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), 0b1111_0000 | 0b0000_0000)
+    }
+
+    func testBitwiseExclusiveOr() {
+        let lhs = CXInt64x2Make(0b0000_1111, 0b1111_0000)
+        let rhs = CXInt64x2Make(0b1111_1111, 0b0000_0000)
+        let storage = CXInt64x2BitwiseExclusiveOr(lhs, rhs)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), 0b0000_1111 ^ 0b1111_1111)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), 0b1111_0000 ^ 0b0000_0000)
+    }
+
+    func testShiftLeft() {
+        let lhs = CXInt64x2Make(0b1111_1111, 0b0000_1111)
+        let storage = CXInt64x2ShiftLeft(lhs, 2)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), 0b1111_1111 << 2)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), 0b0000_1111 << 2)
+    }
+
+    func testShiftRight() {
+        let lhs = CXInt64x2Make(0b1111_1111, 0b0000_1111)
+        let storage = CXInt64x2ShiftRight(lhs, 2)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 0), 0b1111_1111 >> 2)
+        XCTAssertEqual(CXInt64x2GetElement(storage, 1), 0b0000_1111 >> 2)
+    }
+
+
     static var allTests = [
         ("testMake", testMake),
-        ("testLoad", testLoad),
-        ("testMakeRepeatingValues", testMakeRepeatingValues),
-        ("testGetter", testGetter),
-        ("testSetter", testSetter),
-        ("testZero", testZero),
-        ("testAbsolute", testAbsolute),
+        ("testMakeLoad", testMakeLoad),
+        ("testMakeRepeatingElement", testMakeRepeatingElement),
+        ("testMakeZero", testMakeZero),
+        ("testGetElement", testGetElement),
+        ("testSetElement", testSetElement),
+        ("testConvertFromFloat32x2", testConvertFromFloat32x2),
+        ("testConvertFromInt32x2", testConvertFromInt32x2),
+        ("testConvertFromUInt32x2", testConvertFromUInt32x2),
+        ("testConvertFromFloat64x2", testConvertFromFloat64x2),
+        ("testConvertFromUInt64x2", testConvertFromUInt64x2),
+        ("testMinimum", testMinimum),
+        ("testMaximum", testMaximum),
         ("testNegate", testNegate),
+        ("testAbsolute", testAbsolute),
         ("testAdd", testAdd),
         ("testSubtract", testSubtract),
-        ("testMultiply", testMultiply)
+        ("testMultiply", testMultiply),
+        ("testBitwiseNot", testBitwiseNot),
+        ("testBitwiseAnd", testBitwiseAnd),
+        ("testBitwiseAndNot", testBitwiseAndNot),
+        ("testBitwiseOr", testBitwiseOr),
+        ("testBitwiseExclusiveOr", testBitwiseExclusiveOr),
+        ("testShiftLeft", testShiftLeft),
+        ("testShiftRight", testShiftRight),
     ]
 }
