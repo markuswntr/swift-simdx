@@ -14,8 +14,9 @@
 
 #pragma once
 
-#include "types.h"
 #include <stdlib.h>
+#include "types.h"
+#include "CXUInt32x4.h"
 
 /// Initializes a storage to given elements, from least-significant to most-significant bits.
 /// @return `(CXInt32x4){ element0, element1, element2, element3 }`
@@ -26,7 +27,12 @@ CX_INLINE(CXInt32x4) CXInt32x4Make(Int32 element0, Int32 element1, Int32 element
 #elif CX_X86_128
     return _mm_setr_epi32(element0, element1, element2, element3);
 #else
-    return (CXInt32x4){ .val = [ element0, element1, element2, element2 ] };
+    CXInt32x4 storage;
+    storage.val[0] = element0;
+    storage.val[1] = element1;
+    storage.val[2] = element2;
+    storage.val[3] = element3;
+    return storage;
 #endif
 }
 
@@ -38,10 +44,8 @@ CX_INLINE(CXInt32x4) CXInt32x4MakeLoad(const Int32* pointer)
     return vld1q_s32(pointer);
 #elif CX_X86_128
     return _mm_loadu_si128((const __m128i*)pointer);
-#elif CX_EXT_VECTOR
-    return (CXInt32x4){ pointer[0], pointer[1], pointer[2], pointer[3] };
 #else
-    return (CXInt32x4){ .val = [ pointer[0], pointer[1], pointer[2], pointer[3] ] };
+    return CXInt32x4Make( pointer[0], pointer[1], pointer[2], pointer[3] );
 #endif
 }
 
@@ -56,7 +60,7 @@ CX_INLINE(CXInt32x4) CXInt32x4MakeRepeatingElement(const Int32 value)
 #elif CX_EXT_VECTOR
     return (CXInt32x4)(value);
 #else
-    return (CXInt32x4){ .val = [ value, value, value, value ] };
+    return CXInt32x4Make( value, value, value, value );
 #endif
 }
 
@@ -105,14 +109,19 @@ CX_INLINE(CXInt32x4) CXInt32x4FromCXFloat32x4(CXFloat32x4 operand)
 #elif CX_X86_128
     return _mm_cvtps_epi32(operand);
 #elif CX_EXT_VECTOR
-    return __builtin_convertvector(operand, CXInt32x4);
+    return CXInt32x4Make(
+        (Int32)nearbyintf(operand[0]),
+        (Int32)nearbyintf(operand[1]),
+        (Int32)nearbyintf(operand[2]),
+        (Int32)nearbyintf(operand[3])
+    );
 #else
-    return (CXInt32x4){ .val = [
-        (Int32)(operand.val[0]),
-        (Int32)(operand.val[1]),
-        (Int32)(operand.val[2]),
-        (Int32)(operand.val[3])
-    ]};
+    return CXInt32x4Make(
+        (Int32)nearbyintf(operand.val[0]),
+        (Int32)nearbyintf(operand.val[1]),
+        (Int32)nearbyintf(operand.val[2]),
+        (Int32)nearbyintf(operand.val[3])
+    );
 #endif
 }
 
@@ -127,12 +136,12 @@ CX_INLINE(CXInt32x4) CXInt32x4FromCXUInt32x4(CXUInt32x4 operand)
 #elif CX_EXT_VECTOR
     return __builtin_convertvector(operand, CXInt32x4);
 #else
-    return (CXInt32x4){ .val = [
+    return CXInt32x4Make(
         (Int32)(operand.val[0]),
         (Int32)(operand.val[1]),
         (Int32)(operand.val[2]),
         (Int32)(operand.val[3])
-    ]};
+    );
 #endif
 }
 
@@ -197,12 +206,12 @@ CX_INLINE(CXInt32x4) CXInt32x4Negate(const CXInt32x4 operand)
 #elif CX_EXT_VECTOR
     return -(operand);
 #else
-    return (CXInt32x4){ .val = [
+    return CXInt32x4Make(
         -CXInt32x4GetElement(operand, 0),
         -CXInt32x4GetElement(operand, 1),
         -CXInt32x4GetElement(operand, 2),
         -CXInt32x4GetElement(operand, 3)
-    ]};
+    );
 #endif
 }
 
@@ -220,20 +229,13 @@ CX_INLINE(CXUInt32x4) CXInt32x4Absolute(const CXInt32x4 operand)
     return _mm_xor_si128(negated, _mm_and_si128(comparison, _mm_xor_si128(operand, negated)));
     #undef CXInt32x4CompareEqual
     #undef CXInt32x4BitwiseExclusiveOr
-#elif CX_EXT_VECTOR
-    return (CXUInt32x4){
-        abs(CXInt32x4GetElement(operand, 0)),
-        abs(CXInt32x4GetElement(operand, 1)),
-        abs(CXInt32x4GetElement(operand, 2)),
-        abs(CXInt32x4GetElement(operand, 3))
-    };
 #else
-    return (CXUInt32x4){ .val = [
+    return CXUInt32x4Make(
         abs(CXInt32x4GetElement(operand, 0)),
         abs(CXInt32x4GetElement(operand, 1)),
         abs(CXInt32x4GetElement(operand, 2)),
         abs(CXInt32x4GetElement(operand, 3))
-    ]};
+    );
 #endif
 }
 
@@ -250,12 +252,12 @@ CX_INLINE(CXInt32x4) CXInt32x4Add(const CXInt32x4 lhs, const CXInt32x4 rhs)
 #elif CX_EXT_VECTOR
     return lhs + rhs;
 #else
-    return (CXInt32x4){ .val = [
+    return CXInt32x4Make(
          CXInt32x4GetElement(lhs, 0) + CXInt32x4GetElement(rhs, 0),
          CXInt32x4GetElement(lhs, 1) + CXInt32x4GetElement(rhs, 1),
          CXInt32x4GetElement(lhs, 2) + CXInt32x4GetElement(rhs, 2),
          CXInt32x4GetElement(lhs, 3) + CXInt32x4GetElement(rhs, 3)
-    ]};
+    );
 #endif
 }
 
@@ -270,12 +272,12 @@ CX_INLINE(CXInt32x4) CXInt32x4Subtract(const CXInt32x4 lhs, const CXInt32x4 rhs)
 #elif CX_EXT_VECTOR
     return lhs - rhs;
 #else
-    return (CXInt32x4){ .val = [
+    return CXInt32x4Make(
          CXInt32x4GetElement(lhs, 0) - CXInt32x4GetElement(rhs, 0),
          CXInt32x4GetElement(lhs, 1) - CXInt32x4GetElement(rhs, 1),
          CXInt32x4GetElement(lhs, 2) - CXInt32x4GetElement(rhs, 2),
          CXInt32x4GetElement(lhs, 3) - CXInt32x4GetElement(rhs, 3)
-    ]};
+    );
 #endif
 }
 
@@ -298,12 +300,12 @@ CX_INLINE(CXInt32x4) CXInt32x4Multiply(const CXInt32x4 lhs, const CXInt32x4 rhs)
 #elif CX_EXT_VECTOR
     return lhs * rhs;
 #else
-    return (CXInt32x4){ .val = [
+    return CXInt32x4Make(
          CXInt32x4GetElement(lhs, 0) * CXInt32x4GetElement(rhs, 0),
          CXInt32x4GetElement(lhs, 1) * CXInt32x4GetElement(rhs, 1),
          CXInt32x4GetElement(lhs, 2) * CXInt32x4GetElement(rhs, 2),
          CXInt32x4GetElement(lhs, 3) * CXInt32x4GetElement(rhs, 3)
-    ]};
+    );
 #endif
 }
 
@@ -319,12 +321,12 @@ CX_INLINE(CXInt32x4) CXInt32x4BitwiseNot(const CXInt32x4 operand)
 #elif CX_EXT_VECTOR
     return ~operand;
 #else
-    return (CXInt32x4){ .val = [
+    return CXInt32x4Make(
          ~CXInt32x4GetElement(operand, 0),
          ~CXInt32x4GetElement(operand, 1),
          ~CXInt32x4GetElement(operand, 2),
          ~CXInt32x4GetElement(operand, 3)
-    ]};
+    );
 #endif
 }
 
@@ -338,12 +340,12 @@ CX_INLINE(CXInt32x4) CXInt32x4BitwiseAnd(const CXInt32x4 lhs, const CXInt32x4 rh
 #elif CX_EXT_VECTOR
     return lhs & rhs;
 #else
-    return (CXInt32x4){ .val = [
+    return CXInt32x4Make(
          CXInt32x4GetElement(lhs, 0) & CXInt32x4GetElement(rhs, 0),
          CXInt32x4GetElement(lhs, 1) & CXInt32x4GetElement(rhs, 1),
          CXInt32x4GetElement(lhs, 2) & CXInt32x4GetElement(rhs, 2),
          CXInt32x4GetElement(lhs, 3) & CXInt32x4GetElement(rhs, 3)
-    ]};
+    );
 #endif
 }
 
@@ -357,12 +359,13 @@ CX_INLINE(CXInt32x4) CXInt32x4BitwiseAndNot(const CXInt32x4 lhs, const CXInt32x4
 #elif CX_EXT_VECTOR
     return CXInt32x4BitwiseNot(lhs) & rhs;
 #else
-    return (CXInt32x4){ .val = [
-         CXInt32x4BitwiseNot(CXInt32x4GetElement(lhs, 0)) & CXInt32x4GetElement(rhs, 0),
-         CXInt32x4BitwiseNot(CXInt32x4GetElement(lhs, 1)) & CXInt32x4GetElement(rhs, 1),
-         CXInt32x4BitwiseNot(CXInt32x4GetElement(lhs, 2)) & CXInt32x4GetElement(rhs, 2),
-         CXInt32x4BitwiseNot(CXInt32x4GetElement(lhs, 3)) & CXInt32x4GetElement(rhs, 3)
-    ]};
+    CXInt32x4 notLhs = CXInt32x4BitwiseNot(lhs);
+    return CXInt32x4Make(
+         CXInt32x4GetElement(notLhs, 0) & CXInt32x4GetElement(rhs, 0),
+         CXInt32x4GetElement(notLhs, 1) & CXInt32x4GetElement(rhs, 1),
+         CXInt32x4GetElement(notLhs, 2) & CXInt32x4GetElement(rhs, 2),
+         CXInt32x4GetElement(notLhs, 3) & CXInt32x4GetElement(rhs, 3)
+    );
 #endif
 }
 
@@ -376,12 +379,12 @@ CX_INLINE(CXInt32x4) CXInt32x4BitwiseOr(const CXInt32x4 lhs, const CXInt32x4 rhs
 #elif CX_EXT_VECTOR
     return lhs | rhs;
 #else
-    return (CXInt32x4){ .val = [
+    return CXInt32x4Make(
          CXInt32x4GetElement(lhs, 0) | CXInt32x4GetElement(rhs, 0),
          CXInt32x4GetElement(lhs, 1) | CXInt32x4GetElement(rhs, 1),
          CXInt32x4GetElement(lhs, 2) | CXInt32x4GetElement(rhs, 2),
          CXInt32x4GetElement(lhs, 3) | CXInt32x4GetElement(rhs, 3)
-    ]};
+    );
 #endif
 }
 
@@ -395,12 +398,12 @@ CX_INLINE(CXInt32x4) CXInt32x4BitwiseExclusiveOr(const CXInt32x4 lhs, const CXIn
 #elif CX_EXT_VECTOR
     return lhs ^ rhs;
 #else
-    return (CXInt32x4){ .val = [
+    return CXInt32x4Make(
          CXInt32x4GetElement(lhs, 0) ^ CXInt32x4GetElement(rhs, 0),
          CXInt32x4GetElement(lhs, 1) ^ CXInt32x4GetElement(rhs, 1),
          CXInt32x4GetElement(lhs, 2) ^ CXInt32x4GetElement(rhs, 2),
          CXInt32x4GetElement(lhs, 3) ^ CXInt32x4GetElement(rhs, 3)
-    ]};
+    );
 #endif
 }
 
@@ -431,12 +434,12 @@ CX_INLINE(CXInt32x4) CXInt32x4ShiftLeft(const CXInt32x4 lhs, const Int32 rhs)
 #elif CX_EXT_VECTOR
     return lhs << rhs;
 #else
-    return (CXInt32x4){ .val = [
+    return CXInt32x4Make(
          CXInt32x4GetElement(lhs, 0) << rhs,
          CXInt32x4GetElement(lhs, 1) << rhs,
          CXInt32x4GetElement(lhs, 2) << rhs,
          CXInt32x4GetElement(lhs, 3) << rhs
-    ]};
+    );
 #endif
 }
 
@@ -465,11 +468,11 @@ CX_INLINE(CXInt32x4) CXInt32x4ShiftRight(const CXInt32x4 lhs, const Int32 rhs)
 #elif CX_EXT_VECTOR
     return lhs >> rhs;
 #else
-    return (CXInt32x4){ .val = [
+    return CXInt32x4Make(
          CXInt32x4GetElement(lhs, 0) >> rhs,
          CXInt32x4GetElement(lhs, 1) >> rhs,
          CXInt32x4GetElement(lhs, 2) >> rhs,
          CXInt32x4GetElement(lhs, 3) >> rhs
-    ]};
+    );
 #endif
 }

@@ -20,3 +20,6 @@ xcodebuild test -project SIMDX.xcodeproj -configuration Debug -scheme SIMDX-Pack
 # watchOS Build & Test
 xcodebuild -project SIMDX.xcodeproj -configuration Debug -scheme SIMDX-Package -destination "generic/platform=watchOS" | xcpretty; # Generic Device: No tests possible
 xcodebuild -project SIMDX.xcodeproj -configuration Debug -scheme SIMDX-Package -destination "OS=6.0,name=Apple Watch Series 5 - 44mm" | xcpretty; # Apple Watch: No tests possible
+
+# Remove the generated project file
+rm -rf ./SIMDX.xcodeproj

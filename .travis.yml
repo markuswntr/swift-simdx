@@ -4,7 +4,7 @@ sudo: required
 # Environment
 env:
   global:
-    - SWIFT_VERSION=5.1
+    - SWIFT_VERSION=5.1.1
     - PATH="$HOME/.swiftenv/bin:$HOME/.swiftenv/shims:$PATH"
 
 # Packages

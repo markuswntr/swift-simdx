@@ -87,7 +87,7 @@ Move TODOs to Issues and/or a Project at some point
 - [x] Int32, UInt32, Float32 and Float64 storable
 - [x] Conform to common `Numeric` protocols functions (see upcoming blog post #link )
 - [x] Test basic functionality
-- [ ] Use available initializer along the functions of each type (instead of .val)
+- [x] Use available initializer along the functions of each type (instead of .val)
 - [ ] Make `count` on SIMDX static
 - [ ] Extension on Array `init(SIMDX)` that uses native intrinsics store
 - [ ] Remove CStorage wrapper structs and access CX<Numeric>x<Lanes> directly
@@ -98,6 +98,8 @@ Move TODOs to Issues and/or a Project at some point
 - [ ] 256-bit storage
 - [ ] Multi-dimensional storage (Matrix)
 - [ ] Extend conformance to the `Numeric` protocols
+    - [ ] Handle overflows properly
+    - [ ] Handle floating point rounding modes
     - [ ] Instance from RandomNumberGenerator
     - [ ] Cast most vector types natively using intrinsics
 - [ ] 512-bit storage

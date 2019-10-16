@@ -27,7 +27,12 @@ CXFloat32x4Make(Float32 element0, Float32 element1, Float32 element2, Float32 el
 #elif CX_X86_128
     return _mm_setr_ps(element0, element1, element2, element3);
 #else
-    return (CXFloat32x4){ .val = [ element0, element1, element2, element3 ] };
+    CXFloat32x4 storage;
+    storage.val[0] = element0;
+    storage.val[1] = element1;
+    storage.val[2] = element2;
+    storage.val[3] = element3;
+    return storage;
 #endif
 }
 
@@ -39,10 +44,8 @@ CX_INLINE(CXFloat32x4) CXFloat32x4MakeLoad(const Float32* pointer)
     return vld1q_f32(pointer);
 #elif CX_X86_128
     return _mm_loadu_ps(pointer);
-#elif CX_EXT_VECTOR
-    return (CXFloat32x4){ pointer[0], pointer[1], pointer[2], pointer[3] };
 #else
-    return (CXFloat32x4){ .val = [ pointer[0], pointer[1], pointer[2], pointer[3] ] };
+    return CXFloat32x4Make(pointer[0], pointer[1], pointer[2], pointer[3]);
 #endif
 }
 
@@ -57,7 +60,7 @@ CX_INLINE(CXFloat32x4) CXFloat32x4MakeRepeatingElement(const Float32 value)
 #elif CX_EXT_VECTOR
     return (CXFloat32x4)(value);
 #else
-    return (CXFloat32x4){ .val = [ value, value, value, value ] };
+    return CXFloat32x4Make(value, value, value, value);
 #endif
 }
 
@@ -79,7 +82,7 @@ CX_INLINE(CXFloat32x4) CXFloat32x4MakeZero(void)
 CX_INLINE(Float32) CXFloat32x4GetElement(const CXFloat32x4 storage, const int index)
 {
 #if CX_NEON_128 || CX_X86_128 || CX_EXT_VECTOR
-    return storage[index];
+    return ((Float32*)&(storage))[index];
 #else
     return storage.val[index];
 #endif
@@ -89,7 +92,7 @@ CX_INLINE(Float32) CXFloat32x4GetElement(const CXFloat32x4 storage, const int in
 CX_INLINE(void) CXFloat32x4SetElement(CXFloat32x4* storage, const int index, const Float32 value)
 {
 #if CX_NEON_128 || CX_X86_128 || CX_EXT_VECTOR
-    (*storage)[index] = value;
+    ((Float32*)storage)[index] = value;
 #else
     (*storage).val[index] = value;
 #endif
@@ -108,12 +111,12 @@ CX_INLINE(CXFloat32x4) CXFloat32x4FromCXInt32x4(CXInt32x4 operand)
 #elif CX_EXT_VECTOR
     return __builtin_convertvector(operand, CXFloat32x4);
 #else
-    return (CXFloat32x4){ .val = [
+    return CXFloat32x4Make(
         (Float32)(operand.val[0]),
         (Float32)(operand.val[1]),
         (Float32)(operand.val[2]),
         (Float32)(operand.val[3])
-    ]};
+    );
 #endif
 }
 
@@ -128,12 +131,12 @@ CX_INLINE(CXFloat32x4) CXFloat32x4FromCXUInt32x4(CXUInt32x4 operand)
 #elif CX_EXT_VECTOR
     return __builtin_convertvector(operand, CXFloat32x4);
 #else
-    return (CXFloat32x4){ .val = [
+    return CXFloat32x4Make(
         (Float32)(operand.val[0]),
         (Float32)(operand.val[1]),
         (Float32)(operand.val[2]),
         (Float32)(operand.val[3])
-    ]};
+    );
 #endif
 }
 
@@ -152,22 +155,12 @@ CX_INLINE(CXFloat32x4) CXFloat32x4Minimum(const CXFloat32x4 lhs, const CXFloat32
     Float32 lhs1 = CXFloat32x4GetElement(lhs, 1), rhs1 = CXFloat32x4GetElement(rhs, 1);
     Float32 lhs2 = CXFloat32x4GetElement(lhs, 2), rhs2 = CXFloat32x4GetElement(rhs, 2);
     Float32 lhs3 = CXFloat32x4GetElement(lhs, 3), rhs3 = CXFloat32x4GetElement(rhs, 3);
-
-    #if CX_EXT_VECTOR
-        return (CXFloat32x4){
-            lhs0 < rhs0 ? lhs0 : rhs0,
-            lhs1 < rhs1 ? lhs1 : rhs1,
-            lhs2 < rhs2 ? lhs2 : rhs2,
-            lhs3 < rhs3 ? lhs3 : rhs3
-        };
-    #else
-        return (CXFloat32x4){ .val = [
-            lhs0 < rhs0 ? lhs0 : rhs0,
-            lhs1 < rhs1 ? lhs1 : rhs1,
-            lhs2 < rhs2 ? lhs2 : rhs2,
-            lhs3 < rhs3 ? lhs3 : rhs3
-        ]};
-    #endif
+    return CXFloat32x4Make(
+        lhs0 < rhs0 ? lhs0 : rhs0,
+        lhs1 < rhs1 ? lhs1 : rhs1,
+        lhs2 < rhs2 ? lhs2 : rhs2,
+        lhs3 < rhs3 ? lhs3 : rhs3
+    );
 #endif
 }
 
@@ -184,22 +177,12 @@ CX_INLINE(CXFloat32x4) CXFloat32x4Maximum(const CXFloat32x4 lhs, const CXFloat32
     Float32 lhs1 = CXFloat32x4GetElement(lhs, 1), rhs1 = CXFloat32x4GetElement(rhs, 1);
     Float32 lhs2 = CXFloat32x4GetElement(lhs, 2), rhs2 = CXFloat32x4GetElement(rhs, 2);
     Float32 lhs3 = CXFloat32x4GetElement(lhs, 3), rhs3 = CXFloat32x4GetElement(rhs, 3);
-
-    #if CX_EXT_VECTOR
-        return (CXFloat32x4){
-            lhs0 > rhs0 ? lhs0 : rhs0,
-            lhs1 > rhs1 ? lhs1 : rhs1,
-            lhs2 > rhs2 ? lhs2 : rhs2,
-            lhs3 > rhs3 ? lhs3 : rhs3
-        };
-    #else
-        return (CXFloat32x4){ .val = [
-            lhs0 > rhs0 ? lhs0 : rhs0,
-            lhs1 > rhs1 ? lhs1 : rhs1,
-            lhs2 > rhs2 ? lhs2 : rhs2,
-            lhs3 > rhs3 ? lhs3 : rhs3
-        ]};
-    #endif
+    return CXFloat32x4Make(
+        lhs0 > rhs0 ? lhs0 : rhs0,
+        lhs1 > rhs1 ? lhs1 : rhs1,
+        lhs2 > rhs2 ? lhs2 : rhs2,
+        lhs3 > rhs3 ? lhs3 : rhs3
+    );
 #endif
 }
 
@@ -216,12 +199,12 @@ CX_INLINE(CXFloat32x4) CXFloat32x4Negate(const CXFloat32x4 operand)
 #elif CX_EXT_VECTOR
     return -(operand);
 #else
-    return (CXFloat32x4){ .val = [
+    return CXFloat32x4Make(
         -CXFloat32x4GetElement(operand, 0),
         -CXFloat32x4GetElement(operand, 1),
         -CXFloat32x4GetElement(operand, 2),
         -CXFloat32x4GetElement(operand, 3)
-    ]};
+    );
 #endif
 }
 
@@ -236,20 +219,13 @@ CX_INLINE(CXFloat32x4) CXFloat32x4Absolute(const CXFloat32x4 operand)
     union { CXFloat32x4 operand; __m128i signs; } Signed;
     Signed.signs = _mm_setr_epi32(SIGN_BIT, SIGN_BIT, SIGN_BIT, SIGN_BIT);
     return _mm_and_ps(operand, Signed.operand);
-#elif CX_EXT_VECTOR
-    return (CXFloat32x4){
-        fabsf(CXFloat32x4GetElement(operand, 0)),
-        fabsf(CXFloat32x4GetElement(operand, 1)),
-        fabsf(CXFloat32x4GetElement(operand, 2)),
-        fabsf(CXFloat32x4GetElement(operand, 3))
-    };
 #else
-    return (CXFloat32x4){ .val = [
+    return CXFloat32x4Make(
         fabsf(CXFloat32x4GetElement(operand, 0)),
         fabsf(CXFloat32x4GetElement(operand, 1)),
         fabsf(CXFloat32x4GetElement(operand, 2)),
         fabsf(CXFloat32x4GetElement(operand, 3))
-    ]};
+    );
 #endif
 }
 
@@ -266,12 +242,12 @@ CX_INLINE(CXFloat32x4) CXFloat32x4Add(const CXFloat32x4 lhs, const CXFloat32x4 r
 #elif CX_EXT_VECTOR
     return lhs + rhs;
 #else
-    return (CXFloat32x4){ .val = [
-         CXFloat32x4GetElement(lhs, 0) + CXFloat32x4GetElement(rhs, 0),
-         CXFloat32x4GetElement(lhs, 1) + CXFloat32x4GetElement(rhs, 1),
-         CXFloat32x4GetElement(lhs, 2) + CXFloat32x4GetElement(rhs, 2),
-         CXFloat32x4GetElement(lhs, 3) + CXFloat32x4GetElement(rhs, 3)
-    ]};
+    return CXFloat32x4Make(
+        CXFloat32x4GetElement(lhs, 0) + CXFloat32x4GetElement(rhs, 0),
+        CXFloat32x4GetElement(lhs, 1) + CXFloat32x4GetElement(rhs, 1),
+        CXFloat32x4GetElement(lhs, 2) + CXFloat32x4GetElement(rhs, 2),
+        CXFloat32x4GetElement(lhs, 3) + CXFloat32x4GetElement(rhs, 3)
+    );
 #endif
 }
 
@@ -286,12 +262,12 @@ CX_INLINE(CXFloat32x4) CXFloat32x4Subtract(const CXFloat32x4 lhs, const CXFloat3
 #elif CX_EXT_VECTOR
     return lhs - rhs;
 #else
-    return (CXFloat32x4){ .val = [
-         CXFloat32x4GetElement(lhs, 0) - CXFloat32x4GetElement(rhs, 0),
-         CXFloat32x4GetElement(lhs, 1) - CXFloat32x4GetElement(rhs, 1),
-         CXFloat32x4GetElement(lhs, 2) - CXFloat32x4GetElement(rhs, 2),
-         CXFloat32x4GetElement(lhs, 3) - CXFloat32x4GetElement(rhs, 3)
-    ]};
+    return CXFloat32x4Make(
+        CXFloat32x4GetElement(lhs, 0) - CXFloat32x4GetElement(rhs, 0),
+        CXFloat32x4GetElement(lhs, 1) - CXFloat32x4GetElement(rhs, 1),
+        CXFloat32x4GetElement(lhs, 2) - CXFloat32x4GetElement(rhs, 2),
+        CXFloat32x4GetElement(lhs, 3) - CXFloat32x4GetElement(rhs, 3)
+    );
 #endif
 }
 
@@ -308,12 +284,12 @@ CX_INLINE(CXFloat32x4) CXFloat32x4Multiply(const CXFloat32x4 lhs, const CXFloat3
 #elif CX_EXT_VECTOR
     return lhs * rhs;
 #else
-    return (CXFloat32x4){ .val = [
-         CXFloat32x4GetElement(lhs, 0) * CXFloat32x4GetElement(rhs, 0),
-         CXFloat32x4GetElement(lhs, 1) * CXFloat32x4GetElement(rhs, 1),
-         CXFloat32x4GetElement(lhs, 2) * CXFloat32x4GetElement(rhs, 2),
-         CXFloat32x4GetElement(lhs, 3) * CXFloat32x4GetElement(rhs, 3)
-    ]};
+    return CXFloat32x4Make(
+        CXFloat32x4GetElement(lhs, 0) * CXFloat32x4GetElement(rhs, 0),
+        CXFloat32x4GetElement(lhs, 1) * CXFloat32x4GetElement(rhs, 1),
+        CXFloat32x4GetElement(lhs, 2) * CXFloat32x4GetElement(rhs, 2),
+        CXFloat32x4GetElement(lhs, 3) * CXFloat32x4GetElement(rhs, 3)
+    );
 #endif
 }
 
@@ -328,12 +304,12 @@ CX_INLINE(CXFloat32x4) CXFloat32x4Divide(const CXFloat32x4 lhs, const CXFloat32x
 #elif CX_EXT_VECTOR
     return lhs / rhs;
 #else
-    return (CXFloat32x4){ .val = [
-         CXFloat32x4GetElement(lhs, 0) / CXFloat32x4GetElement(rhs, 0),
-         CXFloat32x4GetElement(lhs, 1) / CXFloat32x4GetElement(rhs, 1),
-         CXFloat32x4GetElement(lhs, 2) / CXFloat32x4GetElement(rhs, 2),
-         CXFloat32x4GetElement(lhs, 3) / CXFloat32x4GetElement(rhs, 3)
-    ]};
+    return CXFloat32x4Make(
+        CXFloat32x4GetElement(lhs, 0) / CXFloat32x4GetElement(rhs, 0),
+        CXFloat32x4GetElement(lhs, 1) / CXFloat32x4GetElement(rhs, 1),
+        CXFloat32x4GetElement(lhs, 2) / CXFloat32x4GetElement(rhs, 2),
+        CXFloat32x4GetElement(lhs, 3) / CXFloat32x4GetElement(rhs, 3)
+    );
 #endif
 }
 
@@ -345,19 +321,12 @@ CX_INLINE(CXFloat32x4) CXFloat32x4SquareRoot(const CXFloat32x4 operand)
     return vsqrtq_f32(operand);
 #elif CX_X86_128
     return _mm_sqrt_ps(operand);
-#elif CX_EXT_VECTOR
-    return (CXFloat32x4){
-        sqrtf(CXFloat32x4GetElement(operand, 0)),
-        sqrtf(CXFloat32x4GetElement(operand, 1)),
-        sqrtf(CXFloat32x4GetElement(operand, 2)),
-        sqrtf(CXFloat32x4GetElement(operand, 3))
-    };
 #else
-    return (CXFloat32x4){ .elements = [
+    return CXFloat32x4Make(
        sqrtf(CXFloat32x4GetElement(operand, 0)),
        sqrtf(CXFloat32x4GetElement(operand, 1)),
        sqrtf(CXFloat32x4GetElement(operand, 2)),
        sqrtf(CXFloat32x4GetElement(operand, 3))
-    ]};
+    );
 #endif
 }

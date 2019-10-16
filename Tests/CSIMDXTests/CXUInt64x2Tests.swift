@@ -87,7 +87,7 @@ final class CXUInt64x2Tests: XCTestCase {
         let storage = CXUInt64x2FromCXFloat64x2(fromStorage)
 
         XCTAssertEqual(CXUInt64x2GetElement(storage, 0), 2)
-        XCTAssertEqual(CXUInt64x2GetElement(storage, 1), 1)
+        XCTAssertEqual(CXUInt64x2GetElement(storage, 1), 2)
     }
 
     func testConvertFromInt64x2() {
