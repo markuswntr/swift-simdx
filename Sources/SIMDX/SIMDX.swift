@@ -109,12 +109,12 @@ extension SIMDX where Storage: AdditiveArithmeticStorage {
 
 // MARK: Numeric
 
-extension SIMDX where Storage: NumericRawStorage {
+extension SIMDX where Storage: NumericStorage {
 
     /// Creates a new instance from the given integer storage, if all can be represented exactly.
     @inlinable public init?<Source>(
         exactly value: Source
-    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryInteger {
+    ) where Source: SIMDX, Source.Storage: NumericStorage, Source.Storage.Element: BinaryInteger {
         guard let rawValue = Storage.init(exactly: value.rawValue) else { return nil }
         self.init(rawValue: rawValue)
     }
@@ -142,7 +142,7 @@ extension SIMDX where Storage: NumericRawStorage {
 
 // MARK: Signed Numeric
 
-extension SIMDX where Storage: SignedNumericRawStorage {
+extension SIMDX where Storage: SignedNumericStorage {
 
     /// Returns the additive inverse of the specified storage.
     @inlinable prefix public static func - (operand: Self) -> Self {
@@ -157,39 +157,39 @@ extension SIMDX where Storage: SignedNumericRawStorage {
 
 // MARK: Binary Integer
 
-extension SIMDX where Storage: BinaryIntegerRawStorage {
+extension SIMDX where Storage: BinaryIntegerStorage {
 
     /// A Boolean value indicating whether this storage contains signed integer types.
     @inlinable public static var isSigned: Bool { Storage.isSigned }
 
     @inlinable public init?<Source>(
         exactly value: Source
-    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryFloatingPoint {
+    ) where Source: SIMDX, Source.Storage: NumericStorage, Source.Storage.Element: BinaryFloatingPoint {
         guard let rawValue = Storage.init(exactly: value.rawValue) else { return nil }
         self.init(rawValue: rawValue)
     }
 
     @inlinable public init<Source>(
         _ value: Source
-    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryFloatingPoint {
+    ) where Source: SIMDX, Source.Storage: NumericStorage, Source.Storage.Element: BinaryFloatingPoint {
         self.init(rawValue: Storage.init(value.rawValue))
     }
 
     @inlinable public init<Source>(
         _ value: Source
-    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryInteger {
+    ) where Source: SIMDX, Source.Storage: NumericStorage, Source.Storage.Element: BinaryInteger {
         self.init(rawValue: Storage.init(value.rawValue))
     }
 
     @inlinable public init<Source>(
         truncatingIfNeeded value: Source
-    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryInteger {
+    ) where Source: SIMDX, Source.Storage: NumericStorage, Source.Storage.Element: BinaryInteger {
         self.init(rawValue: Storage.init(truncatingIfNeeded: value.rawValue))
     }
 
     @inlinable public init<Source>(
         clamping value: Source
-    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryInteger {
+    ) where Source: SIMDX, Source.Storage: NumericStorage, Source.Storage.Element: BinaryInteger {
         self.init(rawValue: Storage.init(clamping: value.rawValue))
     }
 
@@ -240,7 +240,7 @@ extension SIMDX where Storage: BinaryIntegerRawStorage {
 
 // MARK: Fixed Width Integer
 
-extension SIMDX where Storage: FixedWidthIntegerRawStorage {
+extension SIMDX where Storage: FixedWidthIntegerStorage {
 
     /// The maximum representable integer in this type.
     ///
@@ -257,17 +257,17 @@ extension SIMDX where Storage: FixedWidthIntegerRawStorage {
 
 // MARK: Floating Point
 
-extension SIMDX where Storage: FloatingPointRawStorage {
+extension SIMDX where Storage: FloatingPointStorage {
 
     @inlinable public init<Source>(
         _ value: Source
-    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryInteger {
+    ) where Source: SIMDX, Source.Storage: NumericStorage, Source.Storage.Element: BinaryInteger {
         self.init(rawValue: Storage.init(value.rawValue))
     }
 
     @inlinable public init?<Source>(
         exactly value: Source
-    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryInteger {
+    ) where Source: SIMDX, Source.Storage: NumericStorage, Source.Storage.Element: BinaryInteger {
         guard let rawValue = Storage.init(exactly: value.rawValue) else { return nil }
         self.init(rawValue: rawValue)
     }
@@ -332,17 +332,17 @@ extension SIMDX where Storage: FloatingPointRawStorage {
 
 // MARK: Binary FloatingPoint
 
-extension SIMDX where Storage: BinaryFloatingPointRawStorage {
+extension SIMDX where Storage: BinaryFloatingPointStorage {
 
     @inlinable public init<Source>(
         _ value: Source
-    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryFloatingPoint {
+    ) where Source: SIMDX, Source.Storage: NumericStorage, Source.Storage.Element: BinaryFloatingPoint {
         self.init(rawValue: Storage.init(value.rawValue))
     }
 
     @inlinable public init?<Source>(
         exactly value: Source
-    ) where Source: SIMDX, Source.Storage: NumericRawStorage, Source.Storage.Element: BinaryFloatingPoint {
+    ) where Source: SIMDX, Source.Storage: NumericStorage, Source.Storage.Element: BinaryFloatingPoint {
         guard let rawValue = Storage.init(exactly: value.rawValue) else { return nil }
         self.init(rawValue: rawValue)
     }

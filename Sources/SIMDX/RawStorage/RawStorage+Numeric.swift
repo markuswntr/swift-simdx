@@ -15,7 +15,7 @@
 import Foundation
 
 /// A storage type with values that support multiplication.
-public protocol NumericRawStorage: AdditiveArithmeticStorage where Element: Numeric {
+public protocol NumericStorage: AdditiveArithmeticStorage where Element: Numeric {
 
     /// Creates a new instance from the given integer storage, if it can be represented exactly.
     ///
@@ -31,10 +31,10 @@ public protocol NumericRawStorage: AdditiveArithmeticStorage where Element: Nume
     ///     // y == nil
     ///
     /// - Parameter source: A storage to convert to this type.
-    init?<Other>(exactly source: Other) where Other: NumericRawStorage, Other.Element: BinaryInteger
+    init?<Other>(exactly source: Other) where Other: NumericStorage, Other.Element: BinaryInteger
 
     /// A type that can represent the absolute value of any possible value of the conforming type.
-    associatedtype Magnitude: NumericRawStorage where Magnitude.Element == Element.Magnitude
+    associatedtype Magnitude: NumericStorage where Magnitude.Element == Element.Magnitude
 
     /// The magnitude of this value.
     ///
@@ -59,10 +59,10 @@ public protocol NumericRawStorage: AdditiveArithmeticStorage where Element: Nume
     static func *= (storage: inout Self, element: Element)
 }
 
-extension NumericRawStorage {
+extension NumericStorage {
 
     /// Creates a new instance from the given integer storage, if it can be represented exactly.
-    @inlinable public init?<Other: NumericRawStorage>(exactly source: Other) where Other.Element: BinaryInteger {
+    @inlinable public init?<Other: NumericStorage>(exactly source: Other) where Other.Element: BinaryInteger {
         let convertedElements = source.compactMap(Element.init(exactly:))
         guard convertedElements.count == source.count else { return nil }
         self.init(convertedElements)

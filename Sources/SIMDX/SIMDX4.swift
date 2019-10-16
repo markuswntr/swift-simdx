@@ -96,7 +96,7 @@ extension SIMDX4 {
 }
 
 // MARK: Magnitude
-extension SIMDX4 where Storage: NumericRawStorage, Storable.Magnitude: RawStorable4,
+extension SIMDX4 where Storage: NumericStorage, Storable.Magnitude: RawStorable4,
 Storable.Magnitude.Storage4 == Storage.Magnitude {
 
     /// A type that can represent the absolute value of any possible value of the conforming type.

@@ -16,8 +16,8 @@ import Foundation
 
 
 /// An integer storage type with a binary representation.
-public protocol BinaryIntegerRawStorage: NumericRawStorage
-where Element: BinaryInteger, Magnitude: BinaryIntegerRawStorage, Magnitude == Magnitude.Magnitude {
+public protocol BinaryIntegerStorage: NumericStorage
+where Element: BinaryInteger, Magnitude: BinaryIntegerStorage, Magnitude == Magnitude.Magnitude {
 
     /// A Boolean value indicating whether this storage contains signed integer types.
     static var isSigned: Bool { get }
@@ -35,24 +35,24 @@ where Element: BinaryInteger, Magnitude: BinaryIntegerRawStorage, Magnitude == M
     ///     // y == nil
     ///
     /// - Parameter source: A floating-point storage to convert to this type.
-    init?<Other>(exactly source: Other) where Other: NumericRawStorage, Other.Element: BinaryFloatingPoint
+    init?<Other>(exactly source: Other) where Other: NumericStorage, Other.Element: BinaryFloatingPoint
 
     /// Creates a new instance from the given floating point storage, rounding toward zero.
     /// If `source` is outside the bounds of this type after rounding toward zero, a runtime error may occur.
     ///
     /// - Parameter source: A floating-point storage to convert to an integer storage.
-    init<Other>(_ source: Other) where Other: NumericRawStorage, Other.Element: BinaryFloatingPoint
+    init<Other>(_ source: Other) where Other: NumericStorage, Other.Element: BinaryFloatingPoint
 
     /// Creates a new instance from the given binary integer storage
     /// If the value passed as `source` is not representable in this type, a runtime error may occur.
     ///
     /// - Parameter source: An integer storage to convert. `source` must be representable in this type.
-    init<Other>(_ source: Other) where Other: NumericRawStorage, Other.Element: BinaryInteger
+    init<Other>(_ source: Other) where Other: NumericStorage, Other.Element: BinaryInteger
 
     /// Creates an new instance from the bit patterns of the given storage by sign-extending or truncating to fit.
     ///
     /// - Parameter source: An integer storage to convert to this type.
-    init<Other>(truncatingIfNeeded source: Other) where Other: NumericRawStorage, Other.Element: BinaryInteger
+    init<Other>(truncatingIfNeeded source: Other) where Other: NumericStorage, Other.Element: BinaryInteger
 
     /// Creates a new instance with the representable values that are closest to the given integer storages value.
     ///
@@ -61,7 +61,7 @@ where Element: BinaryInteger, Magnitude: BinaryIntegerRawStorage, Magnitude == M
     /// representable value in this type, the result is the type's `min` value.
     ///
     /// - Parameter source: An integer to convert to this type.
-    init<Other>(clamping source: Other) where Other: NumericRawStorage, Other.Element: BinaryInteger
+    init<Other>(clamping source: Other) where Other: NumericStorage, Other.Element: BinaryInteger
 
     /// Returns the inverse of the bits set in the argument.
     prefix static func ~ (x: Self) -> Self
@@ -139,32 +139,32 @@ where Element: BinaryInteger, Magnitude: BinaryIntegerRawStorage, Magnitude == M
     static func <<= <RHS>(lhs: inout Self, rhs: RHS) where RHS : BinaryInteger
 }
 
-extension BinaryIntegerRawStorage {
+extension BinaryIntegerStorage {
 
     /// Creates a new instance from the given floating point storage, if it can be represented exactly.
-    @inlinable public init?<T>(exactly source: T) where T: NumericRawStorage, T.Element: BinaryFloatingPoint {
+    @inlinable public init?<T>(exactly source: T) where T: NumericStorage, T.Element: BinaryFloatingPoint {
         let convertedElements = source.compactMap(Element.init(exactly:))
         guard convertedElements.count == source.count else { return nil }
         self.init(convertedElements)
     }
 
     /// Creates a new instance from the given floating point storage, rounding toward zero.
-    @inlinable public init<Other>(_ source: Other) where Other: NumericRawStorage, Other.Element: BinaryFloatingPoint {
+    @inlinable public init<Other>(_ source: Other) where Other: NumericStorage, Other.Element: BinaryFloatingPoint {
         self.init(source.map { Element.init($0) })
     }
 
     /// Creates a new instance from the given binary integer storage
-    @inlinable public init<Other>(_ source: Other) where Other: NumericRawStorage, Other.Element: BinaryInteger {
+    @inlinable public init<Other>(_ source: Other) where Other: NumericStorage, Other.Element: BinaryInteger {
         self.init(source.map { Element.init($0) })
    }
 
     /// Creates an new instance from the bit patterns of the given storage by sign-extending or truncating to fit.
-    @inlinable public init<Other: NumericRawStorage>(truncatingIfNeeded source: Other) where Other.Element: BinaryInteger {
+    @inlinable public init<Other: NumericStorage>(truncatingIfNeeded source: Other) where Other.Element: BinaryInteger {
         self.init(source.map { Element.init(truncatingIfNeeded: $0) })
     }
 
     /// Creates a new instance with the representable values that are closest to the given integer storages value.
-    @inlinable public init<Other>(clamping source: Other) where Other: NumericRawStorage, Other.Element: BinaryInteger {
+    @inlinable public init<Other>(clamping source: Other) where Other: NumericStorage, Other.Element: BinaryInteger {
         self.init(source.map { Element.init(clamping: $0) })
     }
 

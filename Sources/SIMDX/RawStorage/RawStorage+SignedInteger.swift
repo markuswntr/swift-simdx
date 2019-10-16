@@ -15,10 +15,10 @@
 import Foundation
 
 /// An integer type that can represent both positive and negative values.
-public protocol SignedIntegerRawStorage: BinaryIntegerRawStorage, SignedNumericRawStorage where Element: SignedInteger {
+public protocol SignedIntegerStorage: BinaryIntegerStorage, SignedNumericStorage where Element: SignedInteger {
 }
 
-extension SignedIntegerRawStorage {
+extension SignedIntegerStorage {
 
     /// A Boolean value indicating whether this storage contains signed integer types.
     ///

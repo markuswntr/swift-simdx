@@ -15,10 +15,10 @@
 import Foundation
 
 /// An integer storage type that can represent only nonnegative values.
-public protocol UnsignedIntegerRawStorage: BinaryIntegerRawStorage where Element: UnsignedInteger {
+public protocol UnsignedIntegerStorage: BinaryIntegerStorage where Element: UnsignedInteger {
 }
 
-extension UnsignedIntegerRawStorage {
+extension UnsignedIntegerStorage {
 
     /// The magnitude of this value.
     ///

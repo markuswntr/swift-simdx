@@ -37,7 +37,7 @@ extension AdditiveArithmeticStorage {
 
     /// Returns the given storage unchanged.
     @inlinable public static prefix func + (operand: Self) -> Self {
-        return operand
+        operand
     }
 
     /// Adds two storages and stores their element-wise sums in the left-hand-side.

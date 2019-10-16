@@ -15,7 +15,7 @@
 import Foundation
 import CSIMDX
 
-public struct UInt32x2: RawStorage2, FixedWidthIntegerRawStorage, UnsignedIntegerRawStorage {
+public struct UInt32x2: RawStorage2, FixedWidthIntegerStorage, UnsignedIntegerStorage {
 
     // MARK: Collection Conformance
 

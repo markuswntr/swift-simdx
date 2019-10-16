@@ -15,7 +15,7 @@
 import Foundation
 
 /// A storage type that can contain both positive and negative values.
-public protocol SignedNumericRawStorage: NumericRawStorage where Element: SignedNumeric {
+public protocol SignedNumericStorage: NumericStorage where Element: SignedNumeric {
 
     /// Returns the additive inverse of the specified storage.
     prefix static func - (operand: Self) -> Self
@@ -24,7 +24,7 @@ public protocol SignedNumericRawStorage: NumericRawStorage where Element: Signed
     mutating func negate()
 }
 
-extension SignedNumericRawStorage {
+extension SignedNumericStorage {
 
     /// Replaces this value with its additive inverse.
     @inlinable public mutating func negate() {
@@ -36,6 +36,6 @@ extension SignedNumericRawStorage {
 ///
 /// - Parameter value: A signed numeric raw storage.
 /// - Returns: The absolute value of `storage`.
-@inlinable public func abs<Storage>(_ storage: Storage) -> Storage.Magnitude where Storage: SignedNumericRawStorage {
+@inlinable public func abs<Storage>(_ storage: Storage) -> Storage.Magnitude where Storage: SignedNumericStorage {
     return storage.magnitude
 }

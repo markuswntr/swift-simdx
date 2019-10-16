@@ -15,7 +15,7 @@
 import Foundation
 
 /// An integer type that uses a fixed size for every instance.
-public protocol FixedWidthIntegerRawStorage: BinaryIntegerRawStorage where Element: FixedWidthInteger {
+public protocol FixedWidthIntegerStorage: BinaryIntegerStorage where Element: FixedWidthInteger {
 
     // TODO: Add overflowing operators if possible
 
@@ -38,7 +38,7 @@ public protocol FixedWidthIntegerRawStorage: BinaryIntegerRawStorage where Eleme
     static func minimum(_ lhs: Self, _ rhs: Self) -> Self
 }
 
-extension FixedWidthIntegerRawStorage {
+extension FixedWidthIntegerStorage {
 
     /// The maximum representable integer in `Element` on all lanes.
     @inlinable public static var max: Self { .init(.max) }
