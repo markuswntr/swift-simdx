@@ -391,9 +391,9 @@ CX_INLINE(CXUInt32x2) CXUInt32x2ShiftElementWiseLeft(const CXUInt32x2 lhs, const
 #if CX_NEON_128
     return vshl_u32(lhs, rhs);
 #else
-    return CXInt32x2Make(
-        CXInt32x2GetElement(lhs, 0) << CXInt32x2GetElement(rhs, 0),
-        CXInt32x2GetElement(lhs, 1) << CXInt32x2GetElement(rhs, 1)
+    return CXUInt32x2Make(
+        CXUInt32x2GetElement(lhs, 0) << CXUInt32x2GetElement(rhs, 0),
+        CXUInt32x2GetElement(lhs, 1) << CXUInt32x2GetElement(rhs, 1)
     );
 #endif
 }
@@ -408,9 +408,9 @@ CX_INLINE(CXUInt32x2) CXUInt32x2ShiftLeft(const CXUInt32x2 lhs, const UInt32 rhs
 #elif CX_EXT_VECTOR
     return lhs << rhs;
 #else
-    return CXInt32x2Make(
-        CXInt32x2GetElement(lhs, 0) << rhs,
-        CXInt32x2GetElement(lhs, 1) << rhs
+    return CXUInt32x2Make(
+        CXUInt32x2GetElement(lhs, 0) << rhs,
+        CXUInt32x2GetElement(lhs, 1) << rhs
     );
 #endif
 }
@@ -419,11 +419,11 @@ CX_INLINE(CXUInt32x2) CXUInt32x2ShiftLeft(const CXUInt32x2 lhs, const UInt32 rhs
 CX_INLINE(CXUInt32x2) CXUInt32x2ShiftElementWiseRight(const CXUInt32x2 lhs, const CXUInt32x2 rhs)
 {
 #if CX_NEON_128
-    return CXUInt32x2ShiftElementWiseLeft(lhs, CXInt32x2Negate(rhs));
+    return CXUInt32x2ShiftElementWiseLeft(lhs, vreinterpret_u32_s32(vneg_s32(vreinterpret_s32_u32(rhs))));
 #else
-    return CXInt32x2Make(
-        CXInt32x2GetElement(lhs, 0) >> CXInt32x2GetElement(rhs, 0),
-        CXInt32x2GetElement(lhs, 1) >> CXInt32x2GetElement(rhs, 1)
+    return CXUInt32x2Make(
+        CXUInt32x2GetElement(lhs, 0) >> CXUInt32x2GetElement(rhs, 0),
+        CXUInt32x2GetElement(lhs, 1) >> CXUInt32x2GetElement(rhs, 1)
     );
 #endif
 }
@@ -432,15 +432,15 @@ CX_INLINE(CXUInt32x2) CXUInt32x2ShiftElementWiseRight(const CXUInt32x2 lhs, cons
 CX_INLINE(CXUInt32x2) CXUInt32x2ShiftRight(const CXUInt32x2 lhs, const UInt32 rhs)
 {
 #if CX_NEON_128
-    return CXInt32x2ShiftElementWiseRight(lhs, CXInt32x2MakeRepeatingElement(rhs));
+    return CXUInt32x2ShiftElementWiseRight(lhs, CXUInt32x2MakeRepeatingElement(rhs));
 #elif CX_X86_128
     return _mm_srai_epi32(lhs, rhs);
 #elif CX_EXT_VECTOR
     return lhs >> rhs;
 #else
-    return CXInt32x2Make(
-        CXInt32x2GetElement(lhs, 0) >> rhs,
-        CXInt32x2GetElement(lhs, 1) >> rhs
+    return CXUInt32x2Make(
+        CXUInt32x2GetElement(lhs, 0) >> rhs,
+        CXUInt32x2GetElement(lhs, 1) >> rhs
     );
 #endif
 }

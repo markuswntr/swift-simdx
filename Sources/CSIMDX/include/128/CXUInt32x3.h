@@ -396,7 +396,7 @@ CX_INLINE(CXUInt32x3) CXUInt32x3ShiftLeft(const CXUInt32x3 lhs, const UInt32 rhs
 CX_INLINE(CXUInt32x3) CXUInt32x3ShiftElementWiseRight(const CXUInt32x3 lhs, const CXUInt32x3 rhs)
 {
 #if CX_NEON_128
-    return CXUInt32x3ShiftElementWiseLeft(lhs, CXUInt32x3Negate(rhs));
+    return CXUInt32x3ShiftElementWiseLeft(lhs, vreinterpretq_u32_s32(vnegq_s32(vreinterpretq_s32_u32(rhs))));
 #else
     return CXUInt32x3Make(
         CXUInt32x3GetElement(lhs, 0) >> CXUInt32x3GetElement(rhs, 0),
