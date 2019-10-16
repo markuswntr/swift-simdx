@@ -17,13 +17,13 @@ import CSIMDX
 
 public struct Int64x2: RawStorage2, FixedWidthIntegerStorage, SignedIntegerStorage {
 
-    // MARK: Collection Conformance
+    // MARK: Collection
 
-    public let startIndex: Int32 = 0
+    @inlinable public var count: Int { 2 }
+    @inlinable public var startIndex: Int32 { 0 }
+    @inlinable public var endIndex: Int32 { 2 }
 
-    public let endIndex: Int32 = 2
-
-    // MARK: Raw Value Access
+    // MARK: RawValue
 
     public var rawValue: CXInt64x2
 
@@ -37,7 +37,7 @@ public struct Int64x2: RawStorage2, FixedWidthIntegerStorage, SignedIntegerStora
     }
 }
 
-// MARK: - Designated Initializer
+// MARK: - Initializer
 extension Int64x2 {
 
     @inlinable public init(_ repeatingElement: Int64) {

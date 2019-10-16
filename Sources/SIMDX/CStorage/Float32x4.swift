@@ -17,13 +17,13 @@ import CSIMDX
 
 public struct Float32x4: RawStorage4, BinaryFloatingPointStorage {
 
-    // MARK: Collection Conformance
+    // MARK: Collection
 
-    public let startIndex: Int32 = 0
+    @inlinable public var count: Int { 4 }
+    @inlinable public var startIndex: Int32 { 0 }
+    @inlinable public var endIndex: Int32 { 4 }
 
-    public let endIndex: Int32 = 4
-
-    // MARK: Raw Value Access
+    // MARK: RawValue
 
     public var rawValue: CXFloat32x4
 
@@ -37,7 +37,7 @@ public struct Float32x4: RawStorage4, BinaryFloatingPointStorage {
     }
 }
 
-// MARK: - Designated Initializer
+// MARK: - Initializer
 extension Float32x4 {
 
     @inlinable public init(_ repeatingElement: Float32) {

@@ -96,8 +96,7 @@ length, i.e. `float array[4]`.
 
 Move TODOs to Issues and/or a Project at some point
 
-- [ ] Remove CStorage wrapper structs and access CX<Numeric>x<Lanes> directly
-- [ ] Make `count` on SIMDX static
+- [x] Make `count` on SIMDX static
 - [ ] Extension on Array `init(SIMDX)` that uses native intrinsics store
 - [ ] Documentation
 - [ ] Int8, UInt8, Int16 and UInt16 storable

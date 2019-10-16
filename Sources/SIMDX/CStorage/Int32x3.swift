@@ -17,13 +17,13 @@ import CSIMDX
 
 public struct Int32x3: RawStorage3, FixedWidthIntegerStorage, SignedIntegerStorage {
 
-    // MARK: Collection Conformance
+    // MARK: Collection
 
-    public let startIndex: Int32 = 0
+    @inlinable public var count: Int { 3 }
+    @inlinable public var startIndex: Int32 { 0 }
+    @inlinable public var endIndex: Int32 { 3 }
 
-    public let endIndex: Int32 = 3
-
-    // MARK: Raw Value Access
+    // MARK: RawValue
 
     public var rawValue: CXInt32x3
 
@@ -37,7 +37,7 @@ public struct Int32x3: RawStorage3, FixedWidthIntegerStorage, SignedIntegerStora
     }
 }
 
-// MARK: - Designated Initializer
+// MARK: - Initializer
 extension Int32x3 {
 
     @inlinable public init(_ repeatingElement: Int32) {
