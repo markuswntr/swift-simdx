@@ -432,16 +432,11 @@ CX_INLINE(CXInt32x2) CXInt32x2ShiftElementWiseLeft(const CXInt32x2 lhs, const CX
 {
 #if CX_NEON_128
     return vshl_s32(lhs, rhs);
-#elif CX_EXT_VECTOR || CX_X86_128
-    return (CXInt32x2){
-         CXInt32x2GetElement(lhs, 0) << CXInt32x2GetElement(rhs, 0),
-         CXInt32x2GetElement(lhs, 1) << CXInt32x2GetElement(rhs, 1)
-    };
 #else
-    return (CXInt32x2){ .val = [
+    return CXInt32x2Make(
          CXInt32x2GetElement(lhs, 0) << CXInt32x2GetElement(rhs, 0),
          CXInt32x2GetElement(lhs, 1) << CXInt32x2GetElement(rhs, 1)
-    ]};
+    );
 #endif
 }
 
@@ -467,16 +462,11 @@ CX_INLINE(CXInt32x2) CXInt32x2ShiftElementWiseRight(const CXInt32x2 lhs, const C
 {
 #if CX_NEON_128
     return CXInt32x2ShiftElementWiseLeft(lhs, CXInt32x2Negate(rhs));
-#elif CX_EXT_VECTOR || CX_X86_128
-    return (CXInt32x2){
-         CXInt32x2GetElement(lhs, 0) >> CXInt32x2GetElement(rhs, 0),
-         CXInt32x2GetElement(lhs, 1) >> CXInt32x2GetElement(rhs, 1)
-    };
 #else
-    return (CXInt32x2){ .val = [
+    return CXInt32x2Make(
          CXInt32x2GetElement(lhs, 0) >> CXInt32x2GetElement(rhs, 0),
          CXInt32x2GetElement(lhs, 1) >> CXInt32x2GetElement(rhs, 1)
-    ]};
+    );
 #endif
 }
 

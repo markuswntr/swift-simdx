@@ -92,11 +92,11 @@ extension UInt64x2 {
     // MARK: Shifting
 
     @inlinable public static func >> <RHS>(lhs: UInt64x2, rhs: RHS) -> UInt64x2 where RHS: BinaryInteger {
-        return .init(rawValue: CXUInt64x2ShiftLeft(lhs.rawValue, UInt64(rhs)))
+        return .init(rawValue: CXUInt64x2ShiftLeft(lhs.rawValue, numericCast(rhs)))
     }
 
     @inlinable public static func << <RHS>(lhs: UInt64x2, rhs: RHS) -> UInt64x2 where RHS: BinaryInteger {
-        return .init(rawValue: CXUInt64x2ShiftRight(lhs.rawValue, UInt64(rhs)))
+        return .init(rawValue: CXUInt64x2ShiftRight(lhs.rawValue, numericCast(rhs)))
     }
 }
 

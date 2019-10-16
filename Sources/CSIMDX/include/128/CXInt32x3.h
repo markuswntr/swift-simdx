@@ -423,11 +423,11 @@ CX_INLINE(CXInt32x3) CXInt32x3ShiftLeft(const CXInt32x3 lhs, const Int32 rhs)
 #elif CX_EXT_VECTOR
     return lhs << rhs;
 #else
-    return (CXInt32x3){ .val = [
-         CXInt32x3GetElement(lhs, 0) << rhs,
-         CXInt32x3GetElement(lhs, 1) << rhs,
-         CXInt32x3GetElement(lhs, 2) << rhs
-    ]};
+    return CXInt32x3Make(
+        CXInt32x3GetElement(lhs, 0) << rhs,
+        CXInt32x3GetElement(lhs, 1) << rhs,
+        CXInt32x3GetElement(lhs, 2) << rhs
+    );
 #endif
 }
 
@@ -455,10 +455,10 @@ CX_INLINE(CXInt32x3) CXInt32x3ShiftRight(const CXInt32x3 lhs, const Int32 rhs)
 #elif CX_EXT_VECTOR
     return lhs >> rhs;
 #else
-    return (CXInt32x3){ .val = [
-         CXInt32x3GetElement(lhs, 0) >> rhs,
-         CXInt32x3GetElement(lhs, 1) >> rhs,
-         CXInt32x3GetElement(lhs, 2) >> rhs
-    ]};
+    return CXInt32x3Make(
+        CXInt32x3GetElement(lhs, 0) >> rhs,
+        CXInt32x3GetElement(lhs, 1) >> rhs,
+        CXInt32x3GetElement(lhs, 2) >> rhs
+    );
 #endif
 }

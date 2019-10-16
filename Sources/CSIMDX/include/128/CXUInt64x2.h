@@ -148,10 +148,8 @@ CX_INLINE(CXUInt64x2) CXUInt64x2FromCXFloat64x2(CXFloat64x2 operand)
 {
 #if CX_NEON_128_WITH_AARCH64
     return vcvtq_u64_f64(operand);
-#elif CX_X86_128
-    return _mm_castpd_si128(operand);
-#elif CX_EXT_VECTOR
-    return __builtin_convertvector(operand, CXUInt64x2);
+#elif CX_EXT_VECTOR || CX_X86_128
+    return __builtin_convertvector(operand, CXInt64x2);
 #else
     return (CXUInt64x2){ .val = [ (UInt64)(operand.val[0]), (UInt64)(operand.val[1]) ] };
 #endif
@@ -390,27 +388,24 @@ CX_INLINE(CXUInt64x2) CXUInt64x2BitwiseExclusiveOr(const CXUInt64x2 lhs, const C
 CX_INLINE(CXUInt64x2) CXUInt64x2ShiftElementWiseLeft(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
 {
 #if CX_NEON_128
-    return vshlq_u64(lhs, rhs);
+    return vshlq_s64(lhs, rhs);
 #elif CX_X86_128
     return _mm_sll_epi64(lhs, rhs);
-#elif CX_EXT_VECTOR
-    return (CXUInt64x2){
-         CXUInt64x2GetElement(lhs, 0) << CXUInt64x2GetElement(rhs, 0),
-         CXUInt64x2GetElement(lhs, 1) << CXUInt64x2GetElement(rhs, 1)
-    };
 #else
-    return (CXUInt64x2){ .val = [
+    return CXUInt64x2Make(
          CXUInt64x2GetElement(lhs, 0) << CXUInt64x2GetElement(rhs, 0),
          CXUInt64x2GetElement(lhs, 1) << CXUInt64x2GetElement(rhs, 1)
-    ]};
+    );
 #endif
 }
 
 /// Left-shifts each element in the storage operand by the specified number of bits.
 CX_INLINE(CXUInt64x2) CXUInt64x2ShiftLeft(const CXUInt64x2 lhs, const UInt64 rhs)
 {
-#if CX_NEON_128 || CX_X86_128
+#if CX_NEON_128
     return CXUInt64x2ShiftElementWiseLeft(lhs, CXUInt64x2MakeRepeatingElement(rhs));
+#elif CX_X86_128
+    return _mm_slli_epi64(lhs, rhs);
 #elif CX_EXT_VECTOR
     return lhs << rhs;
 #else
@@ -424,28 +419,23 @@ CX_INLINE(CXUInt64x2) CXUInt64x2ShiftLeft(const CXUInt64x2 lhs, const UInt64 rhs
 /// Right-shifts each element in the storage operand by the specified number of bits in each lane of rhs.
 CX_INLINE(CXUInt64x2) CXUInt64x2ShiftElementWiseRight(const CXUInt64x2 lhs, const CXUInt64x2 rhs)
 {
-#if CX_NEON_128_WITH_AARCH64
-    return CXUInt64x2ShiftElementWiseLeft(lhs, vreinterpretq_u64_s64(vnegq_s64(vreinterpretq_s64_u64(rhs))));
-#elif CX_X86_128
-    return CXUInt64x2ShiftElementWiseLeft(lhs, _mm_sub_epi64(CXUInt64x2MakeZero(), rhs));
-#elif CX_EXT_VECTOR
-    return (CXUInt64x2){
-         CXUInt64x2GetElement(lhs, 0) >> CXUInt64x2GetElement(rhs, 0),
-         CXUInt64x2GetElement(lhs, 1) >> CXUInt64x2GetElement(rhs, 1)
-    };
+#if CX_NEON_128
+    return CXUInt64x2ShiftElementWiseLeft(lhs, CXUInt64x2Negate(rhs));
 #else
-    return (CXUInt64x2){ .val = [
+    return CXUInt64x2Make(
          CXUInt64x2GetElement(lhs, 0) >> CXUInt64x2GetElement(rhs, 0),
          CXUInt64x2GetElement(lhs, 1) >> CXUInt64x2GetElement(rhs, 1)
-    ]};
+    );
 #endif
 }
 
 /// Right-shifts each element in the storage operand by the specified number of bits.
 CX_INLINE(CXUInt64x2) CXUInt64x2ShiftRight(const CXUInt64x2 lhs, const UInt64 rhs)
 {
-#if CX_NEON_128 || CX_X86_128
+#if CX_NEON_128
     return CXUInt64x2ShiftElementWiseRight(lhs, CXUInt64x2MakeRepeatingElement(rhs));
+#elif CX_X86_128
+    return _mm_srli_epi64(lhs, rhs);
 #elif CX_EXT_VECTOR
     return lhs >> rhs;
 #else

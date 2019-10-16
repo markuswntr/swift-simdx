@@ -86,6 +86,11 @@ Move TODOs to Issues and/or a Project at some point
 - [x] 128-bit storage
 - [x] Int32, UInt32, Float32 and Float64 storable
 - [x] Conform to common `Numeric` protocols functions (see upcoming blog post #link )
+- [x] Test basic functionality
+- [ ] Use available initializer along the functions of each type (instead of .val)
+- [ ] Make `count` on SIMDX static
+- [ ] Extension on Array `init(SIMDX)` that uses native intrinsics store
+- [ ] Remove CStorage wrapper structs and access CX<Numeric>x<Lanes> directly
 - [ ] Documentation
 - [ ] Int8, UInt8, Int16 and UInt16 storable
 - [ ] Boolean storage
@@ -95,10 +100,9 @@ Move TODOs to Issues and/or a Project at some point
 - [ ] Extend conformance to the `Numeric` protocols
     - [ ] Instance from RandomNumberGenerator
     - [ ] Cast most vector types natively using intrinsics
-- [ ] Make `count` on SIMDX static
-- [ ] Extension on Array `init(SIMDX)` that uses native intrinsics store
 - [ ] 512-bit storage
 - [x] Remove the ARM 64 requirement and any other platform restriction in Package.swift
+- [ ] Edge case tests
 - [ ] Not all intrinsics route through the fastest way possible. Re-visit and improve.
 - [ ] Re-evaluate the necessity of SIMDX being ExpressibleByArrayLiteral
 - [ ] The generic implementation is not the fastest it could be. Do some more magic.
