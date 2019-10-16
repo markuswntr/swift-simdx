@@ -11,7 +11,7 @@ target hardware.
 > <br/><br/> See [**Stumbling on SIMD**](https://blog.wntr.me/posts/001-the-properties-of-space/) series to learn how
 this project came to be. If you want to report a bug or an unexpected behaviour, feel free to open an issue. If have
 suggestions or really anything else that helps evolving the library and/or are interested in the details feel free to
-contact me on [GitHub](https://github.com/markuswntr) or [Twitter](https://twitter.com/markuswntr).
+contact me on [Twitter](https://twitter.com/markuswntr).
 
 ## Coding example
 
@@ -78,19 +78,27 @@ type on Arm with Neon. If neither of both are available, the module instructs th
 If this is not possible on the target hardware, the library provides a fallback to a C-array of float type and fixed
 length, i.e. `float array[4]`.
 
+## Features
+
+- [x] Conform to common `Numeric` protocols functions (see upcoming blog post #link )
+- [x] 64-bit storage
+- [x] 128-bit storage
+- [x] Int32, UInt32, Float32 and Float64 storable
+
+|         | Int8 | UInt8 | Int16 | UInt16 | Float16 | Int32 | UInt32 | Float32 | Int64 | UInt64 | Float64 |
+|--------:|------|-------|-------|--------|---------|-------|--------|---------|-------|--------|---------|
+|  64 bit |      |       |       |        |         |       |        |         |       |        |         |
+| 128 bit |      |       |       |        |         |       |        |         |       |        |         |
+| 256 bit |      |       |       |        |         |       |        |         |       |        |         |
+| 512 bit |      |       |       |        |         |       |        |         |       |        |         |
+
 ## TODO
 
 Move TODOs to Issues and/or a Project at some point
 
-- [x] 64-bit storage
-- [x] 128-bit storage
-- [x] Int32, UInt32, Float32 and Float64 storable
-- [x] Conform to common `Numeric` protocols functions (see upcoming blog post #link )
-- [x] Test basic functionality
-- [x] Use available initializer along the functions of each type (instead of .val)
+- [ ] Remove CStorage wrapper structs and access CX<Numeric>x<Lanes> directly
 - [ ] Make `count` on SIMDX static
 - [ ] Extension on Array `init(SIMDX)` that uses native intrinsics store
-- [ ] Remove CStorage wrapper structs and access CX<Numeric>x<Lanes> directly
 - [ ] Documentation
 - [ ] Int8, UInt8, Int16 and UInt16 storable
 - [ ] Boolean storage

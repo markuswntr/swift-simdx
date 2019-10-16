@@ -33,6 +33,9 @@ where Element == Storage.Element, Index: RawRepresentable, Index.RawValue == Sto
 
 extension SIMDX {
 
+    /// The number of elements in the storage
+    @inlinable public var count: Int { rawValue.count }
+
     /// Allows read and write access to individual elements in the storage.
     @inlinable public subscript(index: Index) -> Element {
         @inlinable set { rawValue[index.rawValue] = newValue }
@@ -62,7 +65,7 @@ extension SIMDX where Storage: EquatableStorage {
 
     /// Returns a Boolean value indicating whether the values of two storages are element-wise equal.
     @inlinable public static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.rawValue == rhs.rawValue
+        lhs.rawValue == rhs.rawValue
     }
 }
 
@@ -71,19 +74,19 @@ extension SIMDX where Storage: EquatableStorage {
 extension SIMDX where Storage: AdditiveArithmeticStorage {
 
     /// The zero value.
-    @inlinable public static var zero: Self { return .init(rawValue: .zero) }
+    @inlinable public static var zero: Self { .init(rawValue: .zero) }
 
     /// Returns the given storage unchanged.
     ///
     /// You can use the unary plus operator (`+`) to provide symmetry in your
     /// code for positive storages when also using the unary minus operator.
-    @inlinable prefix public static func + (operand: Self) -> Self { return operand }
+    @inlinable prefix public static func + (operand: Self) -> Self { operand }
 
     /// Adds two storages and produces their element-wise sums.
     /// - Parameter lhs: The left hand side operand.
     /// - Parameter rhs: The right hand side operand.
     @inlinable public static func + (lhs: Self, rhs: Self) -> Self {
-        return .init(rawValue: lhs.rawValue + rhs.rawValue)
+        .init(rawValue: lhs.rawValue + rhs.rawValue)
     }
 
     /// Adds two storages and stores their element-wise sums in the lhs variable.
@@ -95,7 +98,7 @@ extension SIMDX where Storage: AdditiveArithmeticStorage {
     /// - Parameter lhs: A numeric storage.
     /// - Parameter rhs: The numeric storage to subtract from `lhs`.
     @inlinable public static func - (lhs: Self, rhs: Self) -> Self {
-        return .init(rawValue: lhs.rawValue - rhs.rawValue)
+        .init(rawValue: lhs.rawValue - rhs.rawValue)
     }
 
     /// Subtracts the second storage from the first and stores the element-wise differences in the lhs variable.
@@ -118,7 +121,7 @@ extension SIMDX where Storage: NumericRawStorage {
 
     /// Multiplies two storages and produces their element-wise products.
     @inlinable public static func * (lhs: Self, rhs: Self) -> Self {
-        return .init(rawValue: lhs.rawValue * rhs.rawValue)
+        .init(rawValue: lhs.rawValue * rhs.rawValue)
     }
 
     /// Multiplies two storages element-wise and stores their products in the left-hand-side variable.
@@ -128,7 +131,7 @@ extension SIMDX where Storage: NumericRawStorage {
 
     /// Multiplies the storage element-wise by given element, and returns their products.
     @inlinable public static func * (storage: Self, element: Element) -> Self {
-        return .init(rawValue: storage.rawValue * element)
+        .init(rawValue: storage.rawValue * element)
     }
 
     /// Replaces the storage with the products of current storage elements multiplied element-wise by given element.
@@ -157,7 +160,7 @@ extension SIMDX where Storage: SignedNumericRawStorage {
 extension SIMDX where Storage: BinaryIntegerRawStorage {
 
     /// A Boolean value indicating whether this storage contains signed integer types.
-    @inlinable public static var isSigned: Bool { return Storage.isSigned }
+    @inlinable public static var isSigned: Bool { Storage.isSigned }
 
     @inlinable public init?<Source>(
         exactly value: Source
@@ -243,13 +246,13 @@ extension SIMDX where Storage: FixedWidthIntegerRawStorage {
     ///
     /// For unsigned integer types, this value is `(2 ** bitWidth) - 1`, where
     /// `**` is exponentiation. For signed integer types, this value is `(2 ** (bitWidth - 1)) - 1`.
-    @inlinable public static var max: Self { return .init(rawValue: .max) }
+    @inlinable public static var max: Self { .init(rawValue: .max) }
 
     /// The minimum representable integer in this type.
     ///
     /// For unsigned integer types, this value is always `0`. For signed integer
     /// types, this value is `-(2 ** (bitWidth - 1))`, where `**` is exponentiation.
-    @inlinable public static var min: Self { return .init(rawValue: .min) }
+    @inlinable public static var min: Self { .init(rawValue: .min) }
 }
 
 // MARK: Floating Point
@@ -270,31 +273,31 @@ extension SIMDX where Storage: FloatingPointRawStorage {
     }
 
     @inlinable public static var infinity: Self {
-        return .init(rawValue: .infinity)
+        .init(rawValue: .infinity)
     }
 
     @inlinable public static var greatestFiniteMagnitude: Self {
-        return .init(rawValue: .greatestFiniteMagnitude)
+        .init(rawValue: .greatestFiniteMagnitude)
     }
 
     @inlinable public static var pi: Self {
-        return .init(rawValue: .pi)
+        .init(rawValue: .pi)
     }
 
     @inlinable public static var ulpOfOne: Self {
-        return .init(rawValue: .ulpOfOne)
+        .init(rawValue: .ulpOfOne)
     }
 
     @inlinable public static var leastNormalMagnitude: Self {
-        return .init(rawValue: .leastNormalMagnitude)
+        .init(rawValue: .leastNormalMagnitude)
     }
 
     @inlinable public static var leastNonzeroMagnitude: Self {
-        return .init(rawValue: .leastNonzeroMagnitude)
+        .init(rawValue: .leastNonzeroMagnitude)
     }
 
     @inlinable public static func / (lhs: Self, rhs: Self) -> Self  {
-        return .init(rawValue: lhs.rawValue / rhs.rawValue)
+        .init(rawValue: lhs.rawValue / rhs.rawValue)
     }
 
     @inlinable public static func /= (lhs: inout Self, rhs: Self) {
@@ -302,7 +305,7 @@ extension SIMDX where Storage: FloatingPointRawStorage {
     }
 
     @inlinable public static func / (storage: Self, element: Element) -> Self  {
-        return .init(rawValue: storage.rawValue / element)
+        .init(rawValue: storage.rawValue / element)
     }
 
     @inlinable public static func /= (lhs: inout Self, rhs: Element) {
@@ -310,7 +313,7 @@ extension SIMDX where Storage: FloatingPointRawStorage {
     }
 
     @inlinable public func squareRoot() -> Self {
-        return .init(rawValue: rawValue.squareRoot())
+        .init(rawValue: rawValue.squareRoot())
     }
 
     /// Replaces this storage with its square root, rounded to a representable value.
@@ -319,11 +322,11 @@ extension SIMDX where Storage: FloatingPointRawStorage {
     }
 
     @inlinable public static func minimum(_ lhs: Self, _ rhs: Self) -> Self {
-        return .init(rawValue: .minimum(lhs.rawValue, rhs.rawValue))
+        .init(rawValue: .minimum(lhs.rawValue, rhs.rawValue))
     }
 
     @inlinable public static func maximum(_ lhs: Self, _ rhs: Self) -> Self {
-        return .init(rawValue: .maximum(lhs.rawValue, rhs.rawValue))
+        .init(rawValue: .maximum(lhs.rawValue, rhs.rawValue))
     }
 }
 
