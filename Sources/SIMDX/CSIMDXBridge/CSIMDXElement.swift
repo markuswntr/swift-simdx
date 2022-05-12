@@ -31,26 +31,6 @@ public protocol CSIMDX4Element where RegisterType4.Element == Self {
   associatedtype RegisterType4: CSIMDX4
 }
 
-/// A type that is representable in a SIMD register type of 5 values
-public protocol CSIMDX5Element where RegisterType5.Element == Self {
-  associatedtype RegisterType5: CSIMDX5
-}
-
-/// A type that is representable in a SIMD register type of 6 values
-public protocol CSIMDX6Element where RegisterType6.Element == Self {
-  associatedtype RegisterType6: CSIMDX6
-}
-
-/// A type that is representable in a SIMD register type of 7 values
-public protocol CSIMDX7Element where RegisterType7.Element == Self {
-  associatedtype RegisterType7: CSIMDX7
-}
-
-/// A type that is representable in a SIMD register type of 8 values
-public protocol CSIMDX8Element where RegisterType8.Element == Self {
-  associatedtype RegisterType8: CSIMDX8
-}
-
 // MARK: - Implementations
 
 //extension Int32: RawStorable2, RawStorable3, RawStorable4 {
