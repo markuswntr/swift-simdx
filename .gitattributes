@@ -3,7 +3,3 @@
 
 # Treat header files as part of C (not C++)
 *.h linguist-language=C
-
-# Ignore Travis Scripts & VS Code container
-.travis/* linguist-vendored
-.devcontainer/* linguist-vendored
