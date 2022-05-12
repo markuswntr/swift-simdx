@@ -101,7 +101,7 @@ CX_INLINE(void) CXInt32x2SetElement(CXInt32x2* storage, const int index, const I
 
 /// Converts the elements of `operand`, load them in the new storage and returns the result.
 /// @returns `(CXInt32x2){ (Int32)(operand[0]), (Int32)(operand[1]) }`
-CX_INLINE(CXInt32x2) CXInt32x2FromCXFloat32x2(CXFloat32x2 operand)
+CX_INLINE(CXInt32x2) CXInt32x2FromCFloat32x2(CFloat32x2 operand)
 {
 #if CX_NEON_128
     return vcvt_s32_f32(operand);

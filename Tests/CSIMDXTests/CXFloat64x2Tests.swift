@@ -59,8 +59,8 @@ final class CXFloat64x2Tests: XCTestCase {
     // MARK: Conversion
 
     func testConvertFromFloat32x2() {
-        let fromStorage = CXFloat32x2Make(2.11199999999999, 1.54321987654321)
-        let storage = CXFloat64x2FromCXFloat32x2(fromStorage)
+        let fromStorage = CFloat32x2Make(2.11199999999999, 1.54321987654321)
+        let storage = CXFloat64x2FromCFloat32x2(fromStorage)
 
         let firstRange = 2.11199999999999 - Float64(Float32.ulpOfOne) ... 2.11199999999999 + Float64(Float32.ulpOfOne)
         let secondRange = 1.54321987654321 - Float64(Float32.ulpOfOne) ... 1.54321987654321 + Float64(Float32.ulpOfOne)

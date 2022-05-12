@@ -99,7 +99,7 @@ CX_INLINE(void) CXFloat64x2SetElement(CXFloat64x2* storage, const int index, con
 
 /// Converts the elements of `operand`, load them in the new storage and returns the result.
 /// @returns `(CXFloat64x2){ (Float64)(operand[0]), (Float64)(operand[1]) }`
-CX_INLINE(CXFloat64x2) CXFloat64x2FromCXFloat32x2(CXFloat32x2 operand)
+CX_INLINE(CXFloat64x2) CXFloat64x2FromCFloat32x2(CFloat32x2 operand)
 {
 #if CX_NEON_128_WITH_AARCH64
     return vcvt_f64_f32(operand);
@@ -117,7 +117,7 @@ CX_INLINE(CXFloat64x2) CXFloat64x2FromCXFloat32x2(CXFloat32x2 operand)
 CX_INLINE(CXFloat64x2) CXFloat64x2FromCXInt32x2(CXInt32x2 operand)
 {
 #if CX_NEON_128_WITH_AARCH64
-    return CXFloat64x2FromCXFloat32x2(vreinterpret_f32_s32(operand));
+    return CXFloat64x2FromCFloat32x2(vreinterpret_f32_s32(operand));
 #elif CX_X86_128
     return _mm_cvtepi32_pd(operand);
 #elif CX_EXT_VECTOR
@@ -132,7 +132,7 @@ CX_INLINE(CXFloat64x2) CXFloat64x2FromCXInt32x2(CXInt32x2 operand)
 CX_INLINE(CXFloat64x2) CXFloat64x2FromCXUInt32x2(CXUInt32x2 operand)
 {
 #if CX_NEON_128_WITH_AARCH64
-    return CXFloat64x2FromCXFloat32x2(vreinterpret_f32_u32(operand));
+    return CXFloat64x2FromCFloat32x2(vreinterpret_f32_u32(operand));
 #elif CX_X86_128
     return _mm_cvtepi32_pd(operand);
 #elif CX_EXT_VECTOR

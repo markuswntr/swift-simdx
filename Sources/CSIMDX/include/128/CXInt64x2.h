@@ -100,7 +100,7 @@ CX_INLINE(void) CXInt64x2SetElement(CXInt64x2* storage, const int index, const I
 
 /// Converts the elements of `operand`, load them in the new storage and returns the result.
 /// @returns `(CXInt64x2){ (Int64)(operand[0]), (Int64)(operand[1]) }`
-CX_INLINE(CXInt64x2) CXInt64x2FromCXFloat32x2(CXFloat32x2 operand)
+CX_INLINE(CXInt64x2) CXInt64x2FromCFloat32x2(CFloat32x2 operand)
 {
 #if CX_NEON_128_WITH_AARCH64
     return vcvtq_s64_f64(vcvt_f64_f32(operand));

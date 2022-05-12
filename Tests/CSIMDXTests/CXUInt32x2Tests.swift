@@ -59,8 +59,8 @@ final class CXUInt32x2Tests: XCTestCase {
     // MARK: Conversion
 
     func testConvertFromFloat32x2() {
-        let fromStorage = CXFloat32x2Make(2.49, 0.51)
-        let storage = CXUInt32x2FromCXFloat32x2(fromStorage)
+        let fromStorage = CFloat32x2Make(2.49, 0.51)
+        let storage = CXUInt32x2FromCFloat32x2(fromStorage)
 
         XCTAssertEqual(CXUInt32x2GetElement(storage, 0), 2)
         XCTAssertEqual(CXUInt32x2GetElement(storage, 1), 1)

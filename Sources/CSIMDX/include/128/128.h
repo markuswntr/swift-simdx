@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "CXFloat32x2.h" // Actually 64 bit, but 128 bit is the minimum
+#include "CFloat32x2.h" // Actually 64 bit, but 128 bit is the minimum
 #include "CXFloat32x3.h"
 #include "CXFloat32x4.h"
 #include "CXFloat64x2.h"

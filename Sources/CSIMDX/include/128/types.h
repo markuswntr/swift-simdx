@@ -25,13 +25,13 @@
 
 /// The 2 x 32-bit floating point storage
 #if CX_NEON_128
-typedef float32x2_t __attribute((aligned(16))) CXFloat32x2;
+typedef float32x2_t __attribute((aligned(16))) CFloat32x2;
 #elif CX_X86_128
-typedef __m128 CXFloat32x2; // Most significant 64 bits are unused (zero)
+typedef __m128 CFloat32x2; // Most significant 64 bits are unused (zero)
 #elif CX_EXT_VECTOR
-typedef Float32 CXFloat32x2 __attribute__((ext_vector_type(2)));
+typedef Float32 CFloat32x2 __attribute__((ext_vector_type(2)));
 #else
-typedef struct CXFloat32x2_t { Float32 val[2]; } CXFloat32x2;
+typedef struct CFloat32x2_t { Float32 val[2]; } CFloat32x2;
 #endif
 
 /// The 3 x 32-bit floating point storage
