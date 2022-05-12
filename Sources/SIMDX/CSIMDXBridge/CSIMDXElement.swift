@@ -55,10 +55,12 @@ public protocol CSIMDX4Element where RegisterType4.Element == Self {
 ////    public typealias Storage4 = UInt64x4
 //}
 
-extension Float32: CSIMDX2Element/*, RawStorable3, RawStorable4*/ {
+// MARK: Floating Point
+
+extension Float32: CSIMDX2Element, CSIMDX3Element/*, CSIMDX4Element*/ {
   public typealias RegisterType2 = CFloat32x2
-//    public typealias Storage3 = Float32x3
-//    public typealias Storage4 = Float32x4
+  public typealias RegisterType3 = CFloat32x3
+//  public typealias RegisterType4 = CFloat32x4
 }
 //extension Float64: RawStorable2/*, RawStorable3, RawStorable4*/ {
 //    public typealias Storage2 = Float64x2

@@ -1,21 +1,31 @@
-# SIMDX
+# 🎹 SIMDX
 
-*SIMDX* provides a unified implementation for built-in vector and matrix intrinsics, such as **SSE/AVX on x86** and
-**Neon on Arm**, in C (see `CSIMDX` target) and exposes them to Swift as generic types (see `SIMDX` target).
-Furthermore, *SIMDX* provides a fast and portable implementation of SIMD like intrinsics on **hardware which doesn't
-natively support** them, making *SIMDX* independent of the target hardware. Therefore it allows vector and matrix
-calculations on any (Swift supporting) hardware and automatically inlines the appropriate  intrinsic functions of the
-target hardware.
-
-> **Warning.** Not meant to be used in production, created for learning purposes!
+> **Warning.** Not meant to be used in production – created for learning purposes!
 > <br/><br/> See [**Stumbling on SIMD**](https://blog.wntr.me/posts/001-the-properties-of-space/) series to learn how
 this project came to be. If you want to report a bug or an unexpected behaviour, feel free to open an issue. If have
 suggestions or really anything else that helps evolving the library and/or are interested in the details feel free to
 contact me on [Twitter](https://twitter.com/markuswntr).
 
-## Coding example
+*SIMDX* provides a unified implementation for built-in vector and matrix
+intrinsics, such as **SSE/AVX on x86** and **Neon on Arm**, in C and exposes
+them to Swift as generic types. Furthermore, *SIMDX* provides a fast and
+portable implementation of SIMD like intrinsics on **hardware that does not
+natively support them** or has a limited feature set, making *SIMDX* independent
+of the target hardware – without additional external dependencies.  
+The raison d'être of the package is to provide a simple, unified and generic API
+for vector and matrix types and operations that chooses the fastest calculation
+path available to the target hardware automatically.  
+Further details on the C implementation can be found within the documentation
+and source code of the `CSIMDX` module, while more details on the Swift
+implementation can be found within the documentation and source of the `SIMDX`
+module.
 
-Given a `color` that should be modified in `brightness` on each channel separately and then multiplied by a `scale` factor on each lanes equally.
+## Example
+
+Given a `color` that should be modified in `brightness` on each channel
+separately and then multiplied by a `scale` factor on each lanes equally.
+
+Without SIMDX
 
 **Example 1.1:**
 

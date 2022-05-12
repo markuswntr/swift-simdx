@@ -17,33 +17,6 @@
 #include <stdint.h>
 #include "common/numeric.h"
 
-#if CX_NEON_128
-#include <arm_neon.h>
-#elif CX_X86_128
-#include <emmintrin.h>
-#endif
-
-/// The 2 x 32-bit floating point storage
-#if CX_NEON_128
-typedef float32x2_t __attribute((aligned(16))) CFloat32x2;
-#elif CX_X86_128
-typedef __m128 CFloat32x2; // Most significant 64 bits are unused (zero)
-#elif CX_EXT_VECTOR
-typedef Float32 CFloat32x2 __attribute__((ext_vector_type(2)));
-#else
-typedef struct CFloat32x2_t { Float32 val[2]; } CFloat32x2;
-#endif
-
-/// The 3 x 32-bit floating point storage
-#if CX_NEON_128
-typedef float32x4_t __attribute((aligned(16))) CXFloat32x3; // Most significant 32 bits are unused (zero)
-#elif CX_X86_128
-typedef __m128 CXFloat32x3; // Most significant 32 bits are unused (zero)
-#elif CX_EXT_VECTOR
-typedef Float32 CXFloat32x3 __attribute__((ext_vector_type(3)));
-#else
-typedef struct CXFloat32x3_t { Float32 val[3]; } CXFloat32x3;
-#endif
 
 /// The 4 x 32-bit floating point storage
 #if CX_NEON_128

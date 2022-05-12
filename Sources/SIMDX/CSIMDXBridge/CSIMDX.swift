@@ -12,21 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// A protocol to address highly efficient and parallel processing optimized
+/// A protocol to address highly efficient and for parallel processing optimized
 /// `SIMD` register types.
 ///
-/// Types conforming to this protocol are used to initialize a parallel
-/// processing optimized `SIMD` storage based on the `Element` type within the
-/// collection.
-public protocol CSIMDX {
-
-  typealias Index = CInt
-
-  associatedtype Element
-
-  var count: Int { get }
-
-  subscript(position: Index) -> Element { get set }
+/// Conforming types must be a SIMD register type. This protocol then adds an
+/// interface to SIMDX on top of the existing SIMD functions. If possible all
+/// the functions in the protocol should directly call the appropriate SIMD
+/// intrinsic function and should not implement any additional logic - and avoid
+/// unexpected performance characteristics.
+public protocol CSIMDX: MutableCollection where Index == CInt {
 
   /// Initialize to a raw SIMD storage with all elements equal
   /// to `repeatingElement`.

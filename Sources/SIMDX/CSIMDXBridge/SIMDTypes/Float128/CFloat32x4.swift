@@ -16,41 +16,46 @@ import CSIMDX
 import RealModule
 
 // MARK: Basic Contract
-extension CFloat32x2: CSIMDX, CSIMDX2 {
+extension CFloat32x4: CSIMDX, CSIMDX4 {
   public typealias Element = Float32
   public typealias Index = CInt
 }
 
 // MARK: - Additional Initializers
-extension CFloat32x2: ExpressibleByIntegerLiteral {
+extension CFloat32x4: ExpressibleByIntegerLiteral {
   @_transparent
-  public init(_ index0: Element, _ index1: Element) {
-      self = CFloat32x2Make(index0, index1)
+  public init(
+    _ index0: Element,
+    _ index1: Element,
+    _ index2: Element,
+    _ index3: Element
+  ) {
+      self = CFloat32x4Make(index0, index1, index2, index3)
   }
 
   @_transparent
   public init(repeating repeatingElement: Element) {
-      self = CFloat32x2MakeRepeatingElement(repeatingElement)
+      self = CFloat32x4MakeRepeatingElement(repeatingElement)
   }
 
   @_transparent
   public init(_ array: [Float32]) {
-    precondition(array.count == 2, "Array must contain exactly 2 elements")
+    precondition(array.count == 4, "Array must contain exactly 4 elements")
     var array = array
-    self = CFloat32x2MakeLoad(&array)
+    self = CFloat32x4MakeLoad(&array)
   }
 }
 
 // MARK: - Conformance to MutableCollection
-extension CFloat32x2 {
+extension CFloat32x4 {
   public subscript(index: Index) -> Element {
-    @_transparent set { CFloat32x2SetElement(&self, index, newValue) }
-    @_transparent get { CFloat32x2GetElement(self, index) }
+    @_transparent set { CFloat32x4SetElement(&self, index, newValue) }
+    @_transparent get { CFloat32x4GetElement(self, index) }
   }
 }
 
 // MARK: - Conformance to Equatable
-extension CFloat32x2: Equatable {
+extension CFloat32x4: Equatable {
   @_transparent
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.rawValue == rhs.rawValue
@@ -58,32 +63,32 @@ extension CFloat32x2: Equatable {
 }
 
 // MARK: - Conformance to Hashable
-extension CFloat32x2: Hashable {
+extension CFloat32x4: Hashable {
   public func hash(into hasher: inout Hasher) {
     hasher.combine(rawValue)
   }
 }
 
 // MARK: - Conformance to AdditiveArithmetic
-extension CFloat32x2: AdditiveArithmetic {
+extension CFloat32x4: AdditiveArithmetic {
   @_transparent
   public static var zero: Self {
-    CFloat32x2MakeZero()
+    CFloat32x4MakeZero()
   }
 
   @_transparent
   public static func + (lhs: Self, rhs: Self) -> Self {
-    CFloat32x2Add(lhs, rhs)
+    CFloat32x4Add(lhs, rhs)
   }
 
   @_transparent
   public static func - (lhs: Self, rhs: Self) -> Self  {
-    CFloat32x2Subtract(lhs, rhs)
+    CFloat32x4Subtract(lhs, rhs)
   }
 }
 
 // MARK: - Conformance to Numeric
-extension CFloat32x2: Numeric {
+extension CFloat32x4: Numeric {
   public typealias Magnitude = Element.Magnitude
 
   @_alwaysEmitIntoClient
@@ -93,7 +98,7 @@ extension CFloat32x2: Numeric {
 
   @_transparent
   public static func * (lhs: Self, rhs: Self) -> Self  {
-    CFloat32x2Multiply(lhs, rhs)
+    CFloat32x4Multiply(lhs, rhs)
   }
 
   @_transparent
@@ -104,41 +109,41 @@ extension CFloat32x2: Numeric {
   @_transparent
   public init?<T>(exactly source: T) where T : BinaryInteger {
     guard let exactly = Element(exactly: source) else { return nil }
-    self = CFloat32x2MakeRepeatingElement(exactly)
+    self = CFloat32x4MakeRepeatingElement(exactly)
   }
 }
 
 // MARK: - Conformace to SignedNumeric
-extension CFloat32x2: SignedNumeric {
+extension CFloat32x4: SignedNumeric {
   @_transparent
   public static prefix func - (operand: Self) -> Self  {
-    CFloat32x2Negate(operand)
+    CFloat32x4Negate(operand)
   }
 
   @_transparent
   public mutating func negate() {
-    self = CFloat32x2Negate(self)
+    self = CFloat32x4Negate(self)
   }
 }
 
 // MARK: - Conformance to AlgebraicField
-extension CFloat32x2: AlgebraicField {
+extension CFloat32x4: AlgebraicField {
   @_transparent
   public static func / (lhs: Self, rhs: Self) -> Self  {
-    CFloat32x2Divide(lhs, rhs)
+    CFloat32x4Divide(lhs, rhs)
   }
 
   @_transparent
-  public static func /= (lhs: inout Self, rhs: Self) {
-    lhs = CFloat32x2Divide(lhs, rhs)
+  public static func /= (lhs: inout CFloat32x4_t, rhs: CFloat32x4_t) {
+    lhs = CFloat32x4Divide(lhs, rhs)
   }
 }
 
 //// MARK: - Conformance to ElementaryFunctions
 //// TODO: These are not yet exposed to SIMDX
-//extension CFloat32x2/*: ElementaryFunctions*/ {
+//extension CFloat32x4/*: ElementaryFunctions*/ {
 //  @_transparent
 //  static func sqrt(_ x: Self) -> Self {
-//    CFloat32x2SquareRoot(x)
+//    CFloat32x4SquareRoot(x)
 //  }
 //}

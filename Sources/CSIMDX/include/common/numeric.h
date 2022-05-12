@@ -14,6 +14,12 @@
 
 #include <stdint.h>
 
+#if CSIMDX_ARM_NEON
+#include <arm_neon.h>
+#elif CSIMDX_X86_SSE2
+#include <emmintrin.h>
+#endif
+
 /// The 32-bit floating point type
 #define Float32 float
 /// The 64-bit floating point type
