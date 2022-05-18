@@ -4,8 +4,9 @@ Caveats:
 - Requires at least SSE2 or ARM NEON for any intrinsic. Below, everything is just plain C.
 - Fallbacks require a math library
 - (ARM only) Float64x2 uses a C-array and not an intrinsic if extended neon set (**AARCH64**) is not available
-- Float32x2 is of 128 bit length for SSE2 (most significant 64 bits unused)
+- Float32x2 is of 128 bit length for SSE2 (most significant 64 bits unused)1
 - Float32x3 is of 128 bit length (most significant 32 bits unused) 
+- Underlying storage always has the same length (bits) on all platforms (BUT, CFloat32x2 is 128bits on x86, but 64bits on all other)
 
 > **Warning.** Not meant to be used in production – created for learning purposes!
 > <br/><br/> See [**Stumbling on SIMD**](https://blog.wntr.me/posts/001-the-properties-of-space/) series to learn how

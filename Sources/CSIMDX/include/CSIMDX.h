@@ -25,10 +25,13 @@
 
 // == References ================================================================================
 //  - https://clang.llvm.org/doxygen/emmintrin_8h_source.html
-//  - https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_m128&techs=SSE2
+//  - https://software.intel.com/sites/landingpage/IntrinsicsGuide/
 //  - https://thinkingandcomputing.com/posts/using-avx-instructions-in-matrix-multiplication.html
 // ==============================================================================================
+// #define CSIMDX_X86_MMX
 // #define CSIMDX_X86_SSE2
+// #define CSIMDX_X86_SSE3
+// #define CSIMDX_X86_SSE4_1
 // #define CSIMDX_X86_AVX
 
 /// Find the relevant instruction set
@@ -43,22 +46,38 @@
   #define CSIMDX_ARM_SVE 1
     #include <arm_sve.h>
   #endif
-#elif __SSE2__
-  #define CSIMDX_X86_SSE2 1
-  #include <emmintrin.h>
-  #ifdef __AVX__
-    #define CSIMDX_X86_AVX 1
-    #include <immintrin.h>
-  #endif
-#endif
+#elifdef __MMX__
+  #define CSIMDX_X86_MMX 1
+  #include <mmintrin.h>
+  #ifdef __SSE2__
+    #define CSIMDX_X86_SSE2 1
+    #include <emmintrin.h>
+    #ifdef __SSE3__
+      #define CSIMDX_X86_SSE3 1
+      #include <tmmintrin.h>
+      #ifdef __SSE4_1__
+        #define CSIMDX_X86_SSE4_1 1
+        #include <smmintrin.h>
+        #ifdef __AVX__
+          #define CSIMDX_X86_AVX 1
+          #include <immintrin.h>
+        #endif // AVX
+      #endif // SSE4_1
+    #endif // SSE 3
+  #endif // SSE2
+#endif // MMX
 
 /// Tries force inlining the function. Takes the return value as input.
 #define FORCE_INLINE(returnType) static __inline__ __attribute__((always_inline)) returnType
 
+#include "CInt/CInt.h"
 #include "CFloat/CFloat.h"
 
 #undef CSIMDX_ARM_NEON
 #undef CSIMDX_ARM_NEON_AARCH64
 #undef CSIMDX_ARM_SVE
+#undef CSIMDX_X86_MMX
 #undef CSIMDX_X86_SSE2
+#undef CSIMDX_X86_SSE3
+#undef CSIMDX_X86_SSE4_1
 #undef CSIMDX_X86_AVX

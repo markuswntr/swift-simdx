@@ -14,4 +14,4 @@
 
 #pragma once
 
-#include "CFloat32x2.h"
+#include "CInt32x2.h"

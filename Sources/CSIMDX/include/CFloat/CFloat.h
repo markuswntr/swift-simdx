@@ -14,11 +14,14 @@
 
 #pragma once
 
-#include "CFloat64/CFloat64.h"
-#include "CFloat128/CFloat128.h"
-#include "CFloat256/CFloat256.h"
+#include "CFloat32x2.h"
+#include "CFloat32x3.h"
+#include "CFloat32x4.h"
+#include "CFloat64x2.h"
+#include "CFloat64x3.h"
+#include "CFloat64x4.h"
 
-// MARK: - CFloat32x2 <-> CFloat64x2
+#pragma mark - CFloat32x2 <-> CFloat64x2
 
 /// Converts the double-precision floating-point elements of given `operand`
 /// into single-precision floating-point values and returns them as the elements

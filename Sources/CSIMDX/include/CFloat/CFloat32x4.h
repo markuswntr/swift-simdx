@@ -30,7 +30,7 @@ typedef struct CFloat32x4_t {
 } CFloat32x4;
 #endif
 
-// MARK: - Getter/Setter
+#pragma mark - Getter/Setter
 
 /// Returns the element at `index` of `storage` (`storage[index]`).
 /// @return `storage[index]`
@@ -38,7 +38,7 @@ FORCE_INLINE(Float32)
 CFloat32x4GetElement(const CFloat32x4 storage, const int index)
 {
 #if CSIMDX_ARM_NEON || CSIMDX_X86_AVX
-  return storage[index];
+  return ((Float32*)&(storage))[index];
 #else
   union { CFloat32x4 storage; Float32 rawValue[4]; } Union;
   Union.storage = storage;
@@ -52,7 +52,7 @@ FORCE_INLINE(void)
 CFloat32x4SetElement(CFloat32x4* storage, const int index, const Float32 value)
 {
 #if CSIMDX_ARM_NEON || CSIMDX_X86_AVX
-  (*storage)[index] = value;
+  ((Float32*)storage)[index] = value;
 #else
   union { CFloat32x4* storage; Float32* rawValue; } Union;
   Union.storage = storage;
@@ -71,10 +71,6 @@ CFloat32x4Make(Float32 element0, Float32 element1,
 #if CSIMDX_X86_SSE2
   return _mm_setr_ps(element0, element1, element2, element3);
 #else
-//  CFloat32x4 result;
-//  result.lo = CFloat32x2Make(element0, element1);
-//  result.hi = CFloat32x2Make(element2, element3);
-//  return result;
   return (CFloat32x4){ element0, element1, element2, element3 };
 #endif
 }
@@ -127,7 +123,7 @@ FORCE_INLINE(CFloat32x4) CFloat32x4MakeZero(void)
 #endif
 }
 
-// MARK: Minimum & Maximum
+#pragma mark Minimum & Maximum
 
 /// Performs element-by-element comparison of both storages and returns
 /// the lesser of each pair in the result.
@@ -175,7 +171,7 @@ CFloat32x4Maximum(const CFloat32x4 lhs, const CFloat32x4 rhs)
 #endif
 }
 
-// MARK: - Arithmetics
+#pragma mark - Arithmetics
 
 /// Returns the negated storage (element-wise).
 /// @return `(CFloat32x4){ -(operand[0]), -(operand[1]), -(operand[2]), -(operand[3]) }`
@@ -212,7 +208,7 @@ FORCE_INLINE(CFloat32x4) CFloat32x4Absolute(const CFloat32x4 operand)
 #endif
 }
 
-// MARK: Additive
+#pragma mark Additive
 
 /// Adds two storages (element-wise).
 ///   (CFloat32x4){
@@ -258,7 +254,7 @@ CFloat32x4Subtract(const CFloat32x4 lhs, const CFloat32x4 rhs)
 #endif
 }
 
-// MARK: Multiplicative
+#pragma mark Multiplicative
 
 /// Multiplies two storages (element-wise).
 ///   (CFloat32x4){
@@ -340,33 +336,5 @@ FORCE_INLINE(CFloat32x4) CFloat32x4SquareRoot(const CFloat32x4 operand)
   };
 #endif
 }
-
-// MARK: - Conversion
-
-///// Converts the elements of `operand`, load them in the new storage and returns the result.
-///// @returns `(CFloat32x4){ (Float32)(operand[0]), (Float32)(operand[1]), (Float32)(operand[2]), ... }`
-//FORCE_INLINE(CFloat32x4) CFloat32x4FromCXInt32x4(CXInt32x4 operand)
-//{
-//  CFloat32x4 result;
-//#if CSIMDX_ARM_NEON
-//return vcvtq_f32_s32(operand);
-//#elif CSIMDX_X86_SSE2
-//return _mm_cvtepi32_ps(operand);
-//#endif
-//  return result;
-//}
-//
-///// Converts the elements of `operand`, load them in the new storage and returns the result.
-///// @returns `(CFloat32x4){ (Float32)(operand[0]), (Float32)(operand[1]), (Float32)(operand[2]), ... }`
-//FORCE_INLINE(CFloat32x4) CFloat32x4FromCXUInt32x4(CXUInt32x4 operand)
-//{
-//  CFloat32x4 result;
-//#if CSIMDX_ARM_NEON
-//return vcvtq_f32_u32(operand);
-//#elif CSIMDX_X86_SSE2
-//return _mm_cvtepi32_ps(operand);
-//#endif
-//  return result;
-//}
 
 #undef Float32

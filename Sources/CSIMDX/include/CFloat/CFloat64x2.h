@@ -30,7 +30,7 @@ typedef union CFloat64x2_t {
 } CFloat64x2;
 #endif
 
-// MARK: - Getter/Setter
+#pragma mark - Getter/Setter
 
 /// Returns the element at `index` of `storage` (`storage[index]`).
 /// @return `storage[index]`
@@ -38,7 +38,7 @@ FORCE_INLINE(Float64)
 CFloat64x2GetElement(const CFloat64x2 storage, const int index)
 {
 #if CSIMDX_ARM_NEON_AARCH64 || CSIMDX_X86_SSE2
-  return storage[index];
+  return ((Float64*)&(storage))[index];
 #else
   return storage.rawValue[index];
 #endif
@@ -50,7 +50,7 @@ FORCE_INLINE(void)
 CFloat64x2SetElement(CFloat64x2* storage, const int index, const Float64 value)
 {
 #if CSIMDX_ARM_NEON_AARCH64 || CSIMDX_X86_SSE2
-  (*storage)[index] = value;
+  ((Float64*)storage)[index] = value;
 #else
   (storage->rawValue)[index] = value;
 #endif
@@ -109,7 +109,7 @@ FORCE_INLINE(CFloat64x2) CFloat64x2MakeZero(void)
 #endif
 }
 
-// MARK: Minimum & Maximum
+#pragma mark Minimum & Maximum
 
 /// Performs element-by-element comparison of both storages and
 /// returns the lesser of each pair in the result.
@@ -160,7 +160,7 @@ CFloat64x2Maximum(const CFloat64x2 lhs, const CFloat64x2 rhs)
 #endif
 }
 
-// MARK: - Arithmetics
+#pragma mark - Arithmetics
 
 /// Returns the negated storage (element-wise).
 /// @return `(CFloat64x2){ -(operand[0]), -(operand[1]) }`
@@ -195,7 +195,7 @@ CFloat64x2Absolute(const CFloat64x2 operand)
 #endif
 }
 
-// MARK: Additive
+#pragma mark Additive
 
 /// Adds two storages (element-wise).
 /// @return `(CFloat64x2){ lhs[0] + rhs[0], lhs[1] + rhs[1] }`
@@ -233,7 +233,7 @@ CFloat64x2Subtract(const CFloat64x2 lhs, const CFloat64x2 rhs)
 #endif
 }
 
-// MARK: Multiplicative
+#pragma mark Multiplicative
 
 /// Multiplies two storages (element-wise).
 /// @return `(CFloat64x2){ lhs[0] * rhs[0], lhs[1] * rhs[1] }`
@@ -284,69 +284,5 @@ FORCE_INLINE(CFloat64x2) CFloat64x2SquareRoot(const CFloat64x2 operand)
                         __builtin_sqrt(CFloat64x2GetElement(operand, 1)));
 #endif
 }
-
-//// MARK: - Conversion
-//
-///// Converts the elements of `operand`, load them in the new storage and returns the result.
-///// @returns `(CFloat64x2){ (Float64)(operand[0]), (Float64)(operand[1]) }`
-//FORCE_INLINE(CFloat64x2) CFloat64x2FromCXInt32x2(CInt32x2 operand)
-//{
-//#if CSIMDX_ARM_NEON_AARCH64
-//    return CFloat64x2FromCFloat32x2(vreinterpret_f32_s32(operand));
-//#elif CSIMDX_X86_SSE2
-//    return _mm_cvtepi32_pd(operand);
-//#elif CX_EXT_VECTOR
-//    return __builtin_convertvector(operand, CFloat64x2);
-//#else
-//    return CFloat64x2Make( (Float64)(operand.val[0]), (Float64)(operand.val[1]) );
-//#endif
-//}
-//
-///// Converts the elements of `operand`, load them in the new storage and returns the result.
-///// @returns `(CFloat64x2){ (Float64)(operand[0]), (Float64)(operand[1]) }`
-//FORCE_INLINE(CFloat64x2) CFloat64x2FromCXUInt32x2(CXUInt32x2 operand)
-//{
-//#if CSIMDX_ARM_NEON_AARCH64
-//    return CFloat64x2FromCFloat32x2(vreinterpret_f32_u32(operand));
-//#elif CSIMDX_X86_SSE2
-//    return _mm_cvtepi32_pd(operand);
-//#elif CX_EXT_VECTOR
-//    return __builtin_convertvector(operand, CFloat64x2);
-//#else
-//    return CFloat64x2Make( (Float64)(operand.val[0]), (Float64)(operand.val[1]) );
-//#endif
-//}
-//
-///// Converts the elements of `operand`, load them in the new storage and returns the result.
-///// @returns `(CFloat64x2){ (Float64)(operand[0]), (Float64)(operand[1]) }`
-//FORCE_INLINE(CFloat64x2) CFloat64x2FromCXInt64x2(CXInt64x2 operand)
-//{
-//#if CSIMDX_ARM_NEON_AARCH64
-//    return vcvtq_f64_s64(operand);
-//#elif CSIMDX_X86_SSE2
-////    return _mm_castsi128_pd(operand);
-//    return __builtin_convertvector(operand, CFloat64x2);
-//#elif CX_EXT_VECTOR
-//    return __builtin_convertvector(operand, CFloat64x2);
-//#else
-//    return CFloat64x2Make( (Float64)(operand.val[0]), (Float64)(operand.val[1]) );
-//#endif
-//}
-//
-///// Converts the elements of `operand`, load them in the new storage and returns the result.
-///// @returns `(CFloat64x2){ (Float64)(operand[0]), (Float64)(operand[1]) }`
-//FORCE_INLINE(CFloat64x2) CFloat64x2FromCXUInt64x2(CXUInt64x2 operand)
-//{
-//#if CSIMDX_ARM_NEON_AARCH64
-//    return vcvtq_f64_u64(operand);
-//#elif CSIMDX_X86_SSE2
-////    return _mm_castsi128_pd(operand);
-//    return __builtin_convertvector(operand, CFloat64x2);
-//#elif CX_EXT_VECTOR
-//    return __builtin_convertvector(operand, CFloat64x2);
-//#else
-//    return CFloat64x2Make( (Float64)(operand.val[0]), (Float64)(operand.val[1]) );
-//#endif
-//}
 
 #undef Float64

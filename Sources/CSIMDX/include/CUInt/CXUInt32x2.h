@@ -72,7 +72,7 @@ CX_INLINE(CXUInt32x2) CXUInt32x2MakeZero(void)
 #endif
 }
 
-// MARK: - Getter/Setter
+#pragma mark - Getter/Setter
 
 /// Returns the element at `index` of `storage` (`storage[index]`).
 /// @return `storage[index]`
@@ -95,7 +95,7 @@ CX_INLINE(void) CXUInt32x2SetElement(CXUInt32x2* storage, const int index, const
 #endif
 }
 
-// MARK: - Conversion
+#pragma mark - Conversion
 
 /// Converts the elements of `operand`, load them in the new storage and returns the result.
 /// @returns `(CXUInt32x2){ (UInt32)(operand[0]), (UInt32)(operand[1]) }`
@@ -184,7 +184,7 @@ CX_INLINE(CXUInt32x2) CXUInt32x2FromCXUInt64x2(CXUInt64x2 operand)
 #endif
 }
 
-// MARK: Minimum & Maximum
+#pragma mark Minimum & Maximum
 
 /// Performs element-by-element comparison of both storages and returns the lesser of each pair in the result.
 /// @return `(CXUInt32x2){ lhs[0] < rhs[0] ? lhs[0] : rhs[0], lhs[1] < rhs[1] ? lhs[1] : rhs[1] }`
@@ -224,7 +224,7 @@ CX_INLINE(CXUInt32x2) CXUInt32x2Maximum(const CXUInt32x2 lhs, const CXUInt32x2 r
 #endif
 }
 
-// MARK: - Arithmetics
+#pragma mark - Arithmetics
 
 /// Returns the absolute storage (element-wise).
 /// @return `(CXUInt32x2){ abs(operand[0]), abs(operand[1]) }`
@@ -233,7 +233,7 @@ CX_INLINE(CXUInt32x2) CXUInt32x2Absolute(const CXUInt32x2 operand)
     return operand;
 }
 
-// MARK: Additive
+#pragma mark Additive
 
 /// Adds two storages (element-wise).
 /// @return `(CXUInt32x2){ lhs[0] + rhs[0], lhs[1] + rhs[1] }`
@@ -271,7 +271,7 @@ CX_INLINE(CXUInt32x2) CXUInt32x2Subtract(const CXUInt32x2 lhs, const CXUInt32x2 
 #endif
 }
 
-// MARK: Multiplicative
+#pragma mark Multiplicative
 
 /// Multiplies two storages (element-wise).
 /// @return `(CXUInt32x2){ lhs[0] * rhs[0], lhs[1] * rhs[1] }`
@@ -297,7 +297,7 @@ CX_INLINE(CXUInt32x2) CXUInt32x2Multiply(const CXUInt32x2 lhs, const CXUInt32x2 
 #endif
 }
 
-// MARK: - Bitwise
+#pragma mark - Bitwise
 
 /// Bitwise Not
 CX_INLINE(CXUInt32x2) CXUInt32x2BitwiseNot(const CXUInt32x2 operand)
@@ -385,7 +385,7 @@ CX_INLINE(CXUInt32x2) CXUInt32x2BitwiseExclusiveOr(const CXUInt32x2 lhs, const C
 #endif
 }
 
-// MARK: Shifting
+#pragma mark Shifting
 
 /// Left-shifts each element in the storage operand by the specified number of bits in each lane of rhs.
 CX_INLINE(CXUInt32x2) CXUInt32x2ShiftElementWiseLeft(const CXUInt32x2 lhs, const CXUInt32x2 rhs)
