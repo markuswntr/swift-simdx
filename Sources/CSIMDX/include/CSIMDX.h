@@ -17,6 +17,8 @@
 // == References ===============================================================================
 //  - https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/intrinsics
 //  - http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0472k/chr1359125040547.html
+//  - https://developer.arm.com/architectures/instruction-sets/intrinsics
+//  - https://www.keil.com/support/man/docs/armclang_intro/armclang_intro_wap1490203634804.htm
 // =============================================================================================
 // #define CSIMDX_ARM_NEON
 // #define CSIMDX_ARM_NEON_AARCH64
@@ -27,47 +29,36 @@
 //  - https://thinkingandcomputing.com/posts/using-avx-instructions-in-matrix-multiplication.html
 // ==============================================================================================
 // #define CSIMDX_X86_SSE2
+// #define CSIMDX_X86_AVX
 
 /// Find the relevant instruction set
 #ifdef __ARM_NEON
   #define CSIMDX_ARM_NEON 1
   #include <arm_neon.h>
-  /// Additionally, use the extend set of aarch64 if available
   #ifdef __aarch64__
+    /// Use the extend set of aarch64 if available
     #define CSIMDX_ARM_NEON_AARCH64 1
+  #endif
+  #ifdef __ARM_FEATURE_SVE
+  #define CSIMDX_ARM_SVE 1
+    #include <arm_sve.h>
   #endif
 #elif __SSE2__
   #define CSIMDX_X86_SSE2 1
   #include <emmintrin.h>
-#elif
-  #error Unsupported Architecture
+  #ifdef __AVX__
+    #define CSIMDX_X86_AVX 1
+    #include <immintrin.h>
+  #endif
 #endif
 
-#if CSIMDX_ARM_NEON
-  #define DEFAULT_FN_ATTRS __attribute__((__always_inline__, __nodebug__))
-#elif CSIMDX_X86_SSE2
-  #define DEFAULT_FN_ATTRS __attribute__((__always_inline__, __nodebug__, __min_vector_width__(128)))
-#endif
+/// Tries force inlining the function. Takes the return value as input.
+#define FORCE_INLINE(returnType) static __inline__ __attribute__((always_inline)) returnType
 
-/// Tries to force inline the function. Takes the return value as input.
-#define FORCE_INLINE(returnType) static __inline__ returnType DEFAULT_FN_ATTRS
+#include "CFloat/CFloat.h"
 
-/// Include the 64 bit instructions
-#include "128/CFloat32x2.h" // Actually 64 bit, but 128 bit is the minimum
-//#include "CXInt32x2.h"  // Actually 64 bit, but 128 bit is the minimum
-//#include "CXUInt32x2.h" // Actually 64 bit, but 128 bit is the minimum
-
-/// Include the 128 bit instructions
-#include "128/CFloat32x3.h" // The most significant 32 bits are not used
-//#include "CXInt32x3.h"  // The most significant 32 bits are not used
-//#include "CXUInt32x3.h" // The most significant 32 bits are not used
-
-#include "128/CFloat32x4.h"
-//#include "CXInt32x4.h"
-//#include "CXUInt32x4.h"
-//
-//#include "CXFloat64x2.h"
-//#include "CXInt64x2.h"
-//#include "CXUInt64x2.h"
-//
-//
+#undef CSIMDX_ARM_NEON
+#undef CSIMDX_ARM_NEON_AARCH64
+#undef CSIMDX_ARM_SVE
+#undef CSIMDX_X86_SSE2
+#undef CSIMDX_X86_AVX

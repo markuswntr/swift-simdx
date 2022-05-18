@@ -1,4 +1,4 @@
-// Copyright 2022 Markus Winter
+// Copyright 2019-2022 Markus Winter
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,14 +15,21 @@
 import CSIMDX
 import RealModule
 
-// MARK: Basic Contract
-extension CFloat32x4: CSIMDX, CSIMDX4 {
-  public typealias Element = Float32
-  public typealias Index = CInt
+public struct Float64x4: SIMDXStorage, SIMDX4Storage {
+  public typealias RawValue = CFloat64x4
+  public typealias Element = Float64
+
+  @_alwaysEmitIntoClient
+  public var rawValue: RawValue
+
+  @_alwaysEmitIntoClient
+  public init(rawValue: RawValue) {
+    self.rawValue = rawValue
+  }
 }
 
 // MARK: - Additional Initializers
-extension CFloat32x4: ExpressibleByIntegerLiteral {
+extension Float64x4 {
   @_transparent
   public init(
     _ index0: Element,
@@ -30,65 +37,75 @@ extension CFloat32x4: ExpressibleByIntegerLiteral {
     _ index2: Element,
     _ index3: Element
   ) {
-      self = CFloat32x4Make(index0, index1, index2, index3)
+    self.init(rawValue: CFloat64x4Make(index0, index1, index2, index3))
   }
 
   @_transparent
   public init(repeating repeatingElement: Element) {
-      self = CFloat32x4MakeRepeatingElement(repeatingElement)
+    self.init(rawValue: CFloat64x4MakeRepeatingElement(repeatingElement))
   }
 
   @_transparent
-  public init(_ array: [Float32]) {
+  public init(_ array: [Float64]) {
     precondition(array.count == 4, "Array must contain exactly 4 elements")
     var array = array
-    self = CFloat32x4MakeLoad(&array)
+    self.init(rawValue: CFloat64x4MakeLoad(&array))
   }
 }
 
 // MARK: - Conformance to MutableCollection
-extension CFloat32x4 {
+extension Float64x4 {
+  public typealias Index = CInt
   public subscript(index: Index) -> Element {
-    @_transparent set { CFloat32x4SetElement(&self, index, newValue) }
-    @_transparent get { CFloat32x4GetElement(self, index) }
+    @_transparent set {
+      precondition(indices.contains(index))
+      CFloat64x4SetElement(&rawValue, index, newValue)
+    }
+    @_transparent get {
+      precondition(indices.contains(index))
+      return CFloat64x4GetElement(rawValue, index)
+    }
   }
 }
 
 // MARK: - Conformance to Equatable
-extension CFloat32x4: Equatable {
+extension Float64x4: Equatable {
   @_transparent
   public static func == (lhs: Self, rhs: Self) -> Bool {
-    lhs.rawValue == rhs.rawValue
+    lhs.indices.allSatisfy { lhs[$0] == rhs[$0] }
   }
 }
 
 // MARK: - Conformance to Hashable
-extension CFloat32x4: Hashable {
+extension Float64x4: Hashable {
   public func hash(into hasher: inout Hasher) {
-    hasher.combine(rawValue)
+    hasher.combine(CFloat64x4GetElement(rawValue, 0))
+    hasher.combine(CFloat64x4GetElement(rawValue, 1))
+    hasher.combine(CFloat64x4GetElement(rawValue, 2))
+    hasher.combine(CFloat64x4GetElement(rawValue, 3))
   }
 }
 
 // MARK: - Conformance to AdditiveArithmetic
-extension CFloat32x4: AdditiveArithmetic {
+extension Float64x4: AdditiveArithmetic {
   @_transparent
   public static var zero: Self {
-    CFloat32x4MakeZero()
+    self.init(rawValue: CFloat64x4MakeZero())
   }
 
   @_transparent
   public static func + (lhs: Self, rhs: Self) -> Self {
-    CFloat32x4Add(lhs, rhs)
+    self.init(rawValue: CFloat64x4Add(lhs.rawValue, rhs.rawValue))
   }
 
   @_transparent
   public static func - (lhs: Self, rhs: Self) -> Self  {
-    CFloat32x4Subtract(lhs, rhs)
+    self.init(rawValue: CFloat64x4Subtract(lhs.rawValue, rhs.rawValue))
   }
 }
 
 // MARK: - Conformance to Numeric
-extension CFloat32x4: Numeric {
+extension Float64x4: Numeric {
   public typealias Magnitude = Element.Magnitude
 
   @_alwaysEmitIntoClient
@@ -98,7 +115,7 @@ extension CFloat32x4: Numeric {
 
   @_transparent
   public static func * (lhs: Self, rhs: Self) -> Self  {
-    CFloat32x4Multiply(lhs, rhs)
+    self.init(rawValue: CFloat64x4Multiply(lhs.rawValue, rhs.rawValue))
   }
 
   @_transparent
@@ -109,41 +126,41 @@ extension CFloat32x4: Numeric {
   @_transparent
   public init?<T>(exactly source: T) where T : BinaryInteger {
     guard let exactly = Element(exactly: source) else { return nil }
-    self = CFloat32x4MakeRepeatingElement(exactly)
+    self.init(rawValue: CFloat64x4MakeRepeatingElement(exactly))
   }
 }
 
 // MARK: - Conformace to SignedNumeric
-extension CFloat32x4: SignedNumeric {
+extension Float64x4: SignedNumeric {
   @_transparent
   public static prefix func - (operand: Self) -> Self  {
-    CFloat32x4Negate(operand)
+    self.init(rawValue: CFloat64x4Negate(operand.rawValue))
   }
 
   @_transparent
   public mutating func negate() {
-    self = CFloat32x4Negate(self)
+    rawValue = CFloat64x4Negate(rawValue)
   }
 }
 
 // MARK: - Conformance to AlgebraicField
-extension CFloat32x4: AlgebraicField {
+extension Float64x4: AlgebraicField {
   @_transparent
   public static func / (lhs: Self, rhs: Self) -> Self  {
-    CFloat32x4Divide(lhs, rhs)
+    self.init(rawValue: CFloat64x4Divide(lhs.rawValue, rhs.rawValue))
   }
 
   @_transparent
-  public static func /= (lhs: inout CFloat32x4_t, rhs: CFloat32x4_t) {
-    lhs = CFloat32x4Divide(lhs, rhs)
+  public static func /= (lhs: inout Self, rhs: Self) {
+    lhs = lhs / rhs
   }
 }
 
-//// MARK: - Conformance to ElementaryFunctions
-//// TODO: These are not yet exposed to SIMDX
-//extension CFloat32x4/*: ElementaryFunctions*/ {
-//  @_transparent
-//  static func sqrt(_ x: Self) -> Self {
-//    CFloat32x4SquareRoot(x)
-//  }
-//}
+// MARK: - Conformance to ElementaryFunctions
+// TODO: These are not yet exposed to SIMDX
+extension Float64x4/*: ElementaryFunctions*/ {
+  @_transparent
+  static func sqrt(_ x: Self) -> Self {
+    self.init(rawValue: CFloat64x4SquareRoot(x.rawValue))
+  }
+}

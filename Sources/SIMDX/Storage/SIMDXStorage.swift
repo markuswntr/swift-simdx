@@ -1,4 +1,4 @@
-// Copyright 2022 Markus Winter
+// Copyright 2019-2022 Markus Winter
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,8 +20,7 @@
 /// the functions in the protocol should directly call the appropriate SIMD
 /// intrinsic function and should not implement any additional logic - and avoid
 /// unexpected performance characteristics.
-public protocol CSIMDX: MutableCollection where Index == CInt {
-
+public protocol SIMDXStorage: MutableCollection where Index == CInt {
   /// Initialize to a raw SIMD storage with all elements equal
   /// to `repeatingElement`.
   init(repeating repeatingElement: Element)
@@ -35,7 +34,7 @@ public protocol CSIMDX: MutableCollection where Index == CInt {
 }
 
 // MARK: - Basic Properties
-extension CSIMDX {
+extension SIMDXStorage {
   @_transparent
   public var startIndex: Index { 0 }
 
@@ -60,7 +59,7 @@ extension CSIMDX {
 }
 
 // MARK: - Conformance to ExpressibleByIntegerLiteral
-extension CSIMDX where Element: ExpressibleByIntegerLiteral {
+extension SIMDXStorage where Element: ExpressibleByIntegerLiteral {
   public typealias IntegerLiteralType = Element.IntegerLiteralType
 
   @_transparent
@@ -69,15 +68,15 @@ extension CSIMDX where Element: ExpressibleByIntegerLiteral {
   }
 }
 
-// MARK: - 2-value register
-/// A raw SIMD register type of exactly 2 values
-public protocol CSIMDX2: CSIMDX {
+// MARK: - Cardinality
 
-    /// Initialize a raw SIMD register type to specified elements.
-    init(_ element0: Element, _ element1: Element)
+/// A raw SIMD register type of exactly 2 values
+public protocol SIMDX2Storage: SIMDXStorage {
+  /// Initialize a raw SIMD register type to specified elements.
+  init(_ element0: Element, _ element1: Element)
 }
 
-extension CSIMDX2 {
+extension SIMDX2Storage {
   @_transparent
   public var count: Int { 2 }
 
@@ -85,15 +84,13 @@ extension CSIMDX2 {
   public var endIndex: Index { 2 }
 }
 
-// MARK: - 3-value register
 /// A raw SIMD register type of exactly 3 values
-public protocol CSIMDX3: CSIMDX {
-
+public protocol SIMDX3Storage: SIMDXStorage {
   /// Initialize a raw SIMD register type to specified elements.
-    init(_ element0: Element, _ element1: Element, _ element2: Element)
+  init(_ element0: Element, _ element1: Element, _ element2: Element)
 }
 
-extension CSIMDX3 {
+extension SIMDX3Storage {
   @_transparent
   public var count: Int { 3 }
 
@@ -101,17 +98,18 @@ extension CSIMDX3 {
   public var endIndex: Index { 3 }
 }
 
-
-// MARK: - 4-value register
 /// A raw SIMD register type of exactly 4 values
-public protocol CSIMDX4: CSIMDX {
-
+public protocol SIMDX4Storage: SIMDXStorage {
   /// Initialize a raw SIMD register type to specified elements.
-    init(_ element0: Element, _ element1: Element, _ element2: Element,
-         _ element3: Element)
+  init(
+    _ element0: Element,
+    _ element1: Element,
+    _ element2: Element,
+    _ element3: Element
+  )
 }
 
-extension CSIMDX4 {
+extension SIMDX4Storage {
   @_transparent
   public var count: Int { 4 }
 

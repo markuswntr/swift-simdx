@@ -1,4 +1,4 @@
-// Copyright 2022 Markus Winter
+// Copyright 2019-2022 Markus Winter
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ import RealModule
 
 /// A wrapper type to raw SIMD intrinsic instructions. TODO: More documentation.
 public protocol SIMDX: RawRepresentable, RandomAccessCollection, MutableCollection, ExpressibleByArrayLiteral
-where RawValue: CSIMDX, RawValue.Element == Element, RawValue.Index == Index {
+where RawValue: SIMDXStorage, RawValue.Element == Element, RawValue.Index == Index {
   // OVERRIDEN: All modifications (setter)
   var rawValue: RawValue { get set }
 

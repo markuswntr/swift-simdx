@@ -1,4 +1,4 @@
-// Copyright 2022 Markus Winter
+// Copyright 2019-2022 Markus Winter
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
 import RealModule
 
 /// A SIMD storage to 2 elements
-public struct SIMDX2<Element>: SIMDX where Element: CSIMDX2Element {
-  public typealias RawValue = Element.RegisterType2
+public struct SIMDX2<Element>: SIMDX where Element: SIMDX2Element {
+  public typealias RawValue = Element.Storage2
   public typealias Index = RawValue.Index
 
   public var rawValue: RawValue

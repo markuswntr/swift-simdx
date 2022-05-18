@@ -17,18 +17,6 @@
 #include <stdint.h>
 #include "common/numeric.h"
 
-
-/// The 4 x 32-bit floating point storage
-#if CX_NEON_128
-typedef float32x4_t __attribute((aligned(16))) CXFloat32x4;
-#elif CX_X86_128
-typedef __m128 CXFloat32x4;
-#elif CX_EXT_VECTOR
-typedef Float32 CXFloat32x4 __attribute__((ext_vector_type(4)));
-#else
-typedef struct CXFloat32x4_t { Float32 val[4]; } CXFloat32x4;
-#endif
-
 /// The 2 x 64-bit floating point storage
 #if CX_NEON_128_WITH_AARCH64 // NOTE: float64x2_t requires aarch64
 typedef float64x2_t __attribute((aligned(16))) CXFloat64x2;

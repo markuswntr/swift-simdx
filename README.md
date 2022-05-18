@@ -1,5 +1,12 @@
 # 🎹 SIMDX
 
+Caveats:
+- Requires at least SSE2 or ARM NEON for any intrinsic. Below, everything is just plain C.
+- Fallbacks require a math library
+- (ARM only) Float64x2 uses a C-array and not an intrinsic if extended neon set (**AARCH64**) is not available
+- Float32x2 is of 128 bit length for SSE2 (most significant 64 bits unused)
+- Float32x3 is of 128 bit length (most significant 32 bits unused) 
+
 > **Warning.** Not meant to be used in production – created for learning purposes!
 > <br/><br/> See [**Stumbling on SIMD**](https://blog.wntr.me/posts/001-the-properties-of-space/) series to learn how
 this project came to be. If you want to report a bug or an unexpected behaviour, feel free to open an issue. If have
