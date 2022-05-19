@@ -191,7 +191,7 @@ FORCE_INLINE(CFloat32x4) CFloat32x4Negate(const CFloat32x4 operand)
 
 /// Returns the absolute storage (element-wise).
 /// @return `(CFloat32x4){ abs(operand[0]), abs(operand[1]) }`
-FORCE_INLINE(CFloat32x4) CFloat32x4Absolute(const CFloat32x4 operand)
+FORCE_INLINE(CFloat32x4) CFloat32x4Magnitude(const CFloat32x4 operand)
 {
 #if CSIMDX_ARM_NEON
   return vabsq_f32(operand);
@@ -202,8 +202,8 @@ FORCE_INLINE(CFloat32x4) CFloat32x4Absolute(const CFloat32x4 operand)
   return _mm_and_ps(operand, Signed.operand);
 #else
   return (CFloat32x4) {
-    CFloat32x2Absolute(operand.lo),
-    CFloat32x2Absolute(operand.hi)
+    CFloat32x2Magnitude(operand.lo),
+    CFloat32x2Magnitude(operand.hi)
   };
 #endif
 }

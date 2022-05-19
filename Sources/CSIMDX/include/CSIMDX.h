@@ -70,8 +70,9 @@
 /// Tries force inlining the function. Takes the return value as input.
 #define FORCE_INLINE(returnType) static __inline__ __attribute__((always_inline)) returnType
 
-#include "CInt/CInt.h"
 #include "CFloat/CFloat.h"
+#include "CUInt/CUInt.h"
+#include "CInt/CInt.h"
 
 #undef CSIMDX_ARM_NEON
 #undef CSIMDX_ARM_NEON_AARCH64

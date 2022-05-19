@@ -110,7 +110,10 @@ extension Float64x4: Numeric {
 
   @_alwaysEmitIntoClient
   public var magnitude: Magnitude {
-    indices.reduce(into: self[0]) { $0 = Swift.max($0, self[$1]) }
+    let rawValue = CFloat64x4Magnitude(rawValue)
+    return indices.reduce(into: CFloat64x4GetElement(rawValue, 0)) {
+      $0 = Swift.max($0, CFloat64x4GetElement(rawValue, $1))
+    }
   }
 
   @_transparent

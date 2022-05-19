@@ -14,5 +14,6 @@
 
 #pragma once
 
-#include "CInt32x2.h"
-#include "CInt32x3.h"
+#include "CUInt32x2.h"
+#include "CUInt32x3.h"
+#include "CUInt32x4.h"

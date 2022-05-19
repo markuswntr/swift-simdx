@@ -104,7 +104,10 @@ extension Int32x2: Numeric {
 
   @_alwaysEmitIntoClient
   public var magnitude: Magnitude {
-    UInt32(indices.reduce(into: self[0]) { $0 = Swift.max($0, self[$1]) })
+    let rawValue = CInt32x2Magnitude(rawValue)
+    return indices.reduce(into: CUInt32x2GetElement(rawValue, 0)) {
+      $0 = Swift.max($0, CUInt32x2GetElement(rawValue, $1))
+    }
   }
 
   @_transparent

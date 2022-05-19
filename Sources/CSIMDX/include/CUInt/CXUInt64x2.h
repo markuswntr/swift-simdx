@@ -213,7 +213,7 @@ CX_INLINE(CXUInt64x2) CXUInt64x2Maximum(const CXUInt64x2 lhs, const CXUInt64x2 r
 
 /// Returns the absolute storage (element-wise).
 /// @return `(CXUInt64x2){ abs(operand[0]), abs(operand[1]) }`
-CX_INLINE(CXUInt64x2) CXUInt64x2Absolute(const CXUInt64x2 operand)
+CX_INLINE(CXUInt64x2) CXUInt64x2Magnitude(const CXUInt64x2 operand)
 {
     return operand;
 }

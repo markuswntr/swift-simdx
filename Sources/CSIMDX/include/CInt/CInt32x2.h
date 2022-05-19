@@ -101,7 +101,7 @@ CInt32x2MakeRepeatingElement(const Int32 value)
 FORCE_INLINE(CInt32x2) CInt32x2MakeZero(void)
 {
 #if CSIMDX_ARM_NEON
-  return vdup_n_f32(0);
+  return vdup_n_s32(0);
 #elif CSIMDX_X86_MMX
   return _mm_setzero_si64();
 #else
@@ -200,11 +200,11 @@ FORCE_INLINE(CInt32x2) CInt32x2Negate(const CInt32x2 operand)
 }
 
 /// Returns the absolute storage (element-wise).
-/// @return `(CInt32x2){ abs(operand[0]), abs(operand[1]) }`
-FORCE_INLINE(CInt32x2) CInt32x2Absolute(const CInt32x2 operand)
+/// @return `(CUInt32x2){ abs(operand[0]), abs(operand[1]) }`
+FORCE_INLINE(CUInt32x2) CInt32x2Magnitude(const CInt32x2 operand)
 {
 #if CSIMDX_ARM_NEON
-  return vabs_s32(operand);
+  return vreinterpret_u32_s32(vabs_s32(operand));
 #elif CSIMDX_X86_SSE3 // MMX has no `abs` function for __m64, but SSE3 does
   return _mm_abs_pi32(operand);
 #else

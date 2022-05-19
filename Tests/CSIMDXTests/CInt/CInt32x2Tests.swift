@@ -86,12 +86,12 @@ final class CInt32x2Tests: XCTestCase {
     XCTAssertEqual(CInt32x2GetElement(negate, 1), -3)
   }
 
-  func testAbsolute() {
+  func testMagnitude() {
     let normal = CInt32x2Make(-1, 3)
-    let absolute = CInt32x2Absolute(normal)
+    let absolute = CInt32x2Magnitude(normal)
 
-    XCTAssertEqual(CInt32x2GetElement(absolute, 0), 1)
-    XCTAssertEqual(CInt32x2GetElement(absolute, 1), 3)
+    XCTAssertEqual(CUInt32x2GetElement(absolute, 0), 1)
+    XCTAssertEqual(CUInt32x2GetElement(absolute, 1), 3)
   }
 
   func testAdd() {

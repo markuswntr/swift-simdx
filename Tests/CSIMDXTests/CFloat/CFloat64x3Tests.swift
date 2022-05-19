@@ -88,9 +88,9 @@ final class CFloat64x3Tests: XCTestCase {
   
   // MARK: Arithmetic
   
-  func testAbsolute() {
+  func testMagnitude() {
     let normal = CFloat64x3Make(-1, 0, 3)
-    let absolute = CFloat64x3Absolute(normal)
+    let absolute = CFloat64x3Magnitude(normal)
     
     XCTAssertEqual(CFloat64x3GetElement(absolute, 0), 1)
     XCTAssertEqual(CFloat64x3GetElement(absolute, 1), 0)

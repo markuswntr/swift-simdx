@@ -217,7 +217,7 @@ CX_INLINE(CXInt32x4) CXInt32x4Negate(const CXInt32x4 operand)
 
 /// Returns the absolute storage (element-wise).
 /// @return `(CXUInt32x4){ abs(operand[0]), abs(operand[1]), ... }`
-CX_INLINE(CXUInt32x4) CXInt32x4Absolute(const CXInt32x4 operand)
+CX_INLINE(CXUInt32x4) CXInt32x4Magnitude(const CXInt32x4 operand)
 {
 #if CX_NEON_128
     return vreinterpretq_u32_s32(vabsq_s32(operand));

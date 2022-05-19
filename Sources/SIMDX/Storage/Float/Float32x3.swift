@@ -105,7 +105,10 @@ extension Float32x3: Numeric {
 
   @_alwaysEmitIntoClient
   public var magnitude: Magnitude {
-    indices.reduce(into: self[0]) { $0 = Swift.max($0, self[$1]) }
+    let rawValue = CFloat32x3Magnitude(rawValue)
+    return indices.reduce(into: CFloat32x3GetElement(rawValue, 0)) {
+      $0 = Swift.max($0, CFloat32x3GetElement(rawValue, $1))
+    }
   }
 
   @_transparent

@@ -180,7 +180,7 @@ CFloat64x2Negate(const CFloat64x2 operand)
 /// Returns the absolute storage (element-wise).
 /// @return `(CFloat64x2){ abs(operand[0]), abs(operand[1]) }`
 FORCE_INLINE(CFloat64x2)
-CFloat64x2Absolute(const CFloat64x2 operand)
+CFloat64x2Magnitude(const CFloat64x2 operand)
 {
 #if CSIMDX_ARM_NEON_AARCH64
   return vabsq_f64(operand);

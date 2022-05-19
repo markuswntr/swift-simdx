@@ -182,7 +182,7 @@ FORCE_INLINE(CFloat64x4) CFloat64x4Negate(const CFloat64x4 operand)
 
 /// Returns the absolute storage (element-wise).
 /// @return `(CFloat64x4){ abs(operand[0]), abs(operand[1]) }`
-FORCE_INLINE(CFloat64x4) CFloat64x4Absolute(const CFloat64x4 operand)
+FORCE_INLINE(CFloat64x4) CFloat64x4Magnitude(const CFloat64x4 operand)
 {
 #if CSIMDX_X86_AVX
   __m64 SIGN_BIT = _mm_cvtsi64_m64(~(1LL << 63));
@@ -191,8 +191,8 @@ FORCE_INLINE(CFloat64x4) CFloat64x4Absolute(const CFloat64x4 operand)
   return _mm256_and_pd(operand, Signed.operand);
 #else
   CFloat64x4 result;
-  result.lo = CFloat64x2Absolute(operand.lo);
-  result.hi = CFloat64x2Absolute(operand.hi);
+  result.lo = CFloat64x2Magnitude(operand.lo);
+  result.hi = CFloat64x2Magnitude(operand.hi);
   return result;
 #endif
 }

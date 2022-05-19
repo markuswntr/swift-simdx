@@ -120,9 +120,9 @@
 //
 //    // MARK: Arithmetic
 //
-//    func testAbsolute() {
+//    func testMagnitude() {
 //        let normal = CXUInt64x2Make(1, 3)
-//        let absolute = CXUInt64x2Absolute(normal)
+//        let absolute = CXUInt64x2Magnitude(normal)
 //
 //        XCTAssertEqual(CXUInt64x2GetElement(absolute, 0), 1)
 //        XCTAssertEqual(CXUInt64x2GetElement(absolute, 1), 3)

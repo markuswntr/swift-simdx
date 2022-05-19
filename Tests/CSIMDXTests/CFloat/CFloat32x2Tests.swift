@@ -86,9 +86,9 @@ final class CFloat32x2Tests: XCTestCase {
     XCTAssertEqual(CFloat32x2GetElement(negate, 1), -3)
   }
 
-  func testAbsolute() {
+  func testMagnitude() {
     let normal = CFloat32x2Make(-1, 3)
-    let absolute = CFloat32x2Absolute(normal)
+    let absolute = CFloat32x2Magnitude(normal)
 
     XCTAssertEqual(CFloat32x2GetElement(absolute, 0), 1)
     XCTAssertEqual(CFloat32x2GetElement(absolute, 1), 3)

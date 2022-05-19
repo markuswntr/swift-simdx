@@ -235,7 +235,7 @@ CX_INLINE(CXInt64x2) CXInt64x2Negate(const CXInt64x2 operand)
 
 /// Returns the absolute storage (element-wise).
 /// @return `(CXUInt64x2){ abs(operand[0]), abs(operand[1]) }`
-CX_INLINE(CXUInt64x2) CXInt64x2Absolute(const CXInt64x2 operand)
+CX_INLINE(CXUInt64x2) CXInt64x2Magnitude(const CXInt64x2 operand)
 {
 #if CX_NEON_128_WITH_AARCH64
     return vreinterpretq_u64_s64(vabsq_s64(operand));

@@ -35,16 +35,6 @@
 /// The 64-bit unsigned integer type
 #define UInt64 uint64_t
 
-/// The 3 x 32-bit signed integer storage
-#if CX_NEON_128
-typedef int32x4_t __attribute((aligned(16))) CXInt32x3; // Most significant 32 bits are unused (zero)
-#elif CX_X86_128
-typedef __m128i CXInt32x3; // Most significant 32 bits are unused (zero)
-#elif CX_EXT_VECTOR
-typedef Int32 CXInt32x3 __attribute__((ext_vector_type(3)));
-#else
-typedef struct CXInt32x3_t { Int32 val[3]; } CXInt32x3;
-#endif
 
 /// The 4 x 32-bit signed integer storage
 #if CX_NEON_128
@@ -74,38 +64,6 @@ typedef struct CXInt64x2_t { Int64 val[2]; } CXInt64x2;
 
 
 
-/// The 2 x 32-bit unsigned integer storage
-#if CX_NEON_128
-typedef uint32x2_t __attribute((aligned(16))) CXUInt32x2;
-#elif CX_X86_128
-typedef __m128i CXUInt32x2; // Most significant 2 x 32 bits are unused (zero)
-#elif CX_EXT_VECTOR
-typedef UInt32 CXUInt32x2 __attribute__((ext_vector_type(2)));
-#else
-typedef struct CXUInt32x2_t { UInt32 val[2]; } CXUInt32x2;
-#endif
-
-/// The 3 x 32-bit unsigned integer storage
-#if CX_NEON_128
-typedef uint32x4_t __attribute((aligned(16))) CXUInt32x3; // Most significant 32 bits are unused (zero)
-#elif CX_X86_128
-typedef __m128i CXUInt32x3; // Most significant 32 bits are unused (zero)
-#elif CX_EXT_VECTOR
-typedef UInt32 CXUInt32x3 __attribute__((ext_vector_type(3)));
-#else
-typedef struct CXUInt32x3_t { UInt32 val[3]; } CXUInt32x3;
-#endif
-
-/// The 4 x 32-bit unsigned integer storage
-#if CX_NEON_128
-typedef uint32x4_t __attribute((aligned(16))) CXUInt32x4;
-#elif CX_X86_128
-typedef __m128i CXUInt32x4;
-#elif CX_EXT_VECTOR
-typedef UInt32 CXUInt32x4 __attribute__((ext_vector_type(4)));
-#else
-typedef struct CXUInt32x4_t { UInt32 val[4]; } CXUInt32x4;
-#endif
 
 /// The 2 x 64-bit unsigned integer storage
 #if CX_NEON_128

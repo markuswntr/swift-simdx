@@ -105,7 +105,7 @@
 //
 //    @inlinable public static var zero: UInt32x3 { .init(rawValue: CXUInt32x3MakeZero()) }
 //
-//    @inlinable public var magnitude: UInt32x3 { .init(rawValue: CXUInt32x3Absolute(rawValue)) }
+//    @inlinable public var magnitude: UInt32x3 { .init(rawValue: CXUInt32x3Magnitude(rawValue)) }
 //
 //    // MARK: Additive
 //
