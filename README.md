@@ -9,10 +9,6 @@ Caveats:
 - Underlying storage always has the same length (bits) on all platforms (BUT, CFloat32x2 is 128bits on x86, but 64bits on all other)
 
 > **Warning.** Not meant to be used in production – created for learning purposes!
-> <br/><br/> See [**Stumbling on SIMD**](https://blog.wntr.me/posts/001-the-properties-of-space/) series to learn how
-this project came to be. If you want to report a bug or an unexpected behaviour, feel free to open an issue. If have
-suggestions or really anything else that helps evolving the library and/or are interested in the details feel free to
-contact me on [Twitter](https://twitter.com/markuswntr).
 
 *SIMDX* provides a unified implementation for built-in vector and matrix
 intrinsics, such as **SSE/AVX on x86** and **Neon on Arm**, in C and exposes
